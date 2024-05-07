@@ -25,6 +25,24 @@
             <div class="inventory_table_list_data">
                 {{ data.brand }}
             </div>
+            <div class="inventory_table_list_data">
+                <div (click)="addStock(data.id, addStockModal)">
+                    Add stock
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<ng-template #addStockModal let-d="dismiss">
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="stocks">Stocks</label>
+            <input type="text" id="stocks" name="stocks" [(ngModel)]="stocks" placeholder="Enter stocks">
+        </div>
+        <div class="modal-btns">
+            <button class="btn btn-primary" (click)="addStockToInventory()">Add</button>
+            <button class="btn btn-secondary" (click)="d('Cross click')">Cancel</button>
+        </div>
+    </div>
+</ng-template>

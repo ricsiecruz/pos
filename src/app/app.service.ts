@@ -14,4 +14,18 @@ export class AppService {
   getInventory() {
     return this.http.get(this.API_URL + 'inventory');
   }
+
+  putStocks(id: any, payload: any) {
+    console.log('id', id)
+    console.log('payload', payload)
+    return this.http.put(this.API_URL + `inventory/add-stocks/${id}`, payload)
+  }
+
+//   updateJobPost(id: any, jobId: string, payload: JobPosts) {
+//     let queryParams = new HttpParams();
+//     if(jobId) {
+//         queryParams = queryParams.append('jobId', jobId)
+//     }
+//     return this.http.put(this.API_URL + `api/jobPosts/${id}`, payload, { params: queryParams })
+// }
 }
