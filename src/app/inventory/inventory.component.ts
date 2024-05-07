@@ -5,7 +5,7 @@ import { ModalService } from '../modal.service';
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.component.html',
-  styleUrl: './inventory.component.scss'
+  styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent {
 
@@ -24,17 +24,21 @@ export class InventoryComponent {
   ) {}
 
   ngOnInit() {
+    this.loadInventory();
+  }
+
+  loadInventory() {
     this.appService.getInventory().subscribe((res: any) => {
-      console.log('res', res)
+      console.log('res', res);
       this.inventory = res;
-    })
+    });
   }
 
   addStock(id: any, modalContent: any) {
     this.selectedProductId = id;
-    console.log('selectedproductid', this.selectedProductId)
-    console.log('id', id)
-    this.modalService.openModal(modalContent)
+    console.log('selectedproductid', this.selectedProductId);
+    console.log('id', id);
+    this.modalService.openModal(modalContent);
   }
 
   openAddInventoryModal(modalContent: any) {
@@ -42,56 +46,42 @@ export class InventoryComponent {
   }
 
   addStockToInventory() {
-    if (this.selectedProductId !== null) { // Check if a product is selected
-      // Log the product ID to the console
+    if (this.selectedProductId !== null) {
       console.log('Product ID:', this.selectedProductId);
-      
-      // Log the stock quantity to the console
       console.log('Adding stock:', this.stocks);
   
-      const payload = {
-        stocks: this.stocks
-      }
+      const payload = { stocks: this.stocks };
   
-      // Call the API to add stock
       this.appService.putStocks(this.selectedProductId, payload).subscribe((res: any) => {
         console.log('res', res);
-  
-        // If stocks are successfully added, refresh the inventory list
-        this.appService.getInventory().subscribe((updatedInventory: any) => {
-          this.inventory = updatedInventory;
-        });
+        this.updateInventory();
       });
   
-      // Close the modal
       this.modalService.closeModal();
     }
   }
 
   onSubmit(data: any) {
-
     const payload = {
       product: data.product,
       stocks: data.stocks,
       category: data.category,
       brand: data.brand
-    }
+    };
 
     this.appService.postInventory(payload).subscribe({
       next: () => {
-        console.log('success')
-  
-        // If stocks are successfully added, refresh the inventory list
-        this.appService.getInventory().subscribe((updatedInventory: any) => {
-          this.inventory = updatedInventory;
-        });
-        this.modalService.closeModal()
+        console.log('success');
+        this.updateInventory();
+        this.modalService.closeModal();
       },
-      error:(err) => {
-        console.log('err', err)
+      error: (err) => {
+        console.log('err', err);
       }
-    })
+    });
   }
 
+  updateInventory() {
+    this.loadInventory();
+  }
 }
-
