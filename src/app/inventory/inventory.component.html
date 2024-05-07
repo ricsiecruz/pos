@@ -1,1 +1,30 @@
-<p>inventory works!</p>
+<div class="inventory">
+    <div class="inventory_title">
+        Inventory
+    </div>
+    <div class="inventory_table">
+        <div class="inventory_table_filter">
+            
+        </div>
+        <div class="inventory_table_header">
+            <div>Product</div>
+            <div>Stocks</div>
+            <div>Category</div>
+            <div>Brand</div>
+        </div>
+        <div class="inventory_table_list" *ngFor="let data of inventory">
+            <div class="inventory_table_list_data">
+                {{ data.product }}
+            </div>
+            <div class="inventory_table_list_data">
+                {{ data.stocks }}
+            </div>
+            <div class="inventory_table_list_data">
+                {{ data.category }}
+            </div>
+            <div class="inventory_table_list_data">
+                {{ data.brand }}
+            </div>
+        </div>
+    </div>
+</div>
