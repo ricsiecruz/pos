@@ -10,9 +10,13 @@ import { ModalService } from '../modal.service';
 export class InventoryComponent {
 
   @ViewChild('addStockModal') modal: any;
+  @ViewChild('addInventoryModal') addInventoryModalmodal: any;
   inventory: any[] = [];
   stocks: string = '';
   selectedProductId: number | null = null;
+  product: string = '';
+  category: string = '';
+  brand: string = '';
 
   constructor(
     private appService: AppService,
@@ -31,6 +35,10 @@ export class InventoryComponent {
     console.log('selectedproductid', this.selectedProductId)
     console.log('id', id)
     this.modalService.openModal(modalContent)
+  }
+
+  openAddInventoryModal(modalContent: any) {
+    this.modalService.openModal(modalContent);
   }
 
   addStockToInventory() {
@@ -59,8 +67,31 @@ export class InventoryComponent {
       this.modalService.closeModal();
     }
   }
-  
 
+  onSubmit(data: any) {
+
+    const payload = {
+      product: data.product,
+      stocks: data.stocks,
+      category: data.category,
+      brand: data.brand
+    }
+
+    this.appService.postInventory(payload).subscribe({
+      next: () => {
+        console.log('success')
+  
+        // If stocks are successfully added, refresh the inventory list
+        this.appService.getInventory().subscribe((updatedInventory: any) => {
+          this.inventory = updatedInventory;
+        });
+        this.modalService.closeModal()
+      },
+      error:(err) => {
+        console.log('err', err)
+      }
+    })
+  }
 
 }
 

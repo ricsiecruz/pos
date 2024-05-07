@@ -1,6 +1,9 @@
 <div class="inventory">
     <div class="inventory_title">
         Inventory
+        <div (click)="openAddInventoryModal(addInventoryModal)">
+            Add inventory
+        </div>
     </div>
     <div class="inventory_table">
         <div class="inventory_table_filter">
@@ -42,6 +45,46 @@
         </div>
         <div class="modal-btns">
             <button class="btn btn-primary" (click)="addStockToInventory()">Add</button>
+            <button class="btn btn-secondary" (click)="d('Cross click')">Cancel</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #addInventoryModal let-d="dismiss">
+    <div class="modal-body">
+        add inventory modal
+
+        <form #send="ngForm" (ngSubmit)="onSubmit(send.value)">
+            <div class="add-job">
+                <div class="add-job_designation">
+                    <div for="product">product</div>
+                    <input class="form-control" id="product" name="product" [(ngModel)]="product" placeholder="product" >
+                </div>
+                <div class="add-job_group">
+                    <div class="add-job_group_category">
+                        <div for="category">category</div>
+                        <input class="form-control" id="category" name="category" [(ngModel)]="category" placeholder="category" >
+                    </div>
+                    <div class="add-job_group_position">
+                        <div for="brand">brand</div>
+                        <input class="form-control" id="brand" name="brand" [(ngModel)]="brand" placeholder="brand" >
+                    </div>
+                </div>
+                <div class="add-job_group">
+                    <div class="add-job_group_salary">
+                        <div for="stocks">stocks</div>
+                        <input class="form-control" id="stocks" name="stocks" [(ngModel)]="stocks" placeholder="stocks" >
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="add-job_button btn" type="submit">
+                    Post Job
+                </button>
+            </div>
+        </form>
+
+        <div class="modal-btns">
             <button class="btn btn-secondary" (click)="d('Cross click')">Cancel</button>
         </div>
     </div>
