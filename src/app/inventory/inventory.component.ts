@@ -13,6 +13,7 @@ export class InventoryComponent {
   @ViewChild('addInventoryModal') addInventoryModalmodal: any;
   inventory: any[] = [];
   stocks: string = '';
+  selectedProduct: string | null = null;
   selectedProductId: number | null = null;
   product: string = '';
   category: string = '';
@@ -34,8 +35,9 @@ export class InventoryComponent {
     });
   }
 
-  addStock(id: any, modalContent: any) {
+  addStock(id: any, product: any, modalContent: any) {
     this.selectedProductId = id;
+    this.selectedProduct = product;
     console.log('selectedproductid', this.selectedProductId);
     console.log('id', id);
     this.modalService.openModal(modalContent);
