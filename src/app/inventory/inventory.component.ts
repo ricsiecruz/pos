@@ -40,20 +40,26 @@ export class InventoryComponent {
       
       // Log the stock quantity to the console
       console.log('Adding stock:', this.stocks);
-
+  
       const payload = {
         stocks: this.stocks
       }
-
+  
       // Call the API to add stock
       this.appService.putStocks(this.selectedProductId, payload).subscribe((res: any) => {
-        console.log('res', res)
-      })
-
+        console.log('res', res);
+  
+        // If stocks are successfully added, refresh the inventory list
+        this.appService.getInventory().subscribe((updatedInventory: any) => {
+          this.inventory = updatedInventory;
+        });
+      });
+  
       // Close the modal
       this.modalService.closeModal();
     }
   }
+  
 
 
 }
