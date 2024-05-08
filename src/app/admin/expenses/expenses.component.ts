@@ -64,6 +64,11 @@ export class ExpensesComponent {
     this.channel = '';
   }
 
+  cancelForm() {
+    this.clearForm(); // Call the method to reset form fields
+    this.modalService.closeModal(); // Close the modal
+  }  
+
   updateInventory() {
     this.loadInventory();
   }

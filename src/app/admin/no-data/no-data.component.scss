@@ -1,0 +1,10 @@
+.no-data {
+    display: grid;
+    place-items: center;
+    color: #5b6670;
+    padding: 50px;
+    svg {
+        width: 50px;
+        color: #fb0;
+    }
+}

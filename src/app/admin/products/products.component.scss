@@ -47,7 +47,7 @@
             font-size: 14px;
             font-weight: 400;
             line-height: normal;
-            border-top: 1px solid #dbe0e6;
+            border-bottom: 1px solid #dbe0e6;
             &_add {
                 cursor: pointer;
                 border-radius: 3px;
@@ -149,15 +149,4 @@ input {
 
 ::placeholder {
     color: #8b949b;
-}
-
-.no-data {
-    display: grid;
-    place-items: center;
-    color: #5b6670;
-    padding: 50px;
-    svg {
-        width: 50px;
-        color: #fb0;
-    }
 }

@@ -65,6 +65,7 @@ export class ProductsComponent {
       next: () => {
         this.updateInventory();
         this.modalService.closeModal();
+        this.clearForm
       },
       error: (err) => {
         console.log('err', err);
@@ -78,6 +79,7 @@ export class ProductsComponent {
   }  
 
   clearForm() {
+    this.product = '';
     this.price = '';
   }
 

@@ -16,22 +16,24 @@
             <div class="table_four">Brand</div>
             <div class="table_five"></div>
         </div>
-        <div class="inventory_table_list" *ngFor="let data of inventory">
-            <div class="table_one">
-                {{ data.product }}
-            </div>
-            <div class="table_two">
-                {{ data.stocks }}
-            </div>
-            <div class="table_three">
-                {{ data.category }}
-            </div>
-            <div class="table_four">
-                {{ data.brand }}
-            </div>
-            <div class="table_five">
-                <div class="inventory_table_list_add" (click)="addStock(data.id, data.product, addStockModal)">
-                    Add stock
+        <div *ngIf="inventory.length > 0; else noData">
+            <div class="inventory_table_list" *ngFor="let data of inventory">
+                <div class="table_one">
+                    {{ data.product }}
+                </div>
+                <div class="table_two">
+                    {{ data.stocks }}
+                </div>
+                <div class="table_three">
+                    {{ data.category }}
+                </div>
+                <div class="table_four">
+                    {{ data.brand }}
+                </div>
+                <div class="table_five">
+                    <div class="inventory_table_list_add" (click)="addStock(data.id, data.product, addStockModal)">
+                        Add stock
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,11 +81,15 @@
                 <input class="form-control" id="stocks" name="stocks" [(ngModel)]="stocks" placeholder="stocks" >
             </div>
             <div class="modal-btns">
-                <button class="btn modal-btns-cancel" (click)="cancelForm()">Cancel</button>
+                <button class="btn modal-btns-cancel" type="button" (click)="cancelForm()">Cancel</button>
                 <button class="btn modal-btns-add" type="submit">
                     Add
                 </button>
             </div>
         </form>
     </div>
+</ng-template>
+
+<ng-template #noData>
+    <app-no-data></app-no-data>
 </ng-template>
