@@ -1,0 +1,73 @@
+<div class="inventory">
+    <div class="inventory_title">
+        Drinks
+        <div class="inventory_title_add" (click)="openAddInventoryModal(addProductModal)">
+            Add drink
+        </div>
+    </div>
+    <div class="inventory_table">
+        <div class="inventory_table_filter">
+            
+        </div>
+        <div class="inventory_table_header">
+            <div class="table_one">Drink</div>
+            <div class="table_two">Price</div>
+            <div class="table_five"></div>
+        </div>
+        <div class="inventory_table_list" *ngFor="let data of inventory">
+            <div class="table_one">
+                {{ data.product }}
+            </div>
+            <div class="table_two">
+                PHP {{ data.price }}
+            </div>
+            <div class="table_five">
+                <div class="inventory_table_list_add" (click)="edit(data.id, data.product, editProductModal)">
+                    Edit
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #editProductModal let-d="dismiss">
+    <div class="modal-header">
+        Edit<span>{{ selectedProduct }}</span>
+    </div>
+    <div class="modal-body">
+        <div>
+            <div class="modal-body-label" for="price">Price</div>
+            <input class="form-control" id="price" name="price" [(ngModel)]="price" placeholder="Enter price" >
+        </div>
+        <div class="modal-btns">
+            <button class="btn modal-btns-cancel" (click)="d('Cross click')">Cancel</button>
+            <button class="btn modal-btns-add" (click)="save()">
+                Save
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #addProductModal let-d="dismiss">
+    <div class="modal-header">
+        Add drink
+    </div>
+    <div class="modal-body">
+        <form #send="ngForm" (ngSubmit)="onSubmit(send.value)">
+            <div>
+                <div class="modal-body-label" for="product">product</div>
+                <input class="form-control" id="product" name="product" [(ngModel)]="product" placeholder="product" >
+            </div>
+            <div>
+                <div class="modal-body-label" for="price">price</div>
+                <input class="form-control" id="price" name="price" [(ngModel)]="price" placeholder="price" >
+            </div>
+            <div class="modal-btns">
+                <button class="btn modal-btns-cancel" (click)="d('Cross click')">Cancel</button>
+                <button class="btn modal-btns-add" type="submit">
+                    Add
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>

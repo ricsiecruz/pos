@@ -10,13 +10,15 @@ import { AppComponent } from './app.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ProductsComponent } from './products/products.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SidebarComponent,
     InventoryComponent,
-    DashboardComponent
+    DashboardComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,
