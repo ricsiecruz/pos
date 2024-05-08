@@ -1,23 +1,20 @@
 import { Component, ViewChild } from '@angular/core';
-import { AppService } from '../app.service';
-import { ModalService } from '../modal.service';
+import { AppService } from '../../app.service';
+import { ModalService } from '../../modal.service';
 
 @Component({
-  selector: 'app-inventory',
-  templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.scss']
+  selector: 'app-products',
+  templateUrl: './products.component.html',
+  styleUrl: './products.component.scss'
 })
-export class InventoryComponent {
-
+export class ProductsComponent {
   @ViewChild('addStockModal') modal: any;
   @ViewChild('addInventoryModal') addInventoryModalmodal: any;
   inventory: any[] = [];
-  stocks: string = '';
   selectedProduct: string | null = null;
   selectedProductId: number | null = null;
   product: string = '';
-  category: string = '';
-  brand: string = '';
+  price: string = '';
 
   constructor(
     private appService: AppService,
@@ -29,17 +26,15 @@ export class InventoryComponent {
   }
 
   loadInventory() {
-    this.appService.getInventory().subscribe((res: any) => {
-      console.log('res', res);
+    this.appService.getProducts().subscribe((res: any) => {
       this.inventory = res;
     });
   }
 
-  addStock(id: any, product: any, modalContent: any) {
+  edit(id: any, data: any, modalContent: any) {
     this.selectedProductId = id;
-    this.selectedProduct = product;
-    console.log('selectedproductid', this.selectedProductId);
-    console.log('id', id);
+    this.selectedProduct = data.product;
+    this.price = data.price;
     this.modalService.openModal(modalContent);
   }
 
@@ -47,15 +42,12 @@ export class InventoryComponent {
     this.modalService.openModal(modalContent);
   }
 
-  addStockToInventory() {
+  save() {
     if (this.selectedProductId !== null) {
-      console.log('Product ID:', this.selectedProductId);
-      console.log('Adding stock:', this.stocks);
   
-      const payload = { stocks: this.stocks };
-  
-      this.appService.putStocks(this.selectedProductId, payload).subscribe((res: any) => {
-        console.log('res', res);
+      const payload = { price: this.price };
+
+      this.appService.putProduct(this.selectedProductId, payload).subscribe((res: any) => {
         this.updateInventory();
       });
   
@@ -66,14 +58,11 @@ export class InventoryComponent {
   onSubmit(data: any) {
     const payload = {
       product: data.product,
-      stocks: data.stocks,
-      category: data.category,
-      brand: data.brand
+      price: data.price
     };
 
-    this.appService.postInventory(payload).subscribe({
+    this.appService.postProduct(payload).subscribe({
       next: () => {
-        console.log('success');
         this.updateInventory();
         this.modalService.closeModal();
       },
@@ -89,10 +78,7 @@ export class InventoryComponent {
   }  
 
   clearForm() {
-    this.product = '';
-    this.stocks = '';
-    this.category = '';
-    this.brand = '';
+    this.price = '';
   }
 
   updateInventory() {

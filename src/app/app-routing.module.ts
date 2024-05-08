@@ -1,33 +1,50 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { InventoryComponent } from './inventory/inventory.component';
-import { ProductsComponent } from './products/products.component';
-import { ExpensesComponent } from './expenses/expenses.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { InventoryComponent } from './admin/inventory/inventory.component';
+import { ProductsComponent } from './admin/products/products.component';
+import { ExpensesComponent } from './admin/expenses/expenses.component';
+import { PosComponent } from './pos/pos.component';
+import { AdminComponent } from './admin/admin/admin.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'pos',
     pathMatch: 'full'
   },
   {
-    path: 'dashboard',
-    component: DashboardComponent
+    path: 'pos',
+    component: PosComponent
   },
   {
-    path: 'inventory',
-    component: InventoryComponent
-  },
-  {
-    path: 'products',
-    component: ProductsComponent
-  },
-  {
-    path: 'expenses',
-    component: ExpensesComponent
+    path: 'admin',
+    component: AdminComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent
+      },
+      {
+        path: 'inventory',
+        component: InventoryComponent
+      },
+      {
+        path: 'products',
+        component: ProductsComponent
+      },
+      {
+        path: 'expenses',
+        component: ExpensesComponent
+      }
+    ]
   }
-];
+]
 
 @NgModule({
   imports: [

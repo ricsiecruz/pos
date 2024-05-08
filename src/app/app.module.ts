@@ -7,11 +7,13 @@ import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { InventoryComponent } from './inventory/inventory.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { ProductsComponent } from './products/products.component';
-import { ExpensesComponent } from './expenses/expenses.component';
+import { SidebarComponent } from './admin/sidebar/sidebar.component';
+import { InventoryComponent } from './admin/inventory/inventory.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { ProductsComponent } from './admin/products/products.component';
+import { ExpensesComponent } from './admin/expenses/expenses.component';
+import { PosComponent } from './pos/pos.component';
+import { AdminComponent } from './admin/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { ExpensesComponent } from './expenses/expenses.component';
     InventoryComponent,
     DashboardComponent,
     ProductsComponent,
-    ExpensesComponent
+    ExpensesComponent,
+    PosComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

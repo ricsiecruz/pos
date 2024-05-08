@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'NunitoSans';
+    src: url('../../../assets/fonts/NunitoSans.ttf') format('truetype'),
+}
+
+.admin {
+    font-family: 'NunitoSans';
+    display: flex;
+    min-height: 100vh;
+    &_content {
+        background-color: #FAFBFE;
+        width: 100%;
+        padding: 24px;
+    }
+}

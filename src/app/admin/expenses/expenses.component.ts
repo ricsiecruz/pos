@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AppService } from '../app.service';
-import { ModalService } from '../modal.service';
+import { AppService } from '../../app.service';
+import { ModalService } from '../../modal.service';
 
 @Component({
   selector: 'app-expenses',
