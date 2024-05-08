@@ -27,16 +27,14 @@ export class ProductsComponent {
 
   loadInventory() {
     this.appService.getProducts().subscribe((res: any) => {
-      console.log('res', res);
       this.inventory = res;
     });
   }
 
-  edit(id: any, product: any, modalContent: any) {
+  edit(id: any, data: any, modalContent: any) {
     this.selectedProductId = id;
-    this.selectedProduct = product;
-    console.log('selectedproductid', this.selectedProductId);
-    console.log('id', id);
+    this.selectedProduct = data.product;
+    this.price = data.price;
     this.modalService.openModal(modalContent);
   }
 
@@ -46,14 +44,10 @@ export class ProductsComponent {
 
   save() {
     if (this.selectedProductId !== null) {
-      console.log('Product ID:', this.selectedProductId);
   
       const payload = { price: this.price };
-  
-      console.log('price', this.price)
 
       this.appService.putProduct(this.selectedProductId, payload).subscribe((res: any) => {
-        console.log('res', res);
         this.updateInventory();
       });
   
@@ -69,7 +63,6 @@ export class ProductsComponent {
 
     this.appService.postProduct(payload).subscribe({
       next: () => {
-        console.log('success');
         this.updateInventory();
         this.modalService.closeModal();
       },
