@@ -83,6 +83,18 @@ export class InventoryComponent {
     });
   }
 
+  cancelForm() {
+    this.clearForm(); // Call the method to reset form fields
+    this.modalService.closeModal(); // Close the modal
+  }  
+
+  clearForm() {
+    this.product = '';
+    this.stocks = '';
+    this.category = '';
+    this.brand = '';
+  }
+
   updateInventory() {
     this.loadInventory();
   }

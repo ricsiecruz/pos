@@ -72,6 +72,15 @@ export class ProductsComponent {
     });
   }
 
+  cancelForm() {
+    this.clearForm(); // Call the method to reset form fields
+    this.modalService.closeModal(); // Close the modal
+  }  
+
+  clearForm() {
+    this.price = '';
+  }
+
   updateInventory() {
     this.loadInventory();
   }

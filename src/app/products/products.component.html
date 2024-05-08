@@ -40,8 +40,8 @@
             <input class="form-control" id="price" name="price" [(ngModel)]="price" placeholder="Enter price" >
         </div>
         <div class="modal-btns">
-            <button class="btn modal-btns-cancel" (click)="d('Cross click')">Cancel</button>
-            <button class="btn modal-btns-add" (click)="save()">
+            <button class="btn modal-btns-cancel"  (click)="cancelForm()" type="button">Cancel</button>
+            <button class="btn modal-btns-add" (click)="save()" type="submit">
                 Save
             </button>
         </div>
@@ -63,7 +63,7 @@
                 <input class="form-control" id="price" name="price" [(ngModel)]="price" placeholder="price" >
             </div>
             <div class="modal-btns">
-                <button class="btn modal-btns-cancel" (click)="d('Cross click')">Cancel</button>
+                <button class="btn modal-btns-cancel" (click)="d('Cross click')" type="button">Cancel</button>
                 <button class="btn modal-btns-add" type="submit">
                     Add
                 </button>

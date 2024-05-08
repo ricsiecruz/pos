@@ -35,4 +35,12 @@ export class AppService {
     return this.http.put(this.API_URL + `products/${id}`, payload)
   }
 
+  getExpenses() {
+    return this.http.get(this.API_URL + 'expenses')
+  }
+
+  postExpense(payload: any) {
+    return this.http.post<any>(this.API_URL + 'expenses', payload)
+  }
+
 }

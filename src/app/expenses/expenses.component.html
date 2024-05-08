@@ -1,0 +1,65 @@
+<div class="inventory">
+    <div class="inventory_title">
+        Expenses
+        <div class="inventory_title_add" (click)="openAddInventoryModal(addInventoryModal)">
+            Add expense
+        </div>
+    </div>
+    <div class="inventory_table">
+        <div class="inventory_table_filter">
+            
+        </div>
+        <div class="inventory_table_header">
+            <div class="table_one">Expense</div>
+            <div class="table_two">Month</div>
+            <div class="table_three">Date</div>
+            <div class="table_four">Amount</div>
+            <div class="table_five">Channel</div>
+        </div>
+        <div class="inventory_table_list" *ngFor="let data of expenses">
+            <div class="table_one">
+                {{ data.expense }}
+            </div>
+            <div class="table_two">
+                {{ data.month }}
+            </div>
+            <div class="table_three">
+                {{ data.date | date:"EEEE, MMMM d, y, h:mm:ss a zzzz" }}
+            </div>
+            <div class="table_four">
+                PHP {{ data.amount }}
+            </div>
+            <div class="table_five">
+                {{ data.channel }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #addInventoryModal let-d="dismiss">
+    <div class="modal-header">
+        Add expense
+    </div>
+    <div class="modal-body">
+        <form #send="ngForm" (ngSubmit)="onSubmit(send.value)">
+            <div>
+                <div class="modal-body-label" for="expense">expense</div>
+                <input class="form-control" id="expense" name="expense" [(ngModel)]="expense" placeholder="expense" >
+            </div>
+            <div>
+                <div class="modal-body-label" for="amount">amount</div>
+                <input class="form-control" id="amount" name="amount" [(ngModel)]="amount" placeholder="amount" >
+            </div>
+            <div>
+                <div class="modal-body-label" for="channel">channel</div>
+                <input class="form-control" id="channel" name="channel" [(ngModel)]="channel" placeholder="channel" >
+            </div>
+            <div class="modal-btns">
+                <button class="btn modal-btns-cancel" (click)="d('Cross click')" type="button">Cancel</button>
+                <button class="btn modal-btns-add" type="submit">
+                    Add
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>

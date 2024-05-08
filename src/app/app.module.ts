@@ -11,6 +11,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductsComponent } from './products/products.component';
+import { ExpensesComponent } from './expenses/expenses.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ProductsComponent } from './products/products.component';
     SidebarComponent,
     InventoryComponent,
     DashboardComponent,
-    ProductsComponent
+    ProductsComponent,
+    ExpensesComponent
   ],
   imports: [
     BrowserModule,
