@@ -65,7 +65,7 @@ export class ProductsComponent {
       next: () => {
         this.updateInventory();
         this.modalService.closeModal();
-        this.clearForm
+        this.clearForm();
       },
       error: (err) => {
         console.log('err', err);
