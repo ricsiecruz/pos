@@ -1,5 +1,4 @@
-<!-- test.component.html -->
-
+<button (click)="addModal()">add</button>
 <div class="container">
   <h2>Products</h2>
   <ul>
@@ -8,17 +7,6 @@
       <button (click)="editProduct(product)">Edit</button>
     </li>
   </ul>
-  <div>
-    <h3>Add New Product</h3>
-    <form (submit)="addProduct()">
-      <label for="productName">Name:</label>
-      <input type="text" id="productName" name="productName" [(ngModel)]="newProduct.product" required>
-      <label for="productPrice">Price:</label>
-      <input type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
-      <button type="submit">Add Product</button>
-    </form>
-  </div>
-</div>
 <ng-template #editProductModal let-d="dismiss">
   <div *ngIf="editingProduct">
     <div class="modal-header">
@@ -33,5 +21,17 @@
         <button type="submit">Save</button>
       </form>
     </div>
+  </div>
+</ng-template>
+<ng-template #addProductModal let-d="dismiss">
+  <div>
+    <h3>Add New Product</h3>
+    <form (submit)="addProduct()">
+      <label for="productName">Name:</label>
+      <input type="text" id="productName" name="productName" [(ngModel)]="newProduct.product" required>
+      <label for="productPrice">Price:</label>
+      <input type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
+      <button type="submit">Add Product</button>
+    </form>
   </div>
 </ng-template>

@@ -9,7 +9,8 @@ import { ModalService } from '../modal.service';
   styleUrls: ['./test.component.scss']
 })
 export class TestComponent implements OnInit {
-  @ViewChild('editProductModal') editProductModal?: TemplateRef<any>; // Reference to the modal template
+  @ViewChild('editProductModal') editProductModal?: TemplateRef<any>;
+  @ViewChild('addProductModal') addProductModal?: TemplateRef<any>;
   products: any[] = [];
   newProduct: any = { product: '', price: '' };
   editingProduct: any = null;
@@ -40,6 +41,7 @@ export class TestComponent implements OnInit {
     if (this.newProduct.product.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
       // Add new product via HTTP API
       this.productService.addProduct(this.newProduct)
+      this.modalService.closeModal();
         // Reset newProduct after successfully adding
         this.newProduct = { product: '', price: '' };
     }
@@ -49,6 +51,10 @@ export class TestComponent implements OnInit {
     // Set editingProduct to the selected product for editing
     this.editingProduct = { ...product };
     this.modalService.openModal(this.editProductModal);
+  }
+
+  addModal() {
+    this.modalService.openModal(this.addProductModal);
   }
 
   saveEditedProduct() {
