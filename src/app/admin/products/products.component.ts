@@ -73,8 +73,7 @@ export class ProductsComponent {
   }  
 
   clearForm() {
-    this.product = '';
-    this.price = '';
+    this.newProduct = { product: '', price: '' };
   }
 
 }

@@ -61,12 +61,12 @@
     <div>
         <div class="modal-body">
             <form (submit)="addProduct()">
-                <label for="productName">Product:</label>
+                <label class="modal-body-label" for="productName">Product:</label>
                 <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newProduct.product" required>
-                <label for="productPrice">Price:</label>
+                <label class="modal-body-label" for="productPrice">Price:</label>
                 <input class="form-control" type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
                 <div class="modal-btns">
-                    <button class="btn modal-btns-cancel" (click)="cancelForm()">Cancel</button>
+                    <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
                     <button class="btn modal-btns-add" type="submit">
                         Add
                     </button>
