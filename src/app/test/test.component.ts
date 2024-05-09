@@ -21,7 +21,7 @@ export class TestComponent implements OnInit {
     this.productService.products$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products;
-        console.log('Products received in LandingComponent:', this.products);
+        console.log('Products received in ProductComponent:', this.products);
       }
     });
 
@@ -36,25 +36,34 @@ export class TestComponent implements OnInit {
   addProduct() {
     if (this.newProduct.product.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
       // Add new product via HTTP API
-      this.productService.addProduct(this.newProduct).subscribe(() => {
+      this.productService.addProduct(this.newProduct)
         // Reset newProduct after successfully adding
         this.newProduct = { product: '', price: '' };
-      });
     }
   }
 
   editProduct(product: any) {
-    // Clone the product to avoid modifying the original object directly
+    // Set editingProduct to the selected product for editing
     this.editingProduct = { ...product };
   }
+  
+  // saveEditedProduct() {
+  //   if (this.editingProduct) {
+  //     // Edit product via HTTP API
+  //     this.productService.editProduct(this.editingProduct.id, this.editingProduct).subscribe(() => {
+  //       // Clear editingProduct after successfully editing
+  //       this.editingProduct = null;
+  //     });
+  //   }
+  // }
 
   saveEditedProduct() {
     if (this.editingProduct) {
       // Edit product via HTTP API
-      this.productService.editProduct(this.editingProduct.id, this.editingProduct).subscribe(() => {
+      this.productService.editProduct(this.editingProduct.id, this.editingProduct)
         // Clear editingProduct after successfully editing
         this.editingProduct = null;
-      });
     }
   }
+  
 }
