@@ -63,10 +63,6 @@ export class ProductService implements OnDestroy {
     this.webSocketService.send({ action: 'addProduct', product });
   }
 
-  // editProduct(productId: string, updatedProduct: any): Observable<any> {
-  //   return this.http.put<any>(this.API_URL + `products/${productId}`, updatedProduct);
-  // }
-
   editProduct(productId: string, updatedProduct: any) {
     this.webSocketService.send({ action: 'editProduct', productId, product: updatedProduct });
   }

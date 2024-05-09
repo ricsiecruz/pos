@@ -10,23 +10,15 @@ import { WebSocketService } from '../../websocket-service';
   styleUrl: './products.component.scss'
 })
 export class ProductsComponent {
-  @ViewChild('addStockModal') modal: any;
-  @ViewChild('addInventoryModal') addInventoryModalmodal: any;
+  @ViewChild('editProductModal') editProductModal?: TemplateRef<any>;
   @ViewChild('addProductModal') addProductModal?: TemplateRef<any>;
-
-  inventory: any[] = [];
-  selectedProduct: string | null = null;
-  selectedProductId: number | null = null;
   product: string = '';
   price: string = '';
-
-  @ViewChild('editProductModal') editProductModal?: TemplateRef<any>; // Reference to the modal template
   products: any[] = [];
   newProduct: any = { product: '', price: '' };
   editingProduct: any = null;
 
   constructor(
-    private appService: AppService,
     private modalService: ModalService,
     private productService: ProductService,
     private webSocketService: WebSocketService,
@@ -36,7 +28,6 @@ export class ProductsComponent {
     this.productService.products$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products;
-        console.log('Products received in ProductComponent:', this.products);
       }
     });
 
@@ -50,11 +41,10 @@ export class ProductsComponent {
 
   addProduct() {
     if (this.newProduct.product.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
-      // Add new product via HTTP API
+      // Add new product via websocket
       this.productService.addProduct(this.newProduct)
       this.modalService.closeModal();
-        // Reset newProduct after successfully adding
-        this.newProduct = { product: '', price: '' };
+      this.newProduct = { product: '', price: '' };
     }
   }
 
@@ -70,17 +60,16 @@ export class ProductsComponent {
 
   saveEditedProduct() {
     if (this.editingProduct) {
-      // Edit product via HTTP API
+      // Edit product via websocket
       this.productService.editProduct(this.editingProduct.id, this.editingProduct)
         this.modalService.closeModal();
-        // Clear editingProduct after successfully editing
         this.editingProduct = null;
     }
   }
 
   cancelForm() {
-    this.clearForm(); // Call the method to reset form fields
-    this.modalService.closeModal(); // Close the modal
+    this.clearForm();
+    this.modalService.closeModal();
   }  
 
   clearForm() {

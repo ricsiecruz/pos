@@ -66,7 +66,7 @@
                 <label for="productPrice">Price:</label>
                 <input class="form-control" type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
                 <div class="modal-btns">
-                    <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
+                    <button class="btn modal-btns-cancel" (click)="cancelForm()">Cancel</button>
                     <button class="btn modal-btns-add" type="submit">
                         Add
                     </button>
@@ -74,34 +74,7 @@
             </form>
         </div>
     </div>
-  </ng-template>
-
-  <!-- -<ng-template #addProductModal let-d="dismiss">
-    -    <div class="modal-header">
-    -        Add drink
-    -    </div>
-    -    <div class="modal-body">
-    -        <form (submit)="addProduct()">
-    -            <div>
-    -                <label for="productName">Name:</label>
-    -                <input class="form-control" id="product" name="product" [(ngModel)]="product" placeholder="product" >
-    -            </div>
-    -            <div>
-    -                <div class="modal-body-label" for="price">price</div>
-    -                <input class="form-control" id="price" name="price" [(ngModel)]="price" placeholder="price" >
-    -            </div>
-    -            <div class="modal-btns">
-    -                <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
-    -                <button class="btn modal-btns-add" type="submit">
-    -                    Add
-    -                </button>
-    -            </div>
-             </form>
-    +      </div>
-         </div>
-    -</ng-template> -->
-    
-
+</ng-template>
 
 <ng-template #noData>
     <app-no-data></app-no-data>
