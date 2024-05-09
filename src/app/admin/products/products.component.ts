@@ -1,6 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { AppService } from '../../app.service';
 import { ModalService } from '../../modal.service';
+import { ProductService } from '../../product.service';
+import { WebSocketService } from '../../websocket-service';
 
 @Component({
   selector: 'app-products',
@@ -16,61 +18,57 @@ export class ProductsComponent {
   product: string = '';
   price: string = '';
 
+  @ViewChild('editProductModal') editProductModal?: TemplateRef<any>; // Reference to the modal template
+  products: any[] = [];
+  newProduct: any = { product: '', price: '' };
+  editingProduct: any = null;
+
   constructor(
     private appService: AppService,
     private modalService: ModalService,
+    private productService: ProductService,
+    private webSocketService: WebSocketService,
   ) {}
 
   ngOnInit() {
-    this.loadInventory();
-  }
+    this.productService.products$.subscribe((products: any[]) => {
+      if (products && products.length > 0) {
+        this.products = products;
+        console.log('Products received in ProductComponent:', this.products);
+      }
+    });
 
-  loadInventory() {
-    this.appService.getProducts().subscribe((res: any) => {
-      this.inventory = res;
+    // Subscribe to WebSocket updates for new product additions
+    this.webSocketService.receive().subscribe((message: any) => {
+      if (message.action === 'addProduct') {
+        this.products.push(message.product);
+      }
     });
   }
 
-  edit(id: any, data: any, modalContent: any) {
-    this.selectedProductId = id;
-    this.selectedProduct = data.product;
-    this.price = data.price;
-    this.modalService.openModal(modalContent);
-  }
-
-  openAddInventoryModal(modalContent: any) {
-    this.modalService.openModal(modalContent);
-  }
-
-  save() {
-    if (this.selectedProductId !== null) {
-  
-      const payload = { price: this.price };
-
-      this.appService.putProduct(this.selectedProductId, payload).subscribe((res: any) => {
-        this.updateInventory();
-      });
-  
-      this.modalService.closeModal();
+  addProduct() {
+    if (this.newProduct.product.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
+      // Add new product via HTTP API
+      this.productService.addProduct(this.newProduct)
+        // Reset newProduct after successfully adding
+        this.newProduct = { product: '', price: '' };
     }
   }
 
-  onSubmit(data: any) {
-    const payload = {
-      product: data.product,
-      price: data.price
-    };
+  editProduct(product: any) {
+    // Set editingProduct to the selected product for editing
+    this.editingProduct = { ...product };
+    this.modalService.openModal(this.editProductModal);
+  }
 
-    this.appService.postProduct(payload).subscribe({
-      next: () => {
-        this.updateInventory();
+  saveEditedProduct() {
+    if (this.editingProduct) {
+      // Edit product via HTTP API
+      this.productService.editProduct(this.editingProduct.id, this.editingProduct)
         this.modalService.closeModal();
-        this.clearForm();
-      },
-      error: (err) => {
-        console.log('err', err);
-      }
-    });
+        // Clear editingProduct after successfully editing
+        this.editingProduct = null;
+    }
   }
 
   cancelForm() {
@@ -83,7 +81,4 @@ export class ProductsComponent {
     this.price = '';
   }
 
-  updateInventory() {
-    this.loadInventory();
-  }
 }

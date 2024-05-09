@@ -1,9 +1,9 @@
 <div class="products">
     <div class="products_title">
         Drinks
-        <div class="products_title_add" (click)="openAddInventoryModal(addProductModal)">
+        <!-- <div class="products_title_add" (click)="openAddInventoryModal(addProductModal)">
             Add drink
-        </div>
+        </div> -->
     </div>
     <div class="products_table">
         <div class="products_table_filter">
@@ -14,8 +14,8 @@
             <div class="table_two">Price</div>
             <div class="table_five"></div>
         </div>
-        <div *ngIf="inventory.length > 0; else noData">
-            <div class="products_table_list" *ngFor="let data of inventory">
+        <div *ngIf="products.length > 0; else noData">
+            <div class="products_table_list" *ngFor="let data of products">
                 <div class="table_one">
                     {{ data.product }}
                 </div>
@@ -23,7 +23,7 @@
                     PHP {{ data.price }}
                 </div>
                 <div class="table_five">
-                    <div class="products_table_list_add" (click)="edit(data.id, data, editProductModal)">
+                    <div class="products_table_list_add" (click)="editProduct(data)">
                         Edit
                     </div>
                 </div>
@@ -33,46 +33,27 @@
 </div>
 
 <ng-template #editProductModal let-d="dismiss">
-    <div class="modal-header">
-        Edit<span>{{ selectedProduct }}</span>
-    </div>
-    <div class="modal-body">
-        <div>
-            <div class="modal-body-label" for="price">Price</div>
-            <input class="form-control" id="price" name="price" [(ngModel)]="price" placeholder="Enter price" >
+    <div *ngIf="editingProduct">
+      <div class="modal-header">
+        Edit <span>{{ editingProduct?.product }}</span>
+      </div>
+      <div class="modal-body">
+        <form (submit)="saveEditedProduct()">
+          <div class="modal-body-label">
+          <label for="editProductPrice">Price:</label>
         </div>
-        <div class="modal-btns">
+          <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.price" required>
+          <div class="modal-btns">
             <button class="btn modal-btns-cancel"  (click)="cancelForm()" type="button">Cancel</button>
-            <button class="btn modal-btns-add" (click)="save()" type="submit">
+            <button class="btn modal-btns-add" type="submit">
                 Save
             </button>
         </div>
-    </div>
-</ng-template>
-
-<ng-template #addProductModal let-d="dismiss">
-    <div class="modal-header">
-        Add drink
-    </div>
-    <div class="modal-body">
-        <form #send="ngForm" (ngSubmit)="onSubmit(send.value)">
-            <div>
-                <div class="modal-body-label" for="product">product</div>
-                <input class="form-control" id="product" name="product" [(ngModel)]="product" placeholder="product" >
-            </div>
-            <div>
-                <div class="modal-body-label" for="price">price</div>
-                <input class="form-control" id="price" name="price" [(ngModel)]="price" placeholder="price" >
-            </div>
-            <div class="modal-btns">
-                <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
-                <button class="btn modal-btns-add" type="submit">
-                    Add
-                </button>
-            </div>
         </form>
+      </div>
     </div>
-</ng-template>
+  </ng-template>
+
 
 <ng-template #noData>
     <app-no-data></app-no-data>
