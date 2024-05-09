@@ -1,4 +1,16 @@
-<div *ngFor="let data of drinks">
-    {{ data.product }}
-    {{ data.price }}
-</div>
+<div class="pos">
+    <h2>POS</h2>
+    <div> 
+        <ul *ngIf="products && products.length">
+            <li *ngFor="let product of products">
+              {{ product.product }} - ${{ product.price }}
+            </li>
+        </ul>
+        <div *ngIf="!products || products.length === 0">
+            No products available.
+        </div>
+    </div>
+    <div>right</div>
+  </div>
+  
+  

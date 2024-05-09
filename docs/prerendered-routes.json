@@ -1,7 +1,12 @@
 {
   "routes": [
-    "/dashboard",
-    "/inventory",
-    "/products"
+    "/admin",
+    "/admin/dashboard",
+    "/admin/expenses",
+    "/admin/inventory",
+    "/admin/products",
+    "/landing",
+    "/pos",
+    "/test"
   ]
 }

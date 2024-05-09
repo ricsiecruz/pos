@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AppService } from '../app.service';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-pos',
@@ -8,14 +9,18 @@ import { AppService } from '../app.service';
 })
 export class PosComponent {
 
-  drinks: any[] = [];
+  products: any[] = [];
 
-  constructor(private appService: AppService) {}
+  constructor(public productService: ProductService) { }
 
   ngOnInit() {
-    this.appService.getProducts().subscribe((res: any) => {
-      this.drinks = res;
-    })
+    // Subscribe to the products$ observable to get the list of products
+    this.productService.products$.subscribe((products: any[]) => {
+      if (products && products.length > 0) {
+        this.products = products;
+        console.log('Products received in LandingComponent:', this.products);
+      }
+    });
   }
 
 }
