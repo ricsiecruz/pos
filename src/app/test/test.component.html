@@ -1,7 +1,12 @@
+<!-- test.component.html -->
+
 <div class="container">
   <h2>Products</h2>
   <ul>
-    <li *ngFor="let product of products">{{ product.name }} - ${{ product.price }}</li>
+    <li *ngFor="let product of products">
+      {{ product.name }} - ${{ product.price }}
+      <button (click)="editProduct(product)">Edit</button>
+    </li>
   </ul>
   <div>
     <h3>Add New Product</h3>
@@ -11,6 +16,16 @@
       <label for="productPrice">Price:</label>
       <input type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
       <button type="submit">Add Product</button>
+    </form>
+  </div>
+  <div *ngIf="editingProduct">
+    <h3>Edit Product</h3>
+    <form (submit)="saveEditedProduct()">
+      <label for="editProductName">Name:</label>
+      <input type="text" id="editProductName" name="editProductName" [(ngModel)]="editingProduct.name" required>
+      <label for="editProductPrice">Price:</label>
+      <input type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.price" required>
+      <button type="submit">Save</button>
     </form>
   </div>
 </div>

@@ -24,4 +24,12 @@ export class ProductService {
   addProduct(product: any) {
     this.webSocketService.send({ action: 'addProduct', product });
   }
+
+  // editProduct method to send edited product to the server
+editProduct(productId: string, updatedProduct: any) {
+  // Update the product using WebSocket
+  this.webSocketService.send({ action: 'editProduct', productId, product: updatedProduct });
+}
+
+  
 }

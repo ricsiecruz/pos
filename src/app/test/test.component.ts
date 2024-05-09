@@ -1,3 +1,5 @@
+// test.component.ts
+
 import { Component } from '@angular/core';
 import { ProductService } from '../product.service';
 
@@ -9,6 +11,7 @@ import { ProductService } from '../product.service';
 export class TestComponent {
   products: any[] = [];
   newProduct: any = { name: '', price: '' };
+  editingProduct: any = null;
 
   constructor(private productService: ProductService) { }
 
@@ -23,5 +26,15 @@ export class TestComponent {
       this.productService.addProduct(this.newProduct);
       this.newProduct = { name: '', price: '' };
     }
+  }
+
+  editProduct(product: any) {
+    // Clone the product to avoid modifying the original object directly
+    this.editingProduct = { ...product };
+  }
+
+  saveEditedProduct() {
+    this.productService.editProduct(this.editingProduct.id, this.editingProduct);
+    this.editingProduct = null;
   }
 }
