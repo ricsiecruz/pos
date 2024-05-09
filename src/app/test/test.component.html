@@ -1,0 +1,16 @@
+<div class="container">
+  <h2>Products</h2>
+  <ul>
+    <li *ngFor="let product of products">{{ product.name }} - ${{ product.price }}</li>
+  </ul>
+  <div>
+    <h3>Add New Product</h3>
+    <form (submit)="addProduct()">
+      <label for="productName">Name:</label>
+      <input type="text" id="productName" name="productName" [(ngModel)]="newProduct.name" required>
+      <label for="productPrice">Price:</label>
+      <input type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
+      <button type="submit">Add Product</button>
+    </form>
+  </div>
+</div>

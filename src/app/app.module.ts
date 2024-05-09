@@ -15,6 +15,8 @@ import { ExpensesComponent } from './admin/expenses/expenses.component';
 import { PosComponent } from './pos/pos.component';
 import { AdminComponent } from './admin/admin/admin.component';
 import { NoDataComponent } from './admin/no-data/no-data.component';
+import { TestComponent } from './test/test.component';
+import { LandingComponent } from './landing/landing.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { NoDataComponent } from './admin/no-data/no-data.component';
     ExpensesComponent,
     PosComponent,
     AdminComponent,
-    NoDataComponent
+    NoDataComponent,
+    TestComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,
