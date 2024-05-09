@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ProductService } from '../product.service';
 import { WebSocketService } from '../websocket-service';
+import { ModalService } from '../modal.service';
 
 @Component({
   selector: 'app-test',
@@ -8,13 +9,15 @@ import { WebSocketService } from '../websocket-service';
   styleUrls: ['./test.component.scss']
 })
 export class TestComponent implements OnInit {
+  @ViewChild('editProductModal') editProductModal?: TemplateRef<any>; // Reference to the modal template
   products: any[] = [];
   newProduct: any = { product: '', price: '' };
   editingProduct: any = null;
 
   constructor(
     private productService: ProductService,
-    private webSocketService: WebSocketService
+    private webSocketService: WebSocketService,
+    private modalService: ModalService
   ) { }
 
   ngOnInit() {
@@ -45,22 +48,14 @@ export class TestComponent implements OnInit {
   editProduct(product: any) {
     // Set editingProduct to the selected product for editing
     this.editingProduct = { ...product };
+    this.modalService.openModal(this.editProductModal);
   }
-  
-  // saveEditedProduct() {
-  //   if (this.editingProduct) {
-  //     // Edit product via HTTP API
-  //     this.productService.editProduct(this.editingProduct.id, this.editingProduct).subscribe(() => {
-  //       // Clear editingProduct after successfully editing
-  //       this.editingProduct = null;
-  //     });
-  //   }
-  // }
 
   saveEditedProduct() {
     if (this.editingProduct) {
       // Edit product via HTTP API
       this.productService.editProduct(this.editingProduct.id, this.editingProduct)
+        this.modalService.closeModal();
         // Clear editingProduct after successfully editing
         this.editingProduct = null;
     }
