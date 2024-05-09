@@ -1,5 +1,3 @@
-// test.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../product.service';
 import { WebSocketService } from '../websocket-service';
@@ -11,31 +9,36 @@ import { WebSocketService } from '../websocket-service';
 })
 export class TestComponent implements OnInit {
   products: any[] = [];
-  newProduct: any = { name: '', price: '' };
+  newProduct: any = { product: '', price: '' };
   editingProduct: any = null;
 
-  constructor(private productService: ProductService, private webSocketService: WebSocketService) { }
+  constructor(
+    private productService: ProductService,
+    private webSocketService: WebSocketService
+  ) { }
 
   ngOnInit() {
-    // Fetch initial products using HTTP API
-    this.productService.getProducts().subscribe((products: any) => {
-      this.products = products;
+    this.productService.products$.subscribe((products: any[]) => {
+      if (products && products.length > 0) {
+        this.products = products;
+        console.log('Products received in LandingComponent:', this.products);
+      }
     });
 
-    // Subscribe to WebSocket updates for real-time changes
+    // Subscribe to WebSocket updates for new product additions
     this.webSocketService.receive().subscribe((message: any) => {
-      if (message.action === 'updateProducts') {
-        this.products = message.products;
+      if (message.action === 'addProduct') {
+        this.products.push(message.product);
       }
     });
   }
 
   addProduct() {
-    if (this.newProduct.name.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
+    if (this.newProduct.product.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
       // Add new product via HTTP API
       this.productService.addProduct(this.newProduct).subscribe(() => {
         // Reset newProduct after successfully adding
-        this.newProduct = { name: '', price: '' };
+        this.newProduct = { product: '', price: '' };
       });
     }
   }

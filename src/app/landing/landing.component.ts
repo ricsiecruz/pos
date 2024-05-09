@@ -1,5 +1,3 @@
-// landing.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../product.service';
 
@@ -11,19 +9,15 @@ import { ProductService } from '../product.service';
 export class LandingComponent implements OnInit {
   products: any[] = [];
 
-  constructor(private productService: ProductService) { }
+  constructor(public productService: ProductService) { }
 
   ngOnInit() {
-    // Fetch initial products using HTTP API
-    this.productService.getProducts().subscribe((products: any) => {
-      this.products = products;
-      console.log('a', this.products)
+    // Subscribe to the products$ observable to get the list of products
+    this.productService.products$.subscribe((products: any[]) => {
+      if (products && products.length > 0) {
+        this.products = products;
+        console.log('Products received in LandingComponent:', this.products);
+      }
     });
-
-    // Subscribe to WebSocket updates for real-time changes
-    // this.productService.products$.subscribe((products: any) => {
-    //   this.products = products;
-    //   console.log('b', this.products)
-    // });
   }
 }

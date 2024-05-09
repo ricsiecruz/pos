@@ -12,7 +12,7 @@
     <h3>Add New Product</h3>
     <form (submit)="addProduct()">
       <label for="productName">Name:</label>
-      <input type="text" id="productName" name="productName" [(ngModel)]="newProduct.name" required>
+      <input type="text" id="productName" name="productName" [(ngModel)]="newProduct.product" required>
       <label for="productPrice">Price:</label>
       <input type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
       <button type="submit">Add Product</button>
@@ -22,7 +22,7 @@
     <h3>Edit Product</h3>
     <form (submit)="saveEditedProduct()">
       <label for="editProductName">Name:</label>
-      <input type="text" id="editProductName" name="editProductName" [(ngModel)]="editingProduct.name" required>
+      <input type="text" id="editProductName" name="editProductName" [(ngModel)]="editingProduct.product" required>
       <label for="editProductPrice">Price:</label>
       <input type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.price" required>
       <button type="submit">Save</button>
