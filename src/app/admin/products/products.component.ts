@@ -12,6 +12,8 @@ import { WebSocketService } from '../../websocket-service';
 export class ProductsComponent {
   @ViewChild('addStockModal') modal: any;
   @ViewChild('addInventoryModal') addInventoryModalmodal: any;
+  @ViewChild('addProductModal') addProductModal?: TemplateRef<any>;
+
   inventory: any[] = [];
   selectedProduct: string | null = null;
   selectedProductId: number | null = null;
@@ -50,6 +52,7 @@ export class ProductsComponent {
     if (this.newProduct.product.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
       // Add new product via HTTP API
       this.productService.addProduct(this.newProduct)
+      this.modalService.closeModal();
         // Reset newProduct after successfully adding
         this.newProduct = { product: '', price: '' };
     }
@@ -59,6 +62,10 @@ export class ProductsComponent {
     // Set editingProduct to the selected product for editing
     this.editingProduct = { ...product };
     this.modalService.openModal(this.editProductModal);
+  }
+
+  addModal() {
+    this.modalService.openModal(this.addProductModal);
   }
 
   saveEditedProduct() {
