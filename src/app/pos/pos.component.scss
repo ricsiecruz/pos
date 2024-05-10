@@ -108,5 +108,22 @@
                 text-align: right;
             }
         }
+        &_next {
+            background-color: #28C76F;
+            border: 1px solid #28C76F;
+            color: #ffffff;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 14px;
+            padding: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 20px rgba(40, 199, 111, 0.15);
+        }
+        &_next:hover {
+            background-color: #22a95e;
+            border: 1px solid #22a95e;
+            box-shadow: 0 3px 10px rgba(40, 199, 111, 0.5);
+        }
     }
 }

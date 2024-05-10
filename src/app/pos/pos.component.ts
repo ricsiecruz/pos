@@ -64,4 +64,9 @@ export class PosComponent {
     this.selectedProducts.splice(index, 1);
     this.calculateOverallTotal();
   }
+
+  clearSelectedProducts() {
+    this.selectedProducts = [];
+    this.calculateOverallTotal(); // Reset the overall total
+  }
 }
