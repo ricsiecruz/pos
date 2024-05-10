@@ -55,4 +55,9 @@ export class PosComponent {
       this.calculateOverallTotal();
     }
   }
+
+  deleteProduct(index: number) {
+    this.selectedProducts.splice(index, 1);
+    this.calculateOverallTotal();
+  }
 }

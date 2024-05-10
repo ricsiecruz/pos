@@ -15,7 +15,7 @@
     </div>
     <div class="pos_selected">
         <h2>Selected Products</h2>
-        <div *ngFor="let selectedProduct of selectedProducts" class="pos_selected_product">
+        <div *ngFor="let selectedProduct of selectedProducts; let i = index" class="pos_selected_product">
             <div class="product-info">
                 <span>{{ selectedProduct.product }}</span>
                 <div class="counter-container">
@@ -24,6 +24,7 @@
                     <button (click)="incrementCounter(selectedProduct)">+</button>
                 </div>
                 <div class="pos_selected_product_price">PHP {{ selectedProduct.price }}</div>
+                <button (click)="deleteProduct(i)">Delete</button>
             </div>
             <div class="pos_selected_product_total">Total: PHP {{ selectedProduct.price * selectedProduct.counter }}</div>
         </div>
