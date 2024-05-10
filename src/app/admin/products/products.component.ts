@@ -1,5 +1,4 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { AppService } from '../../app.service';
 import { ModalService } from '../../modal.service';
 import { ProductService } from '../../services/product.service';
 import { WebSocketService } from '../../websocket-service';
@@ -50,6 +49,7 @@ export class ProductsComponent {
 
   editProduct(product: any) {
     // Set editingProduct to the selected product for editing
+    console.log("c", product)
     this.editingProduct = { ...product };
     this.modalService.openModal(this.editProductModal);
   }

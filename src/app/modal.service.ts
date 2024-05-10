@@ -16,6 +16,6 @@ export class ModalService {
   }
 
   openModal(content: any): void {
-    this.modalReference = this.modalService.open(content);
+    this.modalReference = this.modalService.open(content, { windowClass : "profile-status-modal"});
   }
 }

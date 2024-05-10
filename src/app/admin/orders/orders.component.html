@@ -1,17 +1,17 @@
 <div class="inventory">
     <div class="inventory_title">
-        Expenses
+        Sales
     </div>
     <div class="inventory_table">
         <div class="inventory_table_filter">
             
         </div>
         <div class="inventory_table_header">
-            <div class="table_one">Expense</div>
-            <div class="table_two">Month</div>
-            <div class="table_three">Date</div>
-            <div class="table_four">Amount</div>
-            <div class="table_five">Channel</div>
+            <div class="table_one">Invoice #</div>
+            <div class="table_two">Qty</div>
+            <div class="table_three">Total</div>
+            <div class="table_four">Date</div>
+            <div class="table_five"></div>
         </div>
         <div class="inventory_table_list" *ngFor="let data of products">
             <div class="table_one">
@@ -21,14 +21,73 @@
                 {{ data.qty }}
             </div>
             <div class="table_three">
-                {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss a zzzz" }}
-            </div>
-            <div class="table_four">
                 PHP {{ data.total }}
             </div>
-            <!-- <div class="table_five">
-                {{ data.channel }}
-            </div> -->
+            <div class="table_four">
+                {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}
+            </div>
+            <div class="table_five">
+                <div (click)="openModal(data)">
+                    view
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<ng-template #sales let-d="dismiss">
+    <div class="modal-content" style="width: 424px;">
+        <div class="invoice">
+            <div class="invoice_header">
+                <img src="assets/img/logo.png">
+                <div>
+                    <div>POS</div>
+                    <div>TECH HYBE</div>
+                </div>
+            </div>
+            <div class="invoice_text">
+                Invoice
+            </div>
+            <div class="invoice_body">
+                <div class="invoice_body_header">
+                    <div>Invoice #:</div>
+                    <div>{{ details?.transactionid }}</div>
+                </div>
+                <div class="invoice_body_header">
+                    <div>Date:</div>
+                    <div>{{ details?.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}</div>
+                </div>
+                <div class="invoice_body_table">
+                    <div class="invoice_body_table_header">
+                        <div class="table_one">Item</div>
+                        <div class="table_two">Price</div>
+                        <div class="table_three">Qty</div>
+                        <div class="table_four">Total</div>
+                    </div>
+                    <div *ngFor="let order of details?.orders" class="invoice_body_table_data">
+                        <div class="table_one">
+                            {{ order.product }}
+                        </div>
+                        <div class="table_two">
+                            PHP {{ order.price }}
+                        </div>
+                        <div class="table_three">
+                            {{ order.quantity }}
+                        </div>
+                        <div class="table_four">
+                            PHP {{ order.total }}
+                        </div>
+                    </div>
+                </div>
+                <div class="invoice_body_header">
+                    <div>Items:</div>
+                    <div>{{ details?.qty }}</div>
+                </div>
+                <div class="invoice_body_total">
+                    <div>Total Payable:</div>
+                    <div>PHP {{ details?.total }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
