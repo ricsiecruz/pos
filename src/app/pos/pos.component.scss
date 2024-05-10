@@ -100,18 +100,33 @@
             }
         }
         &_total {
-            display: flex;
             color: #5B6670;
             background-color: #f3f6f9;
             padding: 10px;
             border-radius: 8px;
-            &_text {
-                width: 300px;
+            &_qty {
+                display: flex;
+                border-bottom: 1px dashed #dbe0e6;
+                padding-bottom: 10px;            
+                &_text {
+                    width: 300px;
+                }
+                &_qty {
+                    width: 100px;
+                    text-align: right;
+                }
             }
             &_amount {
-                width: 100px;
-                font-weight: 600;
-                text-align: right;
+                display: flex;
+                padding-top: 10px;
+                &_text {
+                    width: 300px;
+                }
+                &_amount {
+                    width: 100px;
+                    font-weight: 600;
+                    text-align: right;
+                }
             }
         }
         &_next {
@@ -134,7 +149,7 @@
     }
 }
 
-.red-background, .red-background:hover {
+.disable, .disable:hover {
     background-color: #BFEED4;
     color: #28C76F;
     cursor: not-allowed;

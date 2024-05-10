@@ -28,10 +28,18 @@
                 <svg (click)="deleteProduct(i)" class="pos_selected_product_info_delete" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path></svg>
             </div>
         </div>
+
         <div class="pos_selected_total">
-            <div class="pos_selected_total_text">Overall Total:</div>
-            <div class="pos_selected_total_amount">PHP {{ overallTotal }}</div>
+            <div class="pos_selected_total_qty">
+                <div class="pos_selected_total_qty_text">Quantity</div>
+                <div class="pos_selected_total_qty_qty">{{ totalQuantity }}</div>
+            </div>
+            <div class="pos_selected_total_amount">
+                <div class="pos_selected_total_amount_text">Total</div>
+                <div class="pos_selected_total_amount_amount">PHP {{ overallTotal }}</div>
+            </div>
         </div>
-        <div class="pos_selected_next" [class.red-background]="selectedProducts.length === 0" (click)="clearSelectedProducts()">Next Order</div>
+        
+        <div class="pos_selected_next" [class.disable]="selectedProducts.length === 0" (click)="clearSelectedProducts()">Next Order</div>
     </div>
 </div>

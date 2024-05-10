@@ -11,6 +11,7 @@ export class PosComponent {
   products: any[] = [];
   selectedProducts: any[] = [];
   overallTotal: number = 0;
+  totalQuantity: number = 0;
 
   constructor(public productService: ProductService) { }
 
@@ -41,6 +42,9 @@ export class PosComponent {
   calculateOverallTotal() {
     this.overallTotal = this.selectedProducts.reduce((total, selectedProduct) => {
       return total + (selectedProduct.price * selectedProduct.counter);
+    }, 0);
+    this.totalQuantity = this.selectedProducts.reduce((total, selectedProduct) => {
+      return total + selectedProduct.counter;
     }, 0);
   }
 
