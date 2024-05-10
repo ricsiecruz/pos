@@ -3,15 +3,26 @@
         <h2>POS</h2>
         <div *ngIf="products && products.length" class="pos_card">
             <div *ngFor="let product of products" class="pos_card_drink">
-              {{ product.product }}
-              <div class="pos_card_price">PHP {{ product.price }}</div>
+                <div>
+                    {{ product.product }}
+                    <div class="pos_card_price">PHP {{ product.price }}</div>
+                </div>
+                <button (click)="addToRightDiv(product)">Add</button>
             </div>
         </div>
         <div *ngIf="!products || products.length === 0">
             No products available.
         </div>
     </div>
-    <div>right</div>
-  </div>
-  
-  
+    <div>
+        <h2>Selected Products</h2>
+        <div *ngFor="let selectedProduct of selectedProducts" class="selected_product">
+            <div class="product-info">
+                <span>{{ selectedProduct.product }}</span>
+                <div class="selected_product_price">PHP {{ selectedProduct.price }}</div>
+            </div>
+            <div class="product-counter">{{ selectedProduct.counter }}</div>
+        </div>
+    </div>
+    
+</div>
