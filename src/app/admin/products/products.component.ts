@@ -1,7 +1,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { AppService } from '../../app.service';
 import { ModalService } from '../../modal.service';
-import { ProductService } from '../../product.service';
+import { ProductService } from '../../services/product.service';
 import { WebSocketService } from '../../websocket-service';
 
 @Component({

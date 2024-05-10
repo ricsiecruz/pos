@@ -1,9 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { WebSocketService } from './websocket-service';
+import { WebSocketService } from '../websocket-service';
 import { Observable, BehaviorSubject, merge, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from '../environment';
+import { environment } from '../../environment';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +61,10 @@ export class ProductService implements OnDestroy {
 
   addProduct(product: any) {
     this.webSocketService.send({ action: 'addProduct', product });
+  }
+
+  addSales(sale: any) {
+    this.webSocketService.send({ action: 'addSales', sale });
   }
 
   editProduct(productId: string, updatedProduct: any) {

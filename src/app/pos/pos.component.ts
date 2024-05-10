@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ProductService } from '../product.service';
+import { ProductService } from '../services/product.service';
+import { SalesService } from '../services/sales.service';
 
 @Component({
   selector: 'app-pos',
@@ -13,7 +14,10 @@ export class PosComponent {
   overallTotal: number = 0;
   totalQuantity: number = 0;
 
-  constructor(public productService: ProductService) { }
+  constructor(
+    public productService: ProductService,
+    public salesService: SalesService
+  ) { }
 
   ngOnInit() {
     // Subscribe to the products$ observable to get the list of products
@@ -70,11 +74,7 @@ export class PosComponent {
   }
 
   clearSelectedProducts() {
-
-    // Generate transaction ID
     const transactionId = this.generateTransactionId();
-
-    // Log order summary with transaction ID
     const orders = this.selectedProducts.map(product => {
         return {
             product: product.product,
@@ -84,30 +84,43 @@ export class PosComponent {
         };
     });
 
+    console.log('data', orders, this.totalQuantity, this.overallTotal, transactionId, new Date().toISOString())
+
     const orderSummary = {
         orders: orders,
         qty: this.totalQuantity,
         total: this.overallTotal,
-        transactionId: transactionId, // Add the transaction ID to the order summary
+        transactionId: transactionId,
         dateTime: new Date().toISOString()
     };
 
     console.log('Order Summary:', orderSummary);
+    this.addToSales(orderSummary);
     this.selectedProducts = [];
     this.calculateOverallTotal();
   }
 
+  addToSales(transactionSales: any) {
+    console.log('sale', transactionSales)
+    this.salesService.addSales(transactionSales);
+    // Make API call to add transactionSales to sales
+    // this.http.post(this.API_URL + 'sales', transactionSales).subscribe(
+    //     (response) => {
+    //         console.log('Transaction added to sales:', response);
+    //     },
+    //     (error) => {
+    //         console.error('Error adding transaction to sales:', error);
+    //     }
+    // );
+}
+
   generateTransactionId(): string {
     const randomNumber = Math.floor(Math.random() * 90000) + 10000;
-
-    // Get the current timestamp
     const timestamp = new Date().getTime();
-
     // Concatenate the timestamp and random number to create the transaction ID
     const transactionId = `TRX-${timestamp}-${randomNumber}`;
 
     return transactionId;
   }
-
 
 }
