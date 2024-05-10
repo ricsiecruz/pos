@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SalesService } from '../../services/sales.service';
 
 @Component({
   selector: 'app-orders',
@@ -6,5 +7,18 @@ import { Component } from '@angular/core';
   styleUrl: './orders.component.scss'
 })
 export class OrdersComponent {
+
+  products: any[] = [];
+  
+  constructor(private salesService: SalesService) {}
+
+  ngOnInit() {
+    this.salesService.products$.subscribe((products: any[]) => {
+      if (products && products.length > 0) {
+        this.products = products;
+        console.log("a", this.products)
+      }
+    });
+  }
 
 }
