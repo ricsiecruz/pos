@@ -6,8 +6,7 @@ import { ProductsComponent } from './admin/products/products.component';
 import { ExpensesComponent } from './admin/expenses/expenses.component';
 import { PosComponent } from './pos/pos.component';
 import { AdminComponent } from './admin/admin/admin.component';
-import { TestComponent } from './test/test.component';
-import { LandingComponent } from './landing/landing.component';
+import { OrdersComponent } from './admin/orders/orders.component';
 
 const routes: Routes = [
   {
@@ -41,18 +40,14 @@ const routes: Routes = [
         component: ProductsComponent
       },
       {
+        path: 'sales',
+        component: OrdersComponent
+      },
+      {
         path: 'expenses',
         component: ExpensesComponent
       }
     ]
-  },
-  {
-    path: 'test',
-    component: TestComponent
-  },
-  {
-    path: 'landing',
-    component: LandingComponent
   }
 ]
 

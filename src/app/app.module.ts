@@ -15,8 +15,7 @@ import { ExpensesComponent } from './admin/expenses/expenses.component';
 import { PosComponent } from './pos/pos.component';
 import { AdminComponent } from './admin/admin/admin.component';
 import { NoDataComponent } from './admin/no-data/no-data.component';
-import { TestComponent } from './test/test.component';
-import { LandingComponent } from './landing/landing.component';
+import { OrdersComponent } from './admin/orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -29,8 +28,7 @@ import { LandingComponent } from './landing/landing.component';
     PosComponent,
     AdminComponent,
     NoDataComponent,
-    TestComponent,
-    LandingComponent
+    OrdersComponent
   ],
   imports: [
     BrowserModule,
