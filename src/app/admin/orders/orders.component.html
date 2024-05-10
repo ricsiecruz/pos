@@ -1,1 +1,34 @@
-<p>orders works!</p>
+<div class="inventory">
+    <div class="inventory_title">
+        Expenses
+    </div>
+    <div class="inventory_table">
+        <div class="inventory_table_filter">
+            
+        </div>
+        <div class="inventory_table_header">
+            <div class="table_one">Expense</div>
+            <div class="table_two">Month</div>
+            <div class="table_three">Date</div>
+            <div class="table_four">Amount</div>
+            <div class="table_five">Channel</div>
+        </div>
+        <div class="inventory_table_list" *ngFor="let data of products">
+            <div class="table_one">
+                {{ data.transactionid }}
+            </div>
+            <div class="table_two">
+                {{ data.qty }}
+            </div>
+            <div class="table_three">
+                {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss a zzzz" }}
+            </div>
+            <div class="table_four">
+                PHP {{ data.total }}
+            </div>
+            <!-- <div class="table_five">
+                {{ data.channel }}
+            </div> -->
+        </div>
+    </div>
+</div>

@@ -10,8 +10,8 @@ import { environment } from '../../environment';
 })
 export class SalesService implements OnDestroy {
   API_URL = environment.apiUrl;
-  private productsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  products$: Observable<any[]> = this.productsSubject.asObservable();
+  private salesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  sales$: Observable<any[]> = this.salesSubject.asObservable();
   private websocketSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
@@ -21,20 +21,19 @@ export class SalesService implements OnDestroy {
           if (message.action === 'addSales') {
             return message.transactionSales;
           } else if (message.action === 'initialize') {
-            return message.products;
+            return message.sales;
           } else {
             return null;
           }
         })
-      ),
-      this.http.get<any[]>(this.API_URL + 'sales')
+      )
     ).subscribe((data: any | any[]) => {
-        console.log('sales', data)
-    //   if (Array.isArray(data)) {
-    //     this.updateProducts(data);
-    //   } else if (data) {
-    //     this.addOrUpdateProduct(data);
-    //   }
+      console.log('sales', data);
+      if (Array.isArray(data)) {
+        this.updateSales(data);
+      } else if (data) {
+        this.addOrUpdateSale(data);
+      }
     });
   }
 
@@ -45,30 +44,27 @@ export class SalesService implements OnDestroy {
     }
   }
 
-  private addOrUpdateProduct(product: any): void {
-    const existingProductIndex = this.productsSubject.value.findIndex(p => p.id === product.id);
-    if (existingProductIndex === -1) {
-      this.productsSubject.next([...this.productsSubject.value, product]);
-    } else {
-      const updatedProducts = [...this.productsSubject.value];
-      updatedProducts[existingProductIndex] = product;
-      this.productsSubject.next(updatedProducts);
-    }
-  }
-
-  private updateProducts(products: any[]): void {
-    this.productsSubject.next(products);
-  }
-
-  addProduct(product: any) {
-    this.webSocketService.send({ action: 'addProduct', product });
-  }
-
   addSales(sale: any) {
     this.webSocketService.send({ action: 'addSales', sale });
   }
 
-  editProduct(productId: string, updatedProduct: any) {
-    this.webSocketService.send({ action: 'editProduct', productId, product: updatedProduct });
+  private addOrUpdateSale(sale: any): void {
+    const existingSaleIndex = this.salesSubject.value.findIndex(s => s.id === sale.id);
+    if (existingSaleIndex === -1) {
+      this.salesSubject.next([...this.salesSubject.value, sale]);
+    } else {
+      const updatedSales = [...this.salesSubject.value];
+      updatedSales[existingSaleIndex] = sale;
+      this.salesSubject.next(updatedSales);
+    }
   }
+
+  private updateSales(sales: any[]): void {
+    this.salesSubject.next(sales);
+  }
+
+  getSales(): Observable<any[]> {
+    return this.http.get<any[]>(this.API_URL + 'sales');
+  }
+
 }
