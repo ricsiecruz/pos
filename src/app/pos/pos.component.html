@@ -20,7 +20,7 @@
                 <span>{{ selectedProduct.product }}</span>
                 <div class="counter-container">
                     <button (click)="decrementCounter(selectedProduct)">-</button>
-                    <div class="product-counter">{{ selectedProduct.counter }}</div>
+                    <input type="number" [(ngModel)]="selectedProduct.counter" (ngModelChange)="updateOverallTotal()" min="0">
                     <button (click)="incrementCounter(selectedProduct)">+</button>
                 </div>
                 <div class="pos_selected_product_price">PHP {{ selectedProduct.price }}</div>

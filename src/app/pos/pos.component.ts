@@ -44,6 +44,10 @@ export class PosComponent {
     }, 0);
   }
 
+  updateOverallTotal() {
+    this.calculateOverallTotal();
+  }
+
   incrementCounter(selectedProduct: any) {
     selectedProduct.counter++;
     this.calculateOverallTotal();
