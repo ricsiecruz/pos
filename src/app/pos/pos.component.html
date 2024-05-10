@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="pos_selected">
-        <h2>Selected Products</h2>
+        <div class="pos_selected_orders">Orders</div>
         <div *ngFor="let selectedProduct of selectedProducts; let i = index" class="pos_selected_product">
             <div class="pos_selected_product_info">
                 <span class="pos_selected_product_info_product">{{ selectedProduct.product }}</span>
@@ -32,6 +32,6 @@
             <div class="pos_selected_total_text">Overall Total:</div>
             <div class="pos_selected_total_amount">PHP {{ overallTotal }}</div>
         </div>
-        <div class="pos_selected_next" (click)="clearSelectedProducts()">Next Order</div>
+        <div class="pos_selected_next" [class.red-background]="selectedProducts.length === 0" (click)="clearSelectedProducts()">Next Order</div>
     </div>
 </div>
