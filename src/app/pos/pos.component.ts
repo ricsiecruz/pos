@@ -70,7 +70,23 @@ export class PosComponent {
   }
 
   clearSelectedProducts() {
+    const orders = this.selectedProducts.map(product => {
+      return {
+          product: product.product,
+          price: product.price,
+          quantity: product.counter,
+          total: product.price * product.counter
+      };
+    });
+    
+    const orderSummary = {
+        orders: orders,
+        qty: this.totalQuantity,
+        total: this.overallTotal
+    };
+    console.log('Order Summary:', orderSummary);
     this.selectedProducts = [];
     this.calculateOverallTotal(); // Reset the overall total
   }
+
 }
