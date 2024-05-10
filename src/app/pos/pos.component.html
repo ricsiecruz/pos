@@ -1,6 +1,5 @@
 <div class="pos">
     <div> 
-        <h2>POS</h2>
         <div *ngIf="products && products.length" class="pos_card">
             <div *ngFor="let product of products" class="pos_card_drink">
                 <div>
@@ -14,15 +13,20 @@
             No products available.
         </div>
     </div>
-    <div>
+    <div class="pos_selected">
         <h2>Selected Products</h2>
-        <div *ngFor="let selectedProduct of selectedProducts" class="selected_product">
+        <div *ngFor="let selectedProduct of selectedProducts" class="pos_selected_product">
             <div class="product-info">
                 <span>{{ selectedProduct.product }}</span>
-                <div class="selected_product_price">PHP {{ selectedProduct.price }}</div>
+                <div class="counter-container">
+                    <button (click)="decrementCounter(selectedProduct)">-</button>
+                    <div class="product-counter">{{ selectedProduct.counter }}</div>
+                    <button (click)="incrementCounter(selectedProduct)">+</button>
+                </div>
+                <div class="pos_selected_product_price">PHP {{ selectedProduct.price }}</div>
             </div>
-            <div class="product-counter">{{ selectedProduct.counter }}</div>
+            <div class="pos_selected_product_total">Total: PHP {{ selectedProduct.price * selectedProduct.counter }}</div>
         </div>
+        <div class="pos_overall_total">Overall Total: PHP {{ overallTotal }}</div>
     </div>
-    
 </div>

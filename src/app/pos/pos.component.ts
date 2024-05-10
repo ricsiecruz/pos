@@ -10,6 +10,7 @@ export class PosComponent {
 
   products: any[] = [];
   selectedProducts: any[] = [];
+  overallTotal: number = 0;
 
   constructor(public productService: ProductService) { }
 
@@ -34,6 +35,24 @@ export class PosComponent {
         // If the product already exists, increment its counter
         this.selectedProducts[existingProductIndex].counter++;
     }
-}
+    this.calculateOverallTotal();
+  }
 
+  calculateOverallTotal() {
+    this.overallTotal = this.selectedProducts.reduce((total, selectedProduct) => {
+      return total + (selectedProduct.price * selectedProduct.counter);
+    }, 0);
+  }
+
+  incrementCounter(selectedProduct: any) {
+    selectedProduct.counter++;
+    this.calculateOverallTotal();
+  }
+
+  decrementCounter(selectedProduct: any) {
+    if (selectedProduct.counter > 0) {
+      selectedProduct.counter--;
+      this.calculateOverallTotal();
+    }
+  }
 }
