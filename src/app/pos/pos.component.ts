@@ -70,23 +70,44 @@ export class PosComponent {
   }
 
   clearSelectedProducts() {
+
+    // Generate transaction ID
+    const transactionId = this.generateTransactionId();
+
+    // Log order summary with transaction ID
     const orders = this.selectedProducts.map(product => {
-      return {
-          product: product.product,
-          price: product.price,
-          quantity: product.counter,
-          total: product.price * product.counter
-      };
+        return {
+            product: product.product,
+            price: product.price,
+            quantity: product.counter,
+            total: product.price * product.counter
+        };
     });
-    
+
     const orderSummary = {
         orders: orders,
         qty: this.totalQuantity,
-        total: this.overallTotal
+        total: this.overallTotal,
+        transactionId: transactionId, // Add the transaction ID to the order summary
+        dateTime: new Date().toISOString()
     };
+
     console.log('Order Summary:', orderSummary);
     this.selectedProducts = [];
-    this.calculateOverallTotal(); // Reset the overall total
+    this.calculateOverallTotal();
   }
+
+  generateTransactionId(): string {
+    const randomNumber = Math.floor(Math.random() * 90000) + 10000;
+
+    // Get the current timestamp
+    const timestamp = new Date().getTime();
+
+    // Concatenate the timestamp and random number to create the transaction ID
+    const transactionId = `TRX-${timestamp}-${randomNumber}`;
+
+    return transactionId;
+  }
+
 
 }
