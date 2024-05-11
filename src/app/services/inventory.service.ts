@@ -62,6 +62,11 @@ export class InventoryService implements OnDestroy {
     this.inventorySubject.next(inventory);
   }
 
+  editProduct(id: string, updatedProduct: any) {
+    console.log('d', id, updatedProduct)
+    this.webSocketService.send({ action: 'addStock', id, inventory: updatedProduct });
+  }
+
   getInventory(): Observable<any[]> {
     return this.http.get<any[]>(this.API_URL + 'inventory');
   }

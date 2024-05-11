@@ -40,15 +40,15 @@
       <div class="modal-body">
         <form (submit)="saveEditedProduct()">
           <div class="modal-body-label">
-          <label for="editProductPrice">Price:</label>
-        </div>
-          <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.price" required>
-          <div class="modal-btns">
-            <button class="btn modal-btns-cancel"  (click)="cancelForm()" type="button">Cancel</button>
-            <button class="btn modal-btns-add" type="submit">
-                Save
-            </button>
-        </div>
+            <label for="editProductPrice">Price:</label>
+            </div>
+            <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.price" required>
+            <div class="modal-btns">
+                <button class="btn modal-btns-cancel"  (click)="cancelForm()" type="button">Cancel</button>
+                <button class="btn modal-btns-add" type="submit">
+                    Save
+                </button>
+            </div>
         </form>
       </div>
     </div>

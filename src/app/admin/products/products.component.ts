@@ -56,6 +56,7 @@ export class ProductsComponent {
 
   saveEditedProduct() {
     if (this.editingProduct) {
+      console.log('drinks', this.editingProduct.id, this.editingProduct)
       this.productService.editProduct(this.editingProduct.id, this.editingProduct)
         this.modalService.closeModal();
         this.editingProduct = null;

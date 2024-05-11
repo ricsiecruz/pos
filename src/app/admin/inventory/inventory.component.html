@@ -17,46 +17,42 @@
             <div class="table_five"></div>
         </div>
         <div *ngIf="inventory.length > 0; else noData">
-            <div class="inventory_table_list" *ngFor="let data of inventory">
-                <div class="table_one">
-                    {{ data.product }}
-                </div>
-                <div class="table_two">
-                    {{ data.stocks }}
-                </div>
-                <div class="table_three">
-                    {{ data.category }}
-                </div>
-                <div class="table_four">
-                    {{ data.brand }}
-                </div>
-                <!-- <div class="table_five">
-                    <div class="inventory_table_list_add" (click)="addStock(data.id, data.product, addStockModal)">
-                        Add stock
+            <div *ngFor="let data of inventory">
+                <div class="inventory_table_list">
+                    <div class="table_one">{{ data.product }}</div>
+                    <div class="table_two">{{ data.stocks }}</div>
+                    <div class="table_three">{{ data.category }}</div>
+                    <div class="table_four">{{ data.brand }}</div>
+                    <div class="table_five">
+                        <div class="inventory_table_list_add" (click)="editProduct(data)">
+                            Add stock
+                        </div>
                     </div>
-                </div> -->
-            </div>
+                </div>
+            </div>            
         </div>
     </div>
 </div>
 
-<!-- <ng-template #addStockModal let-d="dismiss">
+<ng-template #addStockModal let-d="dismiss">
     <div class="modal-header">
-        Add stocks to<span>{{ selectedProduct }}</span>
+        Add stocks to<span>{{ editingProduct?.product }}</span>
     </div>
     <div class="modal-body">
-        <div>
-            <div class="modal-body-label" for="Stocks">Stocks</div>
-            <input class="form-control" id="stocks" name="stocks" [(ngModel)]="stocks" placeholder="Enter stocks" >
-        </div>
-        <div class="modal-btns">
-            <button class="btn modal-btns-cancel" (click)="cancelForm()">Cancel</button>
-            <button class="btn modal-btns-add" (click)="addStockToInventory()">
-                Add
-            </button>
-        </div>
+        <form (submit)="saveEditedProduct()">
+            <div class="modal-body-label">
+              <label for="editProductPrice">Stock:</label>
+              </div>
+              <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.stocks" required>
+              <div class="modal-btns">
+                  <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
+                  <button class="btn modal-btns-add" type="submit">
+                      Save
+                  </button>
+            </div>
+        </form>
     </div>
-</ng-template> -->
+</ng-template>
 
 <ng-template #addInventoryModal let-d="dismiss">
     <div class="modal-header">
