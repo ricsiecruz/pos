@@ -24,7 +24,8 @@ interface OrderDetails {
 export class OrdersComponent {
   @ViewChild('sales') sales?: TemplateRef<any>;
   products: any[] = [];
-  details: OrderDetails | null = null; // Specify the type as OrderDetails
+  details: OrderDetails | null = null;
+  totalSum: number = 0;
 
   constructor(
     private salesService: SalesService,
@@ -35,15 +36,19 @@ export class OrdersComponent {
     this.salesService.sales$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products;
-        console.log("a", this.products);
+        // Calculate the sum of total
+        this.totalSum = this.calculateTotalSum(products);
+        console.log('sum', this.totalSum)
       }
     });
   }
 
   openModal(product: any) {
-    // Set editingProduct to the selected product for editing
-    console.log("c", product);
     this.details = product;
     this.modalService.openModal(this.sales);
+  }
+
+  private calculateTotalSum(products: any[]): number {
+    return products.reduce((acc, curr) => acc + parseFloat(curr.total), 0);
   }
 }
