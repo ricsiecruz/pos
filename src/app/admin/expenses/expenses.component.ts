@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AppService } from '../../app.service';
 import { ModalService } from '../../modal.service';
+import { ExpensesService } from '../../services/expenses.service';
+import { WebSocketService } from '../../websocket-service';
 
 @Component({
   selector: 'app-expenses',
@@ -13,15 +15,58 @@ export class ExpensesComponent {
   expense: string = '';
   amount?: number | null;
   channel: string = '';
+  totalSum: number = 0;
+  newExpenses: any = { expense: '', month: '', date: '', amount: '', channel: '' };
 
   constructor(
     private appService: AppService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private expensesService: ExpensesService,
+    private webSocketService: WebSocketService
   ) {
   }
 
   ngOnInit() {
-    this.loadInventory();
+    this.expensesService.expenses$.subscribe((products: any[]) => {
+      if (products && products.length > 0) {
+        this.expenses = products;
+        console.log('a', products)
+        this.calculateTotalSum(products);
+        console.log('sum', this.calculateTotalSum(products))
+      }
+    });
+
+    this.webSocketService.receive().subscribe((message: any) => {
+      if (message.action === 'addExpenses') {
+        console.log('b', message.product)
+        this.expenses.push(message.product);
+      }
+    });
+  }
+
+  // addProduct() {
+  //   this.newExpenses.date = new Date().toISOString();
+  //   this.expensesService.addExpenses(this.newExpenses);
+  //   this.modalService.closeModal();
+  //   this.newExpenses = { expense: '', month: '', date: '', amount: '', channel: '' };
+  // }
+
+  addProduct() {
+    const currentDate = new Date();
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const currentMonth = monthNames[currentDate.getMonth()];
+    const currentYear = currentDate.getFullYear();
+    this.newExpenses.month = `${currentMonth} ${currentYear}`;
+    this.newExpenses.date = new Date().toISOString();
+    console.log('expenses', this.newExpenses);
+    this.expensesService.addExpenses(this.newExpenses);
+    this.modalService.closeModal();
+    this.newExpenses = { expense: '', month: '', date: '', amount: '', channel: '' };
+  }
+  
+  
+  private calculateTotalSum(expenses: any[]): number {
+    return expenses.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
   }
 
   loadInventory() {
@@ -32,30 +77,6 @@ export class ExpensesComponent {
 
   openAddInventoryModal(modalContent: any) {
     this.modalService.openModal(modalContent);
-  }
-
-  onSubmit(data: any) {
-    const payload = {
-      expense: data.expense,
-      amount: data.amount,
-      channel: data.channel,
-      month: `${new Date().toLocaleString('en-us', { month: 'long' })} ${new Date().getFullYear()}`,
-      date: new Date().toISOString() // Format date in ISO format
-    }; 
-    
-    console.log('payload', payload)
-  
-    this.appService.postExpense(payload).subscribe({
-      next: () => {
-        console.log('success');
-        this.updateInventory();
-        this.modalService.closeModal();
-        this.clearForm();
-      },
-      error: (err) => {
-        console.log('err', err);
-      }
-    });
   }
 
   clearForm() {

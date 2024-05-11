@@ -41,21 +41,16 @@
         Add expense
     </div>
     <div class="modal-body">
-        <form #send="ngForm" (ngSubmit)="onSubmit(send.value)">
-            <div>
-                <div class="modal-body-label" for="expense">expense</div>
-                <input class="form-control" id="expense" name="expense" [(ngModel)]="expense" placeholder="expense" >
-            </div>
-            <div>
-                <div class="modal-body-label" for="amount">amount</div>
-                <input class="form-control" id="amount" name="amount" [(ngModel)]="amount" placeholder="amount" >
-            </div>
-            <div>
-                <div class="modal-body-label" for="channel">channel</div>
-                <input class="form-control" id="channel" name="channel" [(ngModel)]="channel" placeholder="channel" >
-            </div>
+        <form (submit)="addProduct()">
+            <label class="modal-body-label" for="productName">expense:</label>
+            <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newExpenses.expense" required>
+            <label class="modal-body-label" for="categoryName">amount:</label>
+            <input class="form-control" type="number" id="categoryName" name="categoryName" [(ngModel)]="newExpenses.amount" required>
+            <label class="modal-body-label" for="brandName">channel:</label>
+            <input class="form-control" type="text" id="brandName" name="brandName" [(ngModel)]="newExpenses.channel" required>
+            <label class="modal-body-label" for="productStocks">Stocks:</label>
             <div class="modal-btns">
-                <button class="btn modal-btns-cancel" type="button" (click)="cancelForm()">Cancel</button>
+                <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
                 <button class="btn modal-btns-add" type="submit">
                     Add
                 </button>
