@@ -22,6 +22,7 @@ export class InventoryComponent {
   brand: string = '';
   newInventory: any = { product: '', category: '', brand: '', stocks: '' };
   editingProduct: any = null;
+  qty: string = '';
 
   constructor(
     private inventoryService: InventoryService,
@@ -60,19 +61,30 @@ export class InventoryComponent {
   }
 
   editProduct(product: any) {
+    this.editingProduct = null;
     this.editingProduct = { ...product };
     this.modalService.openModal(this.addStockModal);
-  }  
+  }
+  
 
   saveEditedProduct() {
-    console.log('a', this.editingProduct)
-    if (this.editingProduct) {
-      console.log('b', this.editingProduct.id, this.editingProduct)
-      this.inventoryService.editProduct(this.editingProduct.id, this.editingProduct)
+    console.log('a', this.editingProduct, this.editingProduct.stocks)
+    if (this.editingProduct && this.editingProduct.stocks !== undefined) {
+      const newStocks = parseInt(this.qty, 10);
+      if (!isNaN(newStocks)) {
+        const currentStocks = parseInt(this.editingProduct.stocks, 10);
+        const totalStocks = currentStocks + newStocks;
+        this.editingProduct.stocks = totalStocks.toString();
+        this.inventoryService.editProduct(this.editingProduct.id, this.editingProduct)
         this.modalService.closeModal();
         this.editingProduct = null;
+      } else {
+        console.error('Invalid stock quantity');
+      }
     }
+    this.clearForm();
   }
+  
 
   cancelForm() {
     this.clearForm();
@@ -84,6 +96,7 @@ export class InventoryComponent {
     this.stocks = '';
     this.category = '';
     this.brand = '';
+    this.qty = '';
   }
 
   updateInventory() {

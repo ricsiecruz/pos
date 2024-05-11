@@ -11,7 +11,7 @@
         </div>
         <div class="inventory_table_header">
             <div class="table_one">Product</div>
-            <div class="table_two">Stocks</div>
+            <div class="table_two">Qty</div>
             <div class="table_three">Category</div>
             <div class="table_four">Brand</div>
             <div class="table_five"></div>
@@ -43,11 +43,11 @@
             <div class="modal-body-label">
               <label for="editProductPrice">Stock:</label>
               </div>
-              <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.stocks" required>
+              <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="qty" required>
               <div class="modal-btns">
                   <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
                   <button class="btn modal-btns-add" type="submit">
-                      Save
+                      Add
                   </button>
             </div>
         </form>
