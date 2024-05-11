@@ -14,6 +14,7 @@ export class DashboardComponent {
   expenses: any[] = [];
   totalSum: number = 0;
   totalExpenses: number = 0;
+  totalCups: number = 0;
 
   constructor(
     private salesService: SalesService,
@@ -24,7 +25,9 @@ export class DashboardComponent {
     this.salesService.sales$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.totalSum = this.calculateTotalSum(products);
-        console.log('dashboard', this.totalSum)
+        this.totalCups = this.calculateTotalCups(products);
+        console.log('sum', this.totalSum)
+        console.log('cups', this.totalCups)
       }
     });
 
@@ -46,5 +49,9 @@ export class DashboardComponent {
   private calculateTotalExpenses(products: any[]): number {
     console.log('b', products)
     return products.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
+  }
+
+  private calculateTotalCups(products: any[]): number {
+    return products.reduce((acc, curr) => acc + parseFloat(curr.qty), 0);
   }
 }

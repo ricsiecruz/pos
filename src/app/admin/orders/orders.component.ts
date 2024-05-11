@@ -26,6 +26,7 @@ export class OrdersComponent {
   products: any[] = [];
   details: OrderDetails | null = null;
   totalSum: number = 0;
+  totalCups: number = 0;
 
   constructor(
     private salesService: SalesService,
@@ -36,9 +37,10 @@ export class OrdersComponent {
     this.salesService.sales$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products;
-        // Calculate the sum of total
         this.totalSum = this.calculateTotalSum(products);
+        this.totalCups = this.calculateTotalCups(products);
         console.log('sum', this.totalSum)
+        console.log('cups', this.totalCups)
       }
     });
   }
@@ -50,5 +52,9 @@ export class OrdersComponent {
 
   private calculateTotalSum(products: any[]): number {
     return products.reduce((acc, curr) => acc + parseFloat(curr.total), 0);
+  }
+
+  private calculateTotalCups(products: any[]): number {
+    return products.reduce((acc, curr) => acc + parseFloat(curr.qty), 0);
   }
 }

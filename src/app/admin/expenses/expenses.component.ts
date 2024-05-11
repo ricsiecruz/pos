@@ -44,13 +44,6 @@ export class ExpensesComponent {
     });
   }
 
-  // addProduct() {
-  //   this.newExpenses.date = new Date().toISOString();
-  //   this.expensesService.addExpenses(this.newExpenses);
-  //   this.modalService.closeModal();
-  //   this.newExpenses = { expense: '', month: '', date: '', amount: '', channel: '' };
-  // }
-
   addProduct() {
     const currentDate = new Date();
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
