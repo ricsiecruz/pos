@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { AppService } from '../../app.service';
 import { ModalService } from '../../modal.service';
 import { InventoryService } from '../../services/inventory.service';
+import { WebSocketService } from '../../websocket-service';
 
 @Component({
   selector: 'app-inventory',
@@ -24,11 +25,23 @@ export class InventoryComponent {
   constructor(
     private appService: AppService,
     private invetoryService: InventoryService,
+    private webSocketService: WebSocketService,
     private modalService: ModalService,
   ) {}
 
   ngOnInit() {
-    this.loadInventory();
+    // this.loadInventory();
+    this.invetoryService.inventory$.subscribe((inventory: any[]) => {
+      if (inventory && inventory.length > 0) {
+        this.inventory = inventory;
+      }
+    });
+
+    this.webSocketService.receive().subscribe((message: any) => {
+      if (message.action === 'addProduct') {
+        this.inventory.push(message.product);
+      }
+    });
   }
 
   loadInventory() {
