@@ -38,7 +38,6 @@ export class SalesService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // Unsubscribe from WebSocket subscription when the service is destroyed
     if (this.websocketSubscription) {
       this.websocketSubscription.unsubscribe();
     }

@@ -103,15 +103,6 @@ export class PosComponent {
   addToSales(transactionSales: any) {
     console.log('sale', transactionSales)
     this.salesService.addSales(transactionSales);
-    // Make API call to add transactionSales to sales
-    // this.http.post(this.API_URL + 'sales', transactionSales).subscribe(
-    //     (response) => {
-    //         console.log('Transaction added to sales:', response);
-    //     },
-    //     (error) => {
-    //         console.error('Error adding transaction to sales:', error);
-    //     }
-    // );
 }
 
   generateTransactionId(): string {

@@ -30,17 +30,17 @@
                 <div class="table_four">
                     {{ data.brand }}
                 </div>
-                <div class="table_five">
+                <!-- <div class="table_five">
                     <div class="inventory_table_list_add" (click)="addStock(data.id, data.product, addStockModal)">
                         Add stock
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
 </div>
 
-<ng-template #addStockModal let-d="dismiss">
+<!-- <ng-template #addStockModal let-d="dismiss">
     <div class="modal-header">
         Add stocks to<span>{{ selectedProduct }}</span>
     </div>
@@ -56,32 +56,24 @@
             </button>
         </div>
     </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #addInventoryModal let-d="dismiss">
     <div class="modal-header">
         Add inventory
     </div>
     <div class="modal-body">
-        <form #send="ngForm" (ngSubmit)="onSubmit(send.value)">
-            <div>
-                <div class="modal-body-label" for="product">product</div>
-                <input class="form-control" id="product" name="product" [(ngModel)]="product" placeholder="product" >
-            </div>
-            <div>
-                <div class="modal-body-label" for="category">category</div>
-                <input class="form-control" id="category" name="category" [(ngModel)]="category" placeholder="category" >
-            </div>
-            <div>
-                <div class="modal-body-label" for="brand">brand</div>
-                <input class="form-control" id="brand" name="brand" [(ngModel)]="brand" placeholder="brand" >
-            </div>
-            <div>
-                <div class="modal-body-label" for="stocks">stocks</div>
-                <input class="form-control" id="stocks" name="stocks" [(ngModel)]="stocks" placeholder="stocks" >
-            </div>
+        <form (submit)="addProduct()">
+            <label class="modal-body-label" for="productName">Product:</label>
+            <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newInventory.product" required>
+            <label class="modal-body-label" for="categoryName">Category:</label>
+            <input class="form-control" type="text" id="categoryName" name="categoryName" [(ngModel)]="newInventory.category" required>
+            <label class="modal-body-label" for="brandName">Brand:</label>
+            <input class="form-control" type="text" id="brandName" name="brandName" [(ngModel)]="newInventory.brand" required>
+            <label class="modal-body-label" for="productStocks">Stocks:</label>
+            <input class="form-control" type="number" id="productStocks" name="productStocks" [(ngModel)]="newInventory.stocks" required>
             <div class="modal-btns">
-                <button class="btn modal-btns-cancel" type="button" (click)="cancelForm()">Cancel</button>
+                <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
                 <button class="btn modal-btns-add" type="submit">
                     Add
                 </button>

@@ -30,7 +30,6 @@ export class ProductsComponent {
       }
     });
 
-    // Subscribe to WebSocket updates for new product additions
     this.webSocketService.receive().subscribe((message: any) => {
       if (message.action === 'addProduct') {
         this.products.push(message.product);
@@ -40,7 +39,6 @@ export class ProductsComponent {
 
   addProduct() {
     if (this.newProduct.product.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
-      // Add new product via websocket
       this.productService.addProduct(this.newProduct)
       this.modalService.closeModal();
       this.newProduct = { product: '', price: '' };
@@ -48,8 +46,6 @@ export class ProductsComponent {
   }
 
   editProduct(product: any) {
-    // Set editingProduct to the selected product for editing
-    console.log("c", product)
     this.editingProduct = { ...product };
     this.modalService.openModal(this.editProductModal);
   }
@@ -60,7 +56,6 @@ export class ProductsComponent {
 
   saveEditedProduct() {
     if (this.editingProduct) {
-      // Edit product via websocket
       this.productService.editProduct(this.editingProduct.id, this.editingProduct)
         this.modalService.closeModal();
         this.editingProduct = null;

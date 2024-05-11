@@ -38,7 +38,6 @@ export class ProductService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // Unsubscribe from WebSocket subscription when the service is destroyed
     if (this.websocketSubscription) {
       this.websocketSubscription.unsubscribe();
     }
@@ -63,9 +62,9 @@ export class ProductService implements OnDestroy {
     this.webSocketService.send({ action: 'addProduct', product });
   }
 
-  addSales(sale: any) {
-    this.webSocketService.send({ action: 'addSales', sale });
-  }
+  // addSales(sale: any) {
+  //   this.webSocketService.send({ action: 'addSales', sale });
+  // }
 
   editProduct(productId: string, updatedProduct: any) {
     this.webSocketService.send({ action: 'editProduct', productId, product: updatedProduct });

@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { AppService } from '../../app.service';
 import { ModalService } from '../../modal.service';
+import { InventoryService } from '../../services/inventory.service';
 
 @Component({
   selector: 'app-inventory',
@@ -18,9 +19,11 @@ export class InventoryComponent {
   product: string = '';
   category: string = '';
   brand: string = '';
+  newInventory: any = { product: '', category: '', brand: '', stocks: '' };
 
   constructor(
     private appService: AppService,
+    private invetoryService: InventoryService,
     private modalService: ModalService,
   ) {}
 
@@ -29,63 +32,27 @@ export class InventoryComponent {
   }
 
   loadInventory() {
-    this.appService.getInventory().subscribe((res: any) => {
+    this.invetoryService.getInventory().subscribe((res: any) => {
       console.log('res', res);
       this.inventory = res;
     });
-  }
-
-  addStock(id: any, product: any, modalContent: any) {
-    this.selectedProductId = id;
-    this.selectedProduct = product;
-    console.log('selectedproductid', this.selectedProductId);
-    console.log('id', id);
-    this.modalService.openModal(modalContent);
   }
 
   openAddInventoryModal(modalContent: any) {
     this.modalService.openModal(modalContent);
   }
 
-  addStockToInventory() {
-    if (this.selectedProductId !== null) {
-      console.log('Product ID:', this.selectedProductId);
-      console.log('Adding stock:', this.stocks);
-  
-      const payload = { stocks: this.stocks };
-  
-      this.appService.putStocks(this.selectedProductId, payload).subscribe((res: any) => {
-        console.log('res', res);
-        this.updateInventory();
-      });
-  
+  addProduct() {
+    // if (this.newInventory.product.trim() !== '' && !isNaN(Number(this.newInventory.price))) {
+      this.invetoryService.addInventory(this.newInventory)
       this.modalService.closeModal();
-    }
-  }
-
-  onSubmit(data: any) {
-    const payload = {
-      product: data.product,
-      stocks: data.stocks,
-      category: data.category,
-      brand: data.brand
-    };
-
-    this.appService.postInventory(payload).subscribe({
-      next: () => {
-        console.log('success');
-        this.updateInventory();
-        this.modalService.closeModal();
-      },
-      error: (err) => {
-        console.log('err', err);
-      }
-    });
+      this.newInventory = { product: '', category: '', brand: '', stocks: '' };
+    // }
   }
 
   cancelForm() {
-    this.clearForm(); // Call the method to reset form fields
-    this.modalService.closeModal(); // Close the modal
+    this.clearForm();
+    this.modalService.closeModal();
   }  
 
   clearForm() {
