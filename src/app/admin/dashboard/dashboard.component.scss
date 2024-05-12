@@ -3,6 +3,8 @@
         display: flex;
         justify-content: space-between;
         &_income, &_expenses, &_cups {
+            font-weight: 700;
+            font-size: 18px;
             color: #ffffff;
             height: 98px;
             width: 380px;
@@ -18,15 +20,52 @@
             -ms-flex-pack: space-between;
             margin: 0 0 25px;
             padding: 20px;
+            &_header {
+                font-size: 14px;
+                font-weight: normal;
+            }
+            &_icon {
+                background-color: #d2d2d2;
+                width: 48px;
+                height: 48px;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                align-items: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                justify-content: center;
+                -webkit-justify-content: center;
+                -ms-flex-pack: center;
+                border-radius: 50px;
+                svg {
+                    width: 34px;
+                }
+            }
         }
         &_income {
             background: #1B2850;
+            &_icon {
+                svg {
+                    fill: #1b2850;
+                }
+            }
         }
         &_expenses {
             background-color: #FF4D4D;
+            &_icon {
+                svg {
+                    fill: #FF4D4D;
+                }
+            }
         }
         &_cups {
-            background-color: #28C76F;;
+            background-color: #28C76F;
+            &_icon {
+                svg {
+                    fill: #28C76F;
+                }
+            }
         }
     }
 }

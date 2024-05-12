@@ -15,6 +15,7 @@ export class DashboardComponent {
   totalSum: number = 0;
   totalExpenses: number = 0;
   totalCups: number = 0;
+  profit: number = 0;
 
   constructor(
     private salesService: SalesService,
@@ -26,18 +27,13 @@ export class DashboardComponent {
       if (products && products.length > 0) {
         this.totalSum = this.calculateTotalSum(products);
         this.totalCups = this.calculateTotalCups(products);
-        console.log('sum', this.totalSum)
-        console.log('cups', this.totalCups)
       }
     });
 
     this.expensesService.expenses$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.expenses = products;
-        console.log('a', products)
-        // Calculate the sum of total
         this.totalExpenses = this.calculateTotalExpenses(products);
-        console.log('expenses', this.totalExpenses)
       }
     });
   }
@@ -47,7 +43,6 @@ export class DashboardComponent {
   }
 
   private calculateTotalExpenses(products: any[]): number {
-    console.log('b', products)
     return products.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
   }
 
