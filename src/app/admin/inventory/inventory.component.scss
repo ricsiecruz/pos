@@ -1,4 +1,11 @@
+@import 'bootstrap/scss/_functions';
+@import 'bootstrap/scss/_variables';
+@import 'bootstrap/scss/mixins/_breakpoints';
+
 .inventory {
+    @include media-breakpoint-down(sm) {
+        padding: 20px;
+    }
     &_title {
         display: flex;
         justify-content: space-between;
@@ -27,13 +34,20 @@
         border: 1px solid #dbe0e6;
         box-shadow: none;
         padding: 24px;
+        @include media-breakpoint-down(sm) {
+            padding: 15px;
+            display: grid;
+            overflow-x: auto;
+        }
         &_header {
             display: flex;
             justify-content: space-between;
             padding: 0 24px;
             padding-bottom: 0.75rem;
-            /* border-top: 1px solid #dbe0e6; */
             border-bottom: 1px solid #dbe0e6;
+            @include media-breakpoint-down(sm) {
+                padding: 10px;
+            }
             div {
                 font-weight: 600;
                 font-size: 15px;
@@ -48,6 +62,9 @@
             font-weight: 400;
             line-height: normal;
             border-bottom: 1px solid #dbe0e6;
+            @include media-breakpoint-down(sm) {
+                padding: 10px;
+            }
             &_add {
                 cursor: pointer;
                 border-radius: 3px;
