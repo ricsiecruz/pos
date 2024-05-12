@@ -15,7 +15,6 @@ export class DashboardComponent {
   totalSum: number = 0;
   totalExpenses: number = 0;
   totalCups: number = 0;
-  profit: number = 0;
 
   constructor(
     private salesService: SalesService,

@@ -1,7 +1,17 @@
+@import 'bootstrap/scss/_functions';
+@import 'bootstrap/scss/_variables';
+@import 'bootstrap/scss/mixins/_breakpoints';
+
 .dashboard {
+    @include media-breakpoint-down(sm) {
+        padding: 20px;
+    }
     &_cards {
         display: flex;
         justify-content: space-between;
+        @include media-breakpoint-down(sm) {
+            display: block;
+        }
         &_income, &_expenses, &_cups {
             font-weight: 700;
             font-size: 18px;
@@ -20,6 +30,9 @@
             -ms-flex-pack: space-between;
             margin: 0 0 25px;
             padding: 20px;
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+            }
             &_header {
                 font-size: 14px;
                 font-weight: normal;

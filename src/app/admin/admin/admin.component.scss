@@ -1,3 +1,7 @@
+@import 'bootstrap/scss/_functions';
+@import 'bootstrap/scss/_variables';
+@import 'bootstrap/scss/mixins/_breakpoints';
+
 @font-face {
     font-family: 'NunitoSans';
     src: url('../../../assets/fonts/NunitoSans.ttf') format('truetype'),
@@ -6,10 +10,198 @@
 .admin {
     font-family: 'NunitoSans';
     display: flex;
+    min-width: 100%;
+    width: fit-content;
     min-height: 100vh;
     &_content {
-        background-color: #FAFBFE;
         width: 100%;
-        padding: 24px;
+        display: flex;
+        &_web {
+            background-color: #FAFBFE;
+            width: 100%;
+            padding: 24px;
+        }
     }
+    &_mobile {
+        padding: 15px;
+        justify-content: space-between;
+        box-shadow: 0 6px 15px rgba(64,79,104,0.05);
+        border-bottom: 1px solid #E5E5E5;
+
+        img {
+            width: 60px;
+        }
+
+        svg {
+            width: 25px;
+        }   
+
+        &_sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #FFFFFF;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            &_header {
+                display: flex;
+                justify-content: space-between;
+                border-bottom: 1px solid #E5E5E5;
+                padding: 10px 15px;
+
+                img {
+                    width: 80px;
+                }
+
+                svg {
+                    width: 25px;
+                }
+            }
+            &_menu {
+                padding: 15px;
+                &_text {
+                    text-transform: capitalize;
+                    cursor: pointer;
+                    text-align: center;
+                    align-items: end;
+                    display: flex;
+                    @include media-breakpoint-down(sm) {
+                        display: block;
+                        padding: 12px 0;
+                    }
+                    div {
+                        @include media-breakpoint-down(sm) {
+                            padding: 12px 0;
+                        }
+                    }
+                }
+                &_text:last-of-type {
+                    font-weight: 700;
+                    border: 1px solid #14a077;
+                    color: #121212;
+                    background: #fff;
+                    border-radius: 4px;
+                    text-align: center;
+                }
+                span {
+                    width: 100%;
+                }
+            }
+            &_user {
+                display: grid;
+                justify-content: center;
+                text-align: center;
+                text-transform: capitalize;
+
+                &_role {
+                    text-align: center;
+                    color: #64666c;
+                    font-size: 12px;
+                    text-transform: lowercase;
+                }
+            }
+        }
+    }
+
+    &_menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &_nav {
+            display: flex;
+            width: 50%;
+            justify-content: space-between;
+            align-items: center;
+            text-transform: capitalize;
+        }
+
+        img {
+            width: 50px;
+            border-radius: 50%;        
+        }
+
+        span {
+            padding: 10px 30px;
+            cursor: pointer;
+        }
+
+        span:hover {
+            background-color: #14a077;
+            color: #FFFFFF;
+            border-radius: 4px;
+        }
+
+        &_login {
+            font-weight: 700;
+            border: 1px solid #14a077;
+            color: #121212;
+            background: #fff;
+            border-radius: 4px;
+            text-align: center;
+            padding: 10px 30px;
+            cursor: pointer;
+
+            span {
+                padding: 0;
+            }
+        }
+
+        &_login:hover {
+            background-color: #14a077;
+            color: #FFFFFF;
+        }
+
+        &_dropdown {
+            border: none;
+            display: flex;
+            align-items: baseline;
+            color: #121212;
+            &_role {
+                text-align: left;
+                color: #64666c;
+                font-size: 12px;
+            }
+        }
+
+        &_dropdown:hover {
+            background: transparent;
+            color: #121212;
+        }
+    }
+}
+
+// .admin {
+//     padding: 30px 45px;
+//     border-bottom: 1px solid #E5E5E5BF;
+//     align-items: center;
+
+    
+
+// }
+
+.open {
+    width: 250px;
+    z-index: 2;
+    padding: 0;
+}
+
+.menu {
+    &_nav {
+        span {
+            padding: 10px 30px;
+        }
+    }
+}
+
+.overlay {
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 1;
 }
