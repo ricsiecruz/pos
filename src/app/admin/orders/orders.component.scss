@@ -173,6 +173,9 @@ input {
     padding: 30px;
     padding-top: 15px;
     color: #5B6670;
+    @include media-breakpoint-down(sm) {
+        padding: 10px;
+    }
     &_header {
         font-family: "Poppins-Bold", sans-serif;
         justify-content: center;
@@ -256,6 +259,9 @@ input {
 .modal-content {
     width: 424px !important;
     margin: 0 auto;
+    @include media-breakpoint-down(sm) {
+        width: 250px !important;
+    }
 }
 
 .table {
