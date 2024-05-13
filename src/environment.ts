@@ -1,4 +1,4 @@
 // workaround environment config to get example working in stackblitz
 export const environment = {
-    apiUrl: 'http://localhost:3000/'
+    apiUrl: 'https://pos-backend-kt9t.vercel.app/'
 };
