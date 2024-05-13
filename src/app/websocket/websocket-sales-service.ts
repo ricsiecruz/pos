@@ -4,14 +4,11 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 @Injectable({
   providedIn: 'root'
 })
-export class WebSocketService {
+export class WebSocketSalesService {
   private socket$: WebSocketSubject<any>;
 
   constructor() {
-    this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/');
-    // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
-    // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/sales');
-    // this.socket$ = webSocket('wss://localhost:8080');
+    this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/sales');
 
     this.socket$.subscribe(
       () => console.log('WebSocket connection established'),

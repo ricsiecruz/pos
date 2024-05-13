@@ -4,6 +4,7 @@ import { WebSocketService } from '../websocket-service';
 import { Observable, BehaviorSubject, merge, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environment';
+import { WebSocketProductsService } from '../websocket/websocket-products-service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,9 @@ export class ProductService implements OnDestroy {
   products$: Observable<any[]> = this.productsSubject.asObservable();
   private websocketSubscription: Subscription;
 
-  constructor(private http: HttpClient, private webSocketService: WebSocketService) {
+  constructor(private http: HttpClient, private webSocketService: WebSocketProductsService) {
     this.websocketSubscription = merge(
+      // this.http.get<any[]>(this.API_URL + 'products'),
       this.webSocketService.receive().pipe(
         map((message: any) => {
           if (message.action === 'addProduct') {
