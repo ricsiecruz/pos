@@ -38,7 +38,7 @@ export class InventoryComponent {
     });
 
     this.webSocketService.receive().subscribe((message: any) => {
-      if (message.action === 'addProduct') {
+      if (message.action === 'addInventory') {
         this.inventory.push(message.product);
       }
     });

@@ -27,12 +27,12 @@ export class ExpensesComponent {
   }
 
   ngOnInit() {
-    this.expensesService.expenses$.subscribe((products: any[]) => {
-      if (products && products.length > 0) {
-        this.expenses = products;
-        console.log('a', products)
-        this.calculateTotalSum(products);
-        console.log('sum', this.calculateTotalSum(products))
+    this.expensesService.expenses$.subscribe((expenses: any[]) => {
+      if (expenses && expenses.length > 0) {
+        this.expenses = expenses;
+        console.log('a', expenses)
+        this.calculateTotalSum(expenses);
+        console.log('sum', this.calculateTotalSum(expenses))
       }
     });
 

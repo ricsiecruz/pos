@@ -21,7 +21,7 @@ export class ExpensesService implements OnDestroy {
           if (message.action === 'addExpenses') {
             return message.expense;
           } else if (message.action === 'initialize') {
-            return message.expenses;
+            return message.expense;
           } else {
             return null;
           }
