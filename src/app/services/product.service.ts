@@ -1,6 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { WebSocketService } from '../websocket-service';
 import { Observable, BehaviorSubject, merge, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environment';
@@ -17,7 +16,6 @@ export class ProductService implements OnDestroy {
 
   constructor(private http: HttpClient, private webSocketService: WebSocketProductsService) {
     this.websocketSubscription = merge(
-      // this.http.get<any[]>(this.API_URL + 'products'),
       this.webSocketService.receive().pipe(
         map((message: any) => {
           if (message.action === 'addProduct') {
@@ -65,7 +63,19 @@ export class ProductService implements OnDestroy {
   }
 
   editProduct(productId: string, updatedProduct: any) {
-    console.log('edit drinks', productId, updatedProduct)
+    console.log('edit product', productId, updatedProduct);
+    
+    // Send update via WebSocket
     this.webSocketService.send({ action: 'editProduct', productId, product: updatedProduct });
+
+    // Send update via HTTP request
+    this.http.put(`${this.API_URL}products/${productId}`, updatedProduct)
+      .subscribe(response => {
+        console.log('HTTP PUT response:', response);
+        // Optionally update local state if needed
+        this.addOrUpdateProduct(response);
+      }, error => {
+        console.error('HTTP PUT error:', error);
+      });
   }
 }
