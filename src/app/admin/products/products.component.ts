@@ -2,11 +2,12 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ModalService } from '../../modal.service';
 import { ProductService } from '../../services/product.service';
 import { WebSocketService } from '../../websocket-service';
+import { WebSocketProductsService } from '../../websocket/websocket-products-service';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrl: './products.component.scss'
+  styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent {
   @ViewChild('editProductModal') editProductModal?: TemplateRef<any>;
@@ -21,25 +22,34 @@ export class ProductsComponent {
     private modalService: ModalService,
     private productService: ProductService,
     private webSocketService: WebSocketService,
+    private webSocketProductsService: WebSocketProductsService
   ) {}
 
   ngOnInit() {
     this.productService.products$.subscribe((products: any[]) => {
-      if (products && products.length > 0) {
+      if (products) {
         this.products = products;
+        console.log('products', this.products);
       }
     });
 
-    this.webSocketService.receive().subscribe((message: any) => {
+    this.webSocketProductsService.receive().subscribe((message: any) => {
+      console.log('WebSocket message in component:', message);
       if (message.action === 'addProduct') {
         this.products.push(message.product);
+      } else if (message.action === 'editProduct') {
+        const index = this.products.findIndex(p => p.id === message.product.id);
+        if (index !== -1) {
+          this.products[index] = message.product;
+          console.log('Updated product:', this.products[index]);
+        }
       }
     });
   }
 
   addProduct() {
     if (this.newProduct.product.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
-      this.productService.addProduct(this.newProduct)
+      this.productService.addProduct(this.newProduct);
       this.modalService.closeModal();
       this.newProduct = { product: '', price: '' };
     }
@@ -56,20 +66,19 @@ export class ProductsComponent {
 
   saveEditedProduct() {
     if (this.editingProduct) {
-      console.log('drinks', this.editingProduct.id, this.editingProduct)
-      this.productService.editProduct(this.editingProduct.id, this.editingProduct)
-        this.modalService.closeModal();
-        this.editingProduct = null;
+      console.log('Saving edited product:', this.editingProduct.id, this.editingProduct);
+      this.productService.editProduct(this.editingProduct.id, this.editingProduct);
+      this.modalService.closeModal();
+      this.editingProduct = null;
     }
   }
 
   cancelForm() {
     this.clearForm();
     this.modalService.closeModal();
-  }  
+  }
 
   clearForm() {
     this.newProduct = { product: '', price: '' };
   }
-
 }

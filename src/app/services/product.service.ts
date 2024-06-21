@@ -19,20 +19,28 @@ export class ProductService implements OnDestroy {
       this.webSocketService.receive().pipe(
         map((message: any) => {
           if (message.action === 'addProduct') {
-            return message.product;
+            return { action: 'addProduct', product: message.product };
           } else if (message.action === 'initialize') {
-            return message.products;
+            return { action: 'initialize', products: message.products };
+          } else if (message.action === 'editProduct') {
+            return { action: 'editProduct', product: message.product };
           } else {
             return null;
           }
         })
       ),
-      this.http.get<any[]>(this.API_URL + 'products')
-    ).subscribe((data: any | any[]) => {
-      if (Array.isArray(data)) {
-        this.updateProducts(data);
-      } else if (data) {
-        this.addOrUpdateProduct(data);
+      this.http.get<any[]>(this.API_URL + 'products').pipe(
+        map(products => ({ action: 'initialize', products }))
+      )
+    ).subscribe((data: any) => {
+      if (data) {
+        if (data.action === 'initialize') {
+          this.updateProducts(data.products);
+        } else if (data.action === 'addProduct') {
+          this.addOrUpdateProduct(data.product);
+        } else if (data.action === 'editProduct') {
+          this.addOrUpdateProduct(data.product);
+        }
       }
     });
   }
@@ -64,7 +72,7 @@ export class ProductService implements OnDestroy {
 
   editProduct(productId: string, updatedProduct: any) {
     console.log('edit product', productId, updatedProduct);
-    
+
     // Send update via WebSocket
     this.webSocketService.send({ action: 'editProduct', productId, product: updatedProduct });
 
@@ -72,8 +80,8 @@ export class ProductService implements OnDestroy {
     this.http.put(`${this.API_URL}products/${productId}`, updatedProduct)
       .subscribe(response => {
         console.log('HTTP PUT response:', response);
-        // Optionally update local state if needed
-        this.addOrUpdateProduct(response);
+        // Update local state immediately
+        this.addOrUpdateProduct(updatedProduct);
       }, error => {
         console.error('HTTP PUT error:', error);
       });
