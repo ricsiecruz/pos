@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/admin/no-data/no-data.component.scss"],
+  "sourcesContent": [".no-data {\n    display: grid;\n    place-items: center;\n    color: #5b6670;\n    padding: 50px;\n    svg {\n        width: 50px;\n        color: #fb0;\n    }\n}"],
+  "mappings": ";AAAA,CAAA;AACI,WAAA;AACA,eAAA;AACA,SAAA;AACA,WAAA;;AACA,CALJ,QAKI;AACI,SAAA;AACA,SAAA;;",
+  "names": []
+}
