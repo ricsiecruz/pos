@@ -9,7 +9,10 @@ import { environment } from '../../environment';
   providedIn: 'root'
 })
 export class ProductService implements OnDestroy {
-  API_URL = environment.apiUrl;
+  // API_URL = environment.apiUrl;
+  API_URL = ('https://pos-backend-kt9t.vercel.app/');
+  // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
+
   private productsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   products$: Observable<any[]> = this.productsSubject.asObservable();
   private websocketSubscription: Subscription;
