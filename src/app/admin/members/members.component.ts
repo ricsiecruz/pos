@@ -31,7 +31,7 @@ export class MembersComponent {
     });
 
     this.webSocketService.receive().subscribe((message: any) => {
-      if (message.action === 'addProduct') {
+      if (message.action === 'addMember') {
         this.members.push(message.product);
       }
     });
@@ -42,11 +42,19 @@ export class MembersComponent {
   }
 
   addProduct() {
-    if (this.newProduct.name.trim() !== '') {
+    console.log('ccc', this.newProduct)
+    // if (this.newProduct.name.trim() !== '') {
+      console.log('ddd')
+      this.newProduct.date_joined = new Date().toISOString();
+      this.newProduct.coffee = 0;
+      this.newProduct.total_load = 0;
+      this.newProduct.total_spent = 0;
+      this.newProduct.last_spent = new Date().toISOString();
+      console.log('fff', this.newProduct)
       this.membersService.addProduct(this.newProduct)
       this.modalService.closeModal();
-      this.newProduct = { product: '', price: '' };
-    }
+      this.newProduct = { name: '' };
+    // }
   }
 
   cancelForm() {

@@ -20,8 +20,8 @@ export class MembersService implements OnDestroy {
     this.websocketSubscription = merge(
       this.webSocketService.receive().pipe(
         map((message: any) => {
-          if (message.action === 'addProduct') {
-            return message.product;
+          if (message.action === 'addMember') {
+            return message.member;
           } else if (message.action === 'initialize') {
             return message.members;
           } else {
@@ -45,23 +45,24 @@ export class MembersService implements OnDestroy {
     }
   }
 
-  private addOrUpdateProduct(product: any): void {
-    const existingProductIndex = this.productsSubject.value.findIndex(p => p.id === product.id);
+  private addOrUpdateProduct(member: any): void {
+    const existingProductIndex = this.productsSubject.value.findIndex(p => p.id === member.id);
     if (existingProductIndex === -1) {
-      this.productsSubject.next([...this.productsSubject.value, product]);
+      this.productsSubject.next([...this.productsSubject.value, member]);
     } else {
       const updatedProducts = [...this.productsSubject.value];
-      updatedProducts[existingProductIndex] = product;
+      updatedProducts[existingProductIndex] = member;
       this.productsSubject.next(updatedProducts);
     }
   }
 
-  private updateProducts(products: any[]): void {
-    this.productsSubject.next(products);
+  private updateProducts(members: any[]): void {
+    this.productsSubject.next(members);
   }
 
-  addProduct(product: any) {
-    this.webSocketService.send({ action: 'addMember', product });
+  addProduct(member: any) {
+    console.log('eee', member)
+    this.webSocketService.send({ action: 'addMember', member });
   }
 
   editProduct(productId: string, updatedProduct: any) {
