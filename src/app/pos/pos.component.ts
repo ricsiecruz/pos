@@ -15,7 +15,10 @@ export class PosComponent {
   members: any[] = [];
   overallTotal: number = 0;
   totalQuantity: number = 0;
-  selectedMemberId: any;
+  selectedMemberId: number = 0;
+  filteredMembers: any[] = [];
+  selectedMember: any = null;
+  searchTerm: string = '';
 
   constructor(
     public productService: ProductService,
@@ -33,8 +36,21 @@ export class PosComponent {
     this.membersService.members$.subscribe((members: any[]) => {
       if (members && members.length > 0) {
         this.members = members;
+        this.filteredMembers = [...members];
       }
     });
+  }
+
+  customSearchFn(term: string, item: any) {
+    item.name = item.name.replace(',','');
+    term = term.toLocaleLowerCase();
+    return item.name.toLocaleLowerCase().indexOf(term) > -1;
+  }
+
+  filterMembers(): void {
+    this.filteredMembers = this.members.filter(member =>
+      member.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
   }
 
   onMemberChange(event: Event): void {

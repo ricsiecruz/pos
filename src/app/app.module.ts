@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,6 +39,7 @@ import { MembersComponent } from './admin/members/members.component';
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
+    NgSelectModule,
     HttpClientModule,
     AppRoutingModule
   ],
