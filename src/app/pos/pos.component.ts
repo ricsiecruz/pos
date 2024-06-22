@@ -19,6 +19,7 @@ export class PosComponent {
   filteredMembers: any[] = [];
   selectedMember: any = null;
   searchTerm: string = '';
+  selectedMemberName: string = '';
 
   constructor(
     public productService: ProductService,
@@ -53,10 +54,21 @@ export class PosComponent {
     );
   }
 
-  onMemberChange(event: Event): void {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    this.selectedMemberId = Number(selectedValue);
-    console.log('Selected Member ID:', this.selectedMemberId);
+  // onMemberChange(event: Event): void {
+  //   const selectedValue = (event.target as HTMLSelectElement).value;
+  //   this.selectedMemberId = Number(selectedValue);
+  //   console.log('Selected Member ID:', this.selectedMemberId);
+  // }
+
+  onMemberChange(): void {
+    // Find the selected member by ID
+    const selectedMember = this.members.find(member => member.id === this.selectedMemberId);
+
+    // Update selectedMemberName
+    this.selectedMemberName = selectedMember ? selectedMember.name : 'Walk-in Customer';
+
+    // Log the selected member's name
+    console.log('Selected Member:', this.selectedMemberName);
   }
 
   addToRightDiv(product: any) {
@@ -124,7 +136,7 @@ export class PosComponent {
       this.selectedMemberId = 0;
     }
 
-    console.log('Order Summary:', orderSummary, this.selectedMemberId);
+    console.log('Order Summary:', orderSummary, this.selectedMemberName);
     // this.addToSales(orderSummary);
     // this.selectedProducts = [];
     // this.calculateOverallTotal();
