@@ -17,8 +17,8 @@
             <div class="table_five">Total Spent</div>
             <div class="table_six">Last Spent</div>
         </div>
-        <!-- <div *ngIf="products.length > 0; else noData">
-            <div class="products_table_list" *ngFor="let data of products">
+        <div *ngIf="members.length > 0; else noData">
+            <div class="products_table_list" *ngFor="let data of members">
                 <div class="table_one">
                     {{ data.name }}
                 </div>
@@ -38,7 +38,7 @@
                     {{ data.last_spent }}
                 </div>
             </div>
-        </div> -->
+        </div>
     </div>
 </div>
 

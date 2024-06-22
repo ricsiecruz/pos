@@ -9,12 +9,11 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class MembersService implements OnDestroy {
-  // API_URL = environment.apiUrl;
-  API_URL = ('https://pos-backend-kt9t.vercel.app/');
-  // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
+  
+  API_URL = environment.apiUrl;
 
   private productsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  products$: Observable<any[]> = this.productsSubject.asObservable();
+  members$: Observable<any[]> = this.productsSubject.asObservable();
   private websocketSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
@@ -24,13 +23,13 @@ export class MembersService implements OnDestroy {
           if (message.action === 'addProduct') {
             return message.product;
           } else if (message.action === 'initialize') {
-            return message.products;
+            return message.members;
           } else {
             return null;
           }
         })
       ),
-      this.http.get<any[]>(this.API_URL + 'products')
+      this.http.get<any[]>(this.API_URL + 'members')
     ).subscribe((data: any | any[]) => {
       if (Array.isArray(data)) {
         this.updateProducts(data);

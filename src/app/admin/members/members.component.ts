@@ -12,6 +12,7 @@ import { MembersService } from '../../services/members.service';
 export class MembersComponent {
 
   @ViewChild('addProductModal') addProductModal?: TemplateRef<any>;
+  members: any[] = [];
   newProduct: any = { name: '' };
 
   constructor(
@@ -19,6 +20,22 @@ export class MembersComponent {
     private membersService: MembersService,
     private webSocketService: WebSocketService,
   ) {}
+
+  ngOnInit() {
+    console.log('bbb')
+    this.membersService.members$.subscribe((members: any[]) => {
+      if (members && members.length > 0) {
+        this.members = members;
+        console.log('members', this.members)
+      }
+    });
+
+    this.webSocketService.receive().subscribe((message: any) => {
+      if (message.action === 'addProduct') {
+        this.members.push(message.product);
+      }
+    });
+  }
 
   addModal() {
     this.modalService.openModal(this.addProductModal);
