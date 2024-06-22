@@ -24,6 +24,7 @@ export class ProductsComponent {
   ) {}
 
   ngOnInit() {
+    console.log('aaa')
     this.productService.products$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products;

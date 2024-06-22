@@ -2,8 +2,8 @@
 
 import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { environment } from '../environments/environment';
-// import { environment } from '../environments/environment.prod';
+// import { environment } from '../environments/environment';
+import { environment } from '../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -24,11 +24,15 @@ export class WebSocketService {
   // }
 
   constructor() {
+    console.log('Connecting to WebSocket at:', environment.wsUrl);
     this.socket$ = webSocket(environment.wsUrl);
 
     this.socket$.subscribe(
       () => console.log('WebSocket connection established'),
-      (error) => console.error('WebSocket connection error:', error),
+      (error) => {
+        console.error('WebSocket connection error:', error);
+        // Retry logic or user notification can be added here
+      },
       () => console.log('WebSocket connection closed')
     );
   }

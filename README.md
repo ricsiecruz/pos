@@ -1,8 +1,9 @@
 TO RUN IN LOCAL:
 ng serve
+ng serve --prod
 
 TO DEPLOY IN SERVER
-ng build
+ng build --prod
 
 this will generate docs folder. make sure where you built is same in GitHub Pages
 

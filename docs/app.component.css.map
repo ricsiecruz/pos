@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/app.component.scss"],
-  "sourcesContent": ["@font-face {\n    font-family: 'NunitoSans';\n    src: url('../assets/fonts/NunitoSans.ttf') format('truetype'),\n}\n\n.app {\n    font-family: 'NunitoSans';\n    display: flex;\n    height: 100vh;\n    &_content {\n        background-color: #FAFBFE;\n        width: 100%;\n        padding: 24px;\n    }\n}"],
-  "mappings": ";AAAA;AACI,eAAA;AACA,OAAA,8BAAA,OAAA;;AAGJ,CAAA;AACI,eAAA;AACA,WAAA;AACA,UAAA;;AACA,CAAA;AACI,oBAAA;AACA,SAAA;AACA,WAAA;;",
-  "names": []
-}
