@@ -34,9 +34,11 @@ export class OrdersComponent {
   ) {}
 
   ngOnInit() {
+    console.log('this is sales page')
     this.salesService.sales$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products;
+        console.log('sales', this.products)
         this.totalSum = this.calculateTotalSum(products);
         this.totalCups = this.calculateTotalCups(products);
         console.log('sum', this.totalSum)

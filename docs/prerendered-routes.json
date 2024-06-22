@@ -4,6 +4,7 @@
     "/admin/dashboard",
     "/admin/expenses",
     "/admin/inventory",
+    "/admin/members",
     "/admin/products",
     "/admin/sales",
     "/pos"

@@ -1,0 +1,67 @@
+<div class="products">
+    <div class="products_title">
+        Members
+        <div class="products_title_add" (click)="addModal()">
+            Add member
+        </div>
+    </div>
+    <div class="products_table">
+        <div class="products_table_filter">
+            
+        </div>
+        <div class="products_table_header">
+            <div class="table_one">Name</div>
+            <div class="table_two">Date Joined</div>
+            <div class="table_three">Coffee</div>
+            <div class="table_four">Total Load</div>
+            <div class="table_five">Total Spent</div>
+            <div class="table_six">Last Spent</div>
+        </div>
+        <!-- <div *ngIf="products.length > 0; else noData">
+            <div class="products_table_list" *ngFor="let data of products">
+                <div class="table_one">
+                    {{ data.name }}
+                </div>
+                <div class="table_two">
+                    {{ data.date_joined }}
+                </div>
+                <div class="table_three">
+                    {{ data.coffee }}
+                </div>
+                <div class="table_four">
+                    {{ data.total_load }}
+                </div>
+                <div class="table_five">
+                    {{ data.total_spent }}
+                </div>
+                <div class="table_six">
+                    {{ data.last_spent }}
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+<ng-template #addProductModal let-d="dismiss">
+    <div class="modal-header">
+        Add member
+    </div>
+    <div>
+        <div class="modal-body">
+            <form (submit)="addProduct()">
+                <label class="modal-body-label" for="productName">Name:</label>
+                <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newProduct.name" required>
+                <div class="modal-btns">
+                    <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
+                    <button class="btn modal-btns-add" type="submit">
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #noData>
+    <app-no-data></app-no-data>
+</ng-template>

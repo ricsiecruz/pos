@@ -10,8 +10,8 @@ export class WebSocketService {
   private socket$: WebSocketSubject<any>;
 
   constructor() {
-    this.socket$ = webSocket('ws://localhost:8080');
-    // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
+    // this.socket$ = webSocket('ws://localhost:8080');
+    this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
     // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/');
 
     this.socket$.subscribe(

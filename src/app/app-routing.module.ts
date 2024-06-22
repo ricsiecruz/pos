@@ -7,6 +7,7 @@ import { ExpensesComponent } from './admin/expenses/expenses.component';
 import { PosComponent } from './pos/pos.component';
 import { AdminComponent } from './admin/admin/admin.component';
 import { OrdersComponent } from './admin/orders/orders.component';
+import { MembersComponent } from './admin/members/members.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: 'expenses',
         component: ExpensesComponent
+      },
+      {
+        path: 'members',
+        component: MembersComponent
       }
     ]
   }

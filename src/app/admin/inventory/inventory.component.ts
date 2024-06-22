@@ -31,9 +31,11 @@ export class InventoryComponent {
   ) {}
 
   ngOnInit() {
+    console.log('this is inventory page')
     this.inventoryService.inventory$.subscribe((inventory: any[]) => {
       if (inventory && inventory.length > 0) {
         this.inventory = inventory;
+        console.log('inventory', this.inventory)
       }
     });
 
