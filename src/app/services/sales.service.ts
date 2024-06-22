@@ -9,7 +9,8 @@ import { environment } from '../../environment';
   providedIn: 'root'
 })
 export class SalesService implements OnDestroy {
-  API_URL = environment.apiUrl;
+  // API_URL = environment.apiUrl;
+  API_URL = ('https://pos-backend-kt9t.vercel.app/');
   private salesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   sales$: Observable<any[]> = this.salesSubject.asObservable();
   private websocketSubscription: Subscription;
@@ -26,7 +27,8 @@ export class SalesService implements OnDestroy {
             return null;
           }
         })
-      )
+      ),
+      this.http.get<any[]>(this.API_URL + 'sales')
     ).subscribe((data: any | any[]) => {
       console.log('sales', data);
       if (Array.isArray(data)) {
