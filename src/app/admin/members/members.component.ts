@@ -22,11 +22,9 @@ export class MembersComponent {
   ) {}
 
   ngOnInit() {
-    console.log('bbb')
     this.membersService.members$.subscribe((members: any[]) => {
       if (members && members.length > 0) {
         this.members = members;
-        console.log('members', this.members)
       }
     });
 
@@ -42,19 +40,14 @@ export class MembersComponent {
   }
 
   addProduct() {
-    console.log('ccc', this.newProduct)
-    // if (this.newProduct.name.trim() !== '') {
-      console.log('ddd')
-      this.newProduct.date_joined = new Date().toISOString();
-      this.newProduct.coffee = 0;
-      this.newProduct.total_load = 0;
-      this.newProduct.total_spent = 0;
-      this.newProduct.last_spent = new Date().toISOString();
-      console.log('fff', this.newProduct)
-      this.membersService.addProduct(this.newProduct)
-      this.modalService.closeModal();
-      this.newProduct = { name: '' };
-    // }
+    this.newProduct.date_joined = new Date().toISOString();
+    this.newProduct.coffee = 0;
+    this.newProduct.total_load = 0;
+    this.newProduct.total_spent = 0;
+    this.newProduct.last_spent = new Date().toISOString();
+    this.membersService.addProduct(this.newProduct)
+    this.modalService.closeModal();
+    this.newProduct = { name: '' };
   }
 
   cancelForm() {

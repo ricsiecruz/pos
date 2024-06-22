@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { SalesService } from '../services/sales.service';
+import { MembersService } from '../services/members.service';
 
 @Component({
   selector: 'app-pos',
@@ -11,33 +12,44 @@ export class PosComponent {
 
   products: any[] = [];
   selectedProducts: any[] = [];
+  members: any[] = [];
   overallTotal: number = 0;
   totalQuantity: number = 0;
+  selectedMemberId: any;
 
   constructor(
     public productService: ProductService,
-    public salesService: SalesService
+    public salesService: SalesService,
+    private membersService: MembersService
   ) { }
 
   ngOnInit() {
-    // Subscribe to the products$ observable to get the list of products
     this.productService.products$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products.map(product => ({ ...product, counter: 0 }));
       }
     });
+
+    this.membersService.members$.subscribe((members: any[]) => {
+      if (members && members.length > 0) {
+        this.members = members;
+      }
+    });
+  }
+
+  onMemberChange(event: Event): void {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    this.selectedMemberId = Number(selectedValue);
+    console.log('Selected Member ID:', this.selectedMemberId);
   }
 
   addToRightDiv(product: any) {
-    // Check if the product already exists in selectedProducts
     const existingProductIndex = this.selectedProducts.findIndex(selectedProduct => selectedProduct.product === product.product);
 
     if (existingProductIndex === -1) {
-        // If the product doesn't exist, add it to selectedProducts
         product.counter++;
         this.selectedProducts.push(product);
     } else {
-        // If the product already exists, increment its counter
         this.selectedProducts[existingProductIndex].counter++;
     }
     this.calculateOverallTotal();
@@ -76,28 +88,30 @@ export class PosComponent {
   clearSelectedProducts() {
     const transactionId = this.generateTransactionId();
     const orders = this.selectedProducts.map(product => {
-        return {
-            product: product.product,
-            price: product.price,
-            quantity: product.counter,
-            total: product.price * product.counter
-        };
+      return {
+        product: product.product,
+        price: product.price,
+        quantity: product.counter,
+        total: product.price * product.counter
+      };
     });
 
-    console.log('data', orders, this.totalQuantity, this.overallTotal, transactionId, new Date().toISOString())
-
     const orderSummary = {
-        orders: orders,
-        qty: this.totalQuantity,
-        total: this.overallTotal,
-        transactionId: transactionId,
-        dateTime: new Date().toISOString()
+      orders: orders,
+      qty: this.totalQuantity,
+      total: this.overallTotal,
+      transactionId: transactionId,
+      dateTime: new Date().toISOString()
     };
 
-    console.log('Order Summary:', orderSummary);
-    this.addToSales(orderSummary);
-    this.selectedProducts = [];
-    this.calculateOverallTotal();
+    if(this.selectedMemberId == undefined) {
+      this.selectedMemberId = 0;
+    }
+
+    console.log('Order Summary:', orderSummary, this.selectedMemberId);
+    // this.addToSales(orderSummary);
+    // this.selectedProducts = [];
+    // this.calculateOverallTotal();
   }
 
   addToSales(transactionSales: any) {
@@ -108,7 +122,6 @@ export class PosComponent {
   generateTransactionId(): string {
     const randomNumber = Math.floor(Math.random() * 90000) + 10000;
     const timestamp = new Date().getTime();
-    // Concatenate the timestamp and random number to create the transaction ID
     const transactionId = `TRX-${timestamp}-${randomNumber}`;
 
     return transactionId;

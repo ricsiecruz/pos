@@ -15,6 +15,10 @@
     </div>
     <div class="pos_selected">
         <div class="pos_selected_orders">Orders</div>
+        <select (change)="onMemberChange($event)">
+            <option value="0" selected>Walk-in Customer</option>
+            <option *ngFor="let data of members" [value]="data.id">{{ data.name }}</option>
+        </select>
         <div *ngFor="let selectedProduct of selectedProducts; let i = index" class="pos_selected_product">
             <div class="pos_selected_product_info">
                 <span class="pos_selected_product_info_product">{{ selectedProduct.product }}</span>
