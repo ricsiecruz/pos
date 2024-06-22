@@ -9,8 +9,8 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ProductService implements OnDestroy {
-  // API_URL = environment.apiUrl;
-  API_URL = ('https://pos-backend-kt9t.vercel.app/');
+  API_URL = environment.apiUrl;
+  // API_URL = ('https://pos-backend-kt9t.vercel.app/');
   // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
 
   private productsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
