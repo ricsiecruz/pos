@@ -11,7 +11,8 @@
             <div class="table_two">Qty</div>
             <div class="table_three">Total</div>
             <div class="table_four">Date</div>
-            <div class="table_five"></div>
+            <div class="table_five">Customer</div>
+            <div class="table_six"></div>
         </div>
         <div class="inventory_table_list" *ngFor="let data of products">
             <div class="table_one">
@@ -27,6 +28,9 @@
                 {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}
             </div>
             <div class="table_five">
+                {{ data.customer }}
+            </div>
+            <div class="table_six">
                 <div (click)="openModal(data)">
                     view
                 </div>

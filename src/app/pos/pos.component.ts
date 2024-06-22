@@ -124,22 +124,26 @@ export class PosComponent {
       };
     });
 
+    if(this.selectedMemberId == 0) {
+      // this.selectedMemberId = 0;
+      this.selectedMemberName = 'Walk-in Customer'
+    }
+
+    console.log('customer', this.selectedMemberId, this.selectedMemberName)
+
     const orderSummary = {
       orders: orders,
       qty: this.totalQuantity,
       total: this.overallTotal,
       transactionId: transactionId,
-      dateTime: new Date().toISOString()
+      dateTime: new Date().toISOString(),
+      customer: this.selectedMemberName
     };
 
-    if(this.selectedMemberId == undefined) {
-      this.selectedMemberId = 0;
-    }
-
-    console.log('Order Summary:', orderSummary, this.selectedMemberName);
-    // this.addToSales(orderSummary);
-    // this.selectedProducts = [];
-    // this.calculateOverallTotal();
+    console.log('Order Summary:', orderSummary, this.selectedMemberName, this.selectedMemberId);
+    this.addToSales(orderSummary);
+    this.selectedProducts = [];
+    this.calculateOverallTotal();
   }
 
   addToSales(transactionSales: any) {
