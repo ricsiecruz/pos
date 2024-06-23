@@ -14,6 +14,8 @@ interface OrderDetails {
   qty: number;
   total: string;
   transactionid: string;
+  computer: string;
+  subtotal: number;
 }
 
 @Component({
@@ -27,6 +29,7 @@ export class OrdersComponent {
   details: OrderDetails | null = null;
   totalSum: number = 0;
   totalCups: number = 0;
+  subtotal: number = 0; // Variable to hold subtotal
 
   constructor(
     private salesService: SalesService,
@@ -38,13 +41,19 @@ export class OrdersComponent {
     this.salesService.sales$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products;
-        console.log('sales', this.products)
+        console.log('aaa', this.products)
         this.totalSum = this.calculateTotalSum(products);
         this.totalCups = this.calculateTotalCups(products);
-        console.log('sum', this.totalSum)
-        console.log('cups', this.totalCups)
+        this.subtotal = this.calculateSubtotal(products); // Calculate subtotal
+        console.log('subtotal', this.subtotal)
       }
     });
+  }
+
+  private calculateSubtotal(products: OrderDetails[]): number {
+    return products.reduce((acc, curr) => {
+      return acc + curr.orders.reduce((orderAcc, orderCurr) => orderAcc + orderCurr.total, 0);
+    }, 0);
   }
 
   openModal(product: any) {

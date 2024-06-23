@@ -7,32 +7,32 @@
             
         </div>
         <div class="inventory_table_header">
+            <div class="table_five">Customer</div>
             <div class="table_one">Invoice #</div>
             <div class="table_two">Qty</div>
-            <div class="table_three">Total</div>
             <div class="table_four">Date</div>
-            <div class="table_five">Customer</div>
             <div class="table_six">Computer</div>
+            <div class="table_three">Total</div>
             <div class="table_seven"></div>
         </div>
         <div class="inventory_table_list" *ngFor="let data of products">
+            <div class="table_five">
+                {{ data.customer }}
+            </div>
             <div class="table_one">
                 {{ data.transactionid }}
             </div>
             <div class="table_two">
                 {{ data.qty }}
             </div>
-            <div class="table_three">
-                PHP {{ data.total }}
-            </div>
             <div class="table_four">
                 {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}
             </div>
-            <div class="table_five">
-                {{ data.customer }}
-            </div>
             <div class="table_six">
-                {{ data.computer }}
+                PHP {{ data.computer }}
+            </div>
+            <div class="table_three">
+                PHP {{ data.total }}
             </div>
             <div class="table_seven">
                 <div (click)="openModal(data)">
@@ -67,22 +67,22 @@
                 </div>
                 <div class="invoice_body_table">
                     <div class="invoice_body_table_header">
-                        <div class="table_one">Item</div>
-                        <div class="table_two">Price</div>
-                        <div class="table_three">Qty</div>
-                        <div class="table_four">Total</div>
+                        <div class="table1_one">Item</div>
+                        <div class="table1_two">Price</div>
+                        <div class="table1_three">Qty</div>
+                        <div class="table1_four">Total</div>
                     </div>
                     <div *ngFor="let order of details?.orders" class="invoice_body_table_data">
-                        <div class="table_one">
+                        <div class="table1_one">
                             {{ order.product }}
                         </div>
-                        <div class="table_two">
+                        <div class="table1_two">
                             PHP {{ order.price }}
                         </div>
-                        <div class="table_three">
+                        <div class="table1_three">
                             {{ order.quantity }}
                         </div>
-                        <div class="table_four">
+                        <div class="table1_four">
                             PHP {{ order.total }}
                         </div>
                     </div>
@@ -90,6 +90,19 @@
                 <div class="invoice_body_header">
                     <div>Items:</div>
                     <div>{{ details?.qty }}</div>
+                </div>
+                <div class="invoice_body_header">
+                    <div>
+                        Subtotal: 
+                    </div>
+                    <div>
+                        PHP {{ details?.subtotal }}
+                    </div>
+                    
+                </div>
+                <div class="invoice_body_header">
+                    <div>Computer:</div>
+                    <div>PHP {{ details?.computer }}</div>
                 </div>
                 <div class="invoice_body_total">
                     <div>Total Payable:</div>

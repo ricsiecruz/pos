@@ -253,6 +253,10 @@ input {
                 padding: 5px;
             }
         }
+        &_computer {
+            display: flex;
+            justify-content: space-between;
+        }
         &_total {
             font-weight: 500;
             font-size: 15px;
@@ -270,17 +274,18 @@ input {
     }
 }
 
-.table {
+.table1 {
     &_one {
-        width: 200px;
+        width: 128px;
     }
     &_two {
-        width: 90px;
+        width: 108px;
     }
     &_three {
-        width: 100px;
+        width: 58px;
     }
     &_four {
-        width: 190px;
+        width: 58px;
+        text-align: right;
     }
 }

@@ -20,6 +20,7 @@ export class PosComponent {
   filteredMembers: any[] = [];
   searchTerm: string = '';
   pc: any;
+  subtotal: number = 0;
 
   constructor(
     public productService: ProductService,
@@ -84,14 +85,14 @@ export class PosComponent {
     } else {
         this.selectedProducts[existingProductIndex].counter++;
     }
-    this.calculateOverallTotal();
+    this.subtotal = this.calculateSubtotal(); // Update subtotal
+    this.calculateOverallTotal(); // Recalculate overall total
   }
 
   calculateOverallTotal() {
     this.pc = this.ensureNumber(this.pc);
-    this.overallTotal = this.selectedProducts.reduce((total, selectedProduct) => {
-      return total + (selectedProduct.price * selectedProduct.counter);
-    }, 0) + this.pc;
+    this.subtotal = this.calculateSubtotal(); // Calculate subtotal
+    this.overallTotal = this.subtotal + this.pc; // Calculate overall total
     this.totalQuantity = this.selectedProducts.reduce((total, selectedProduct) => {
       return total + selectedProduct.counter;
     }, 0);
@@ -107,19 +108,22 @@ export class PosComponent {
 
   incrementCounter(selectedProduct: any) {
     selectedProduct.counter++;
-    this.calculateOverallTotal();
+    this.subtotal = this.calculateSubtotal(); // Update subtotal
+    this.calculateOverallTotal(); // Recalculate overall total
   }
 
   decrementCounter(selectedProduct: any) {
     if (selectedProduct.counter > 0) {
       selectedProduct.counter--;
-      this.calculateOverallTotal();
+      this.subtotal = this.calculateSubtotal(); // Update subtotal
+      this.calculateOverallTotal(); // Recalculate overall total
     }
   }
 
   deleteProduct(index: number) {
     this.selectedProducts.splice(index, 1);
-    this.calculateOverallTotal();
+    this.subtotal = this.calculateSubtotal(); // Update subtotal
+    this.calculateOverallTotal(); // Recalculate overall total
     this.pc = this.selectedProducts.length === 0 ? undefined : this.pc; // Set pc to undefined if no selected products
   }  
 
@@ -134,14 +138,16 @@ export class PosComponent {
       };
     });
 
-    if(this.selectedMemberId == 0) {
-      this.selectedMemberName = 'Walk-in Customer'
+    if (this.selectedMemberId == 0) {
+      this.selectedMemberName = 'Walk-in Customer';
     }
 
+    this.subtotal = this.calculateSubtotal(); // Calculate subtotal
     const orderSummary = {
       orders: orders,
       qty: this.totalQuantity,
       total: this.overallTotal,
+      subtotal: this.subtotal, // Include subtotal here
       transactionId: transactionId,
       dateTime: new Date().toISOString(),
       customer: this.selectedMemberName,
@@ -152,7 +158,7 @@ export class PosComponent {
     this.addToSales(orderSummary);
     this.selectedMemberId = 0;
     this.selectedProducts = [];
-    this.pc = ''
+    this.pc = '';
     this.calculateOverallTotal();
     this.updateButtonState();
   }
@@ -160,7 +166,13 @@ export class PosComponent {
   addToSales(transactionSales: any) {
     console.log('sale', transactionSales)
     this.salesService.addSales(transactionSales);
-}
+  }
+
+  calculateSubtotal(): number {
+    return this.selectedProducts.reduce((subtotal, selectedProduct) => {
+      return subtotal + (selectedProduct.price * selectedProduct.counter);
+    }, 0);
+  }
 
   generateTransactionId(): string {
     const randomNumber = Math.floor(Math.random() * 90000) + 10000;

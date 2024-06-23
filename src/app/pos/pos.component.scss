@@ -99,13 +99,20 @@
                 }
             }
         }
+        &_subtotal {
+            padding: 0 10px;
+            justify-content: space-between;
+            display: flex;
+        }
         &_pc {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 10px;
             input {
-                width: 105px;
+                width: 100px;
+                text-align: right;
+                margin-right: 30px;
             }
         }
         &_total {
