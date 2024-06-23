@@ -60,6 +60,27 @@
                 <div class="pos_selected_total_amount_amount">PHP {{ overallTotal }}</div>
             </div>
         </div>
+
+        <div class="pos_selected_credit">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="credit" 
+              (click)="check()" 
+              [disabled]="selectedProducts.length === 0 && (pc <= 0 || pc == '' || pc == undefined)">
+            <label>Credit</label>
+        </div>
+          
+        <div *ngIf="credit">
+            <div>
+              <div>Paid:</div>
+              <input class="form-control" type="number" [(ngModel)]="paidAmount" (input)="updatePaidAmount()">
+            </div>
+          
+            <div *ngIf="isCreditDue()">
+              <div>Credit: PHP {{ calculateCredit() }}</div>
+            </div>
+        </div>
+        
         <div class="pos_selected_next" [class.disable]="selectedProducts.length === 0 && (pc <= 0 || pc == '' || pc == undefined)" (click)="clearSelectedProducts()">Next Order</div>
     </div>
 </div>

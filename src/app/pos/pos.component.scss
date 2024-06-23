@@ -145,6 +145,11 @@
                 }
             }
         }
+        &_credit {
+            display: flex;
+            column-gap: 5px;
+            padding: 10px 0;
+        }
         &_next {
             background-color: #28C76F;
             border: 1px solid #28C76F;

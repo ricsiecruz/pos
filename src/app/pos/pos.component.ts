@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { SalesService } from '../services/sales.service';
 import { MembersService } from '../services/members.service';
@@ -21,6 +21,8 @@ export class PosComponent {
   searchTerm: string = '';
   pc: any;
   subtotal: number = 0;
+  paidAmount: number | null = null;
+  credit: boolean = false;
 
   constructor(
     public productService: ProductService,
@@ -29,6 +31,7 @@ export class PosComponent {
   ) { }
 
   ngOnInit() {
+    console.log('pos ')
     this.productService.products$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products.map(product => ({ ...product, counter: 0 }));
@@ -43,8 +46,13 @@ export class PosComponent {
     });
   }
 
+  check() {
+    this.credit = !this.credit;
+  }
+
   updateButtonState(): void {
     this.pc = Number(this.pc);
+    console.log('pc', this.pc)
     if (this.pc > 0) {
       const nextOrderButton = document.querySelector('.pos_selected_next');
       if (nextOrderButton) {
@@ -80,19 +88,19 @@ export class PosComponent {
     const existingProductIndex = this.selectedProducts.findIndex(selectedProduct => selectedProduct.product === product.product);
 
     if (existingProductIndex === -1) {
-        const newProduct = { ...product, counter: 1 }; // Create a copy of the product with a counter set to 1
+        const newProduct = { ...product, counter: 1 };
         this.selectedProducts.push(newProduct);
     } else {
         this.selectedProducts[existingProductIndex].counter++;
     }
-    this.subtotal = this.calculateSubtotal(); // Update subtotal
-    this.calculateOverallTotal(); // Recalculate overall total
+    this.subtotal = this.calculateSubtotal();
+    this.calculateOverallTotal();
   }
 
   calculateOverallTotal() {
     this.pc = this.ensureNumber(this.pc);
-    this.subtotal = this.calculateSubtotal(); // Calculate subtotal
-    this.overallTotal = this.subtotal + this.pc; // Calculate overall total
+    this.subtotal = this.calculateSubtotal();
+    this.overallTotal = this.subtotal + this.pc;
     this.totalQuantity = this.selectedProducts.reduce((total, selectedProduct) => {
       return total + selectedProduct.counter;
     }, 0);
@@ -108,23 +116,23 @@ export class PosComponent {
 
   incrementCounter(selectedProduct: any) {
     selectedProduct.counter++;
-    this.subtotal = this.calculateSubtotal(); // Update subtotal
-    this.calculateOverallTotal(); // Recalculate overall total
+    this.subtotal = this.calculateSubtotal();
+    this.calculateOverallTotal();
   }
 
   decrementCounter(selectedProduct: any) {
     if (selectedProduct.counter > 0) {
       selectedProduct.counter--;
-      this.subtotal = this.calculateSubtotal(); // Update subtotal
-      this.calculateOverallTotal(); // Recalculate overall total
+      this.subtotal = this.calculateSubtotal();
+      this.calculateOverallTotal();
     }
   }
 
   deleteProduct(index: number) {
     this.selectedProducts.splice(index, 1);
-    this.subtotal = this.calculateSubtotal(); // Update subtotal
-    this.calculateOverallTotal(); // Recalculate overall total
-    this.pc = this.selectedProducts.length === 0 ? undefined : this.pc; // Set pc to undefined if no selected products
+    this.subtotal = this.calculateSubtotal();
+    this.calculateOverallTotal();
+    this.pc = this.selectedProducts.length === 0 ? undefined : this.pc;
   }  
 
   clearSelectedProducts() {
@@ -142,12 +150,12 @@ export class PosComponent {
       this.selectedMemberName = 'Walk-in Customer';
     }
 
-    this.subtotal = this.calculateSubtotal(); // Calculate subtotal
+    this.subtotal = this.calculateSubtotal();
     const orderSummary = {
       orders: orders,
       qty: this.totalQuantity,
       total: this.overallTotal,
-      subtotal: this.subtotal, // Include subtotal here
+      subtotal: this.subtotal,
       transactionId: transactionId,
       dateTime: new Date().toISOString(),
       customer: this.selectedMemberName,
@@ -155,12 +163,15 @@ export class PosComponent {
     };
 
     console.log('Order Summary:', orderSummary, this.pc);
-    this.addToSales(orderSummary);
+    // this.addToSales(orderSummary);
     this.selectedMemberId = 0;
     this.selectedProducts = [];
     this.pc = '';
     this.calculateOverallTotal();
     this.updateButtonState();
+    this.credit = false;
+    this.paidAmount = 0;
+    this.overallTotal = 0;
   }
 
   addToSales(transactionSales: any) {
@@ -172,6 +183,23 @@ export class PosComponent {
     return this.selectedProducts.reduce((subtotal, selectedProduct) => {
       return subtotal + (selectedProduct.price * selectedProduct.counter);
     }, 0);
+  }
+  updatePaidAmount() {
+    this.paidAmount = Number(this.paidAmount);
+
+    console.log('paid amount', this.paidAmount)
+  }
+
+  calculateCredit(): number {
+    if (this.paidAmount !== null) {
+      return this.overallTotal - this.paidAmount;
+    } else {
+      return this.overallTotal;
+    }
+  }
+
+  isCreditDue(): boolean {
+    return this.calculateCredit() > 0;
   }
 
   generateTransactionId(): string {
