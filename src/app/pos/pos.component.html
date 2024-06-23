@@ -51,7 +51,7 @@
                 <div class="pos_selected_total_amount_amount">PHP {{ overallTotal }}</div>
             </div>
         </div>
-        <div class="pos_selected_next" [class.disable]="selectedProducts.length === 0 || pc <= 0" (click)="clearSelectedProducts()">Next Order</div>
-
+        <div class="pos_selected_next" [class.disable]="selectedProducts.length === 0 && (pc <= 0 || pc == '')" (click)="clearSelectedProducts()">Next Order</div>
+        <!-- <div class="pos_selected_next" [class.disable]="selectedProducts.length === 0 && pc == ''" (click)="clearSelectedProducts()">Next Order</div> -->
     </div>
 </div>

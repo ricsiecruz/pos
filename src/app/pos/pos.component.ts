@@ -85,10 +85,11 @@ export class PosComponent {
         this.selectedProducts[existingProductIndex].counter++;
     }
     this.calculateOverallTotal();
+    console.log('this.pc', this.pc)
   }
 
   calculateOverallTotal() {
-    this.pc = Number(this.pc); // Ensure pc is treated as a number
+    this.pc = this.ensureNumber(this.pc); // Ensure pc is treated as a number
     this.overallTotal = this.selectedProducts.reduce((total, selectedProduct) => {
       return total + (selectedProduct.price * selectedProduct.counter);
     }, 0) + this.pc; // Add the value of pc to overallTotal
@@ -99,6 +100,10 @@ export class PosComponent {
 
   updateOverallTotal() {
     this.calculateOverallTotal();
+  }
+
+  ensureNumber(value: any): any {
+    return isNaN(Number(value)) ? '' : Number(value);
   }
 
   incrementCounter(selectedProduct: any) {
