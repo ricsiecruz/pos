@@ -42,6 +42,7 @@ export class InventoryComponent {
     this.webSocketService.receive().subscribe((message: any) => {
       if (message.action === 'addProduct') {
         this.inventory.push(message.product);
+        console.log('...', message.product)
       }
     });
   }
@@ -68,7 +69,6 @@ export class InventoryComponent {
     this.modalService.openModal(this.addStockModal);
   }
   
-
   saveEditedProduct() {
     console.log('a', this.editingProduct, this.editingProduct.stocks)
     if (this.editingProduct && this.editingProduct.stocks !== undefined) {
@@ -86,7 +86,6 @@ export class InventoryComponent {
     }
     this.clearForm();
   }
-  
 
   cancelForm() {
     this.clearForm();

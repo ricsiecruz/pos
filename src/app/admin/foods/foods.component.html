@@ -1,9 +1,39 @@
-<p>foods works!</p>
-<div class="products_title_add" (click)="addModal()">
-    Add drink
-</div>
-<div *ngFor="let data of products">
-    {{ data.food }} - {{ data.stocks }}
+<div class="products">
+    <div class="products_title">
+        Foods
+        <div class="products_title_add" (click)="addModal()">
+            Add food
+        </div>
+    </div>
+    <div class="products_table">
+        <div class="products_table_filter">
+            
+        </div>
+        <div class="products_table_header">
+            <div class="table_one">Food</div>
+            <div class="table_two">Stocks</div>
+            <div class="table_five"></div>
+            <div class="table_three">Price</div>
+        </div>
+        <div *ngIf="products.length > 0; else noData">
+            <div class="products_table_list" *ngFor="let data of products">
+                <div class="table_one">
+                    {{ data.food }}
+                </div>
+                <div class="table_two">
+                    {{ data.stocks }}
+                </div>
+                <div class="table_five">
+                    <div class="products_table_list_add" (click)="editProduct(data)">
+                        Add stocks
+                    </div>
+                </div>
+                <div class="table_three">
+                    PHP {{ data.price }}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <ng-template #addProductModal let-d="dismiss">
@@ -28,4 +58,30 @@
             </form>
         </div>
     </div>
+</ng-template>
+
+<ng-template #addStockModal let-d="dismiss">
+    <div class="modal-header">
+        Add stocks to<span>{{ editingProduct?.food }}</span>
+    </div>
+    <div class="modal-body">
+        <form (submit)="saveEditedProduct()">
+            <div class="modal-body-label">
+                <label>Current stock:</label>
+                <div>{{ editingProduct?.stocks }}</div>
+                <label for="editProductPrice">Add stock:</label>
+            </div>
+            <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="qty" required>
+            <div class="modal-btns">
+                <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
+                <button class="btn modal-btns-add" type="submit">
+                    Add
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #noData>
+    <app-no-data></app-no-data>
 </ng-template>
