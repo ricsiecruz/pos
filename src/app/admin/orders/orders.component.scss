@@ -72,22 +72,22 @@
 
 .table {
     &_one {
-        width: 200px;
+        width: 240px;
     }
     &_two {
-        width: 100px;
+        width: 70px;
     }
     &_three {
-        width: 100px;
+        width: 120px;
     }
     &_four {
-        width: 100px;
+        width: 230px;
     }
     &_five {
-        width: 80px;
+        width: 150px;
     }
     &_six {
-        width: 80px;
+        width: 110px;
     }
     &_seven {
         width: 80px;
@@ -107,6 +107,9 @@
             border: 1px solid #051a2c !important;
             box-shadow: 0 3px 10px rgba(9, 44, 76, 0.5);
         }
+    }
+    &_eight {
+        width: 110px;
     }
 }
 

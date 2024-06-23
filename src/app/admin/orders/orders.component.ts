@@ -16,6 +16,7 @@ interface OrderDetails {
   transactionid: string;
   computer: string;
   subtotal: number;
+  credit: number;
 }
 
 @Component({

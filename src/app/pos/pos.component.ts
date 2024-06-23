@@ -23,6 +23,7 @@ export class PosComponent {
   subtotal: number = 0;
   paidAmount: number | null = null;
   credit: boolean = false;
+  creditAmount: number = 0;
 
   constructor(
     public productService: ProductService,
@@ -150,6 +151,12 @@ export class PosComponent {
       this.selectedMemberName = 'Walk-in Customer';
     }
 
+    // Check if there is any credit due
+    this.creditAmount = this.calculateCredit();
+    if (this.creditAmount > 0) {
+      console.log('Credit due:', this.creditAmount);
+    }
+
     this.subtotal = this.calculateSubtotal();
     const orderSummary = {
       orders: orders,
@@ -159,11 +166,12 @@ export class PosComponent {
       transactionId: transactionId,
       dateTime: new Date().toISOString(),
       customer: this.selectedMemberName,
-      computer: this.pc
+      computer: this.pc,
+      credit: this.creditAmount
     };
 
-    console.log('Order Summary:', orderSummary, this.pc);
-    // this.addToSales(orderSummary);
+    console.log('Order Summary:', orderSummary, this.creditAmount);
+    this.addToSales(orderSummary);
     this.selectedMemberId = 0;
     this.selectedProducts = [];
     this.pc = '';
@@ -192,6 +200,7 @@ export class PosComponent {
 
   calculateCredit(): number {
     if (this.paidAmount !== null) {
+      console.log('aaa', this.overallTotal - this.paidAmount)
       return this.overallTotal - this.paidAmount;
     } else {
       return this.overallTotal;
