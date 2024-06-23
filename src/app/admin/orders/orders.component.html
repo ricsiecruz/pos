@@ -42,12 +42,16 @@
                     PHP {{ data.credit }}
                 </ng-template>
             </div>
-            <div class="table_nine" (click)="pay(data)">pay</div>
+            <div class="table_nine">
+                <div (click)="pay(data)" *ngIf="data.credit != null" class="secondary-btn">
+                    pay
+                </div>
+            </div>
             <div class="table_three">
                 PHP {{ data.total }}
             </div>
             <div class="table_seven">
-                <div (click)="openModal(data)">
+                <div (click)="openModal(data)" class="primary-btn">
                     view
                 </div>
             </div>

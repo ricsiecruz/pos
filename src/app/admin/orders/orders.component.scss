@@ -91,28 +91,12 @@
     }
     &_seven {
         width: 80px;
-        div {
-            cursor: pointer;
-            border-radius: 3px;
-            text-align: center;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            background-color: #092C4C !important;
-            border: 1px solid #092C4C !important;
-            color: #ffffff;
-            box-shadow: 0 4px 20px rgba(9, 44, 76, 0.15);
-        }
-        div:hover {
-            background-color: #051a2c !important;
-            border: 1px solid #051a2c !important;
-            box-shadow: 0 3px 10px rgba(9, 44, 76, 0.5);
-        }
     }
     &_eight {
         width: 110px;
     }
     &_nine {
-        width: 30px;
+        width: 50px;
     }
 }
 
@@ -294,4 +278,40 @@ input {
         width: 58px;
         text-align: right;
     }
+}
+
+.primary-btn {
+    cursor: pointer;
+    border-radius: 3px;
+    text-align: center;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    background-color: #092C4C !important;
+    border: 1px solid #092C4C !important;
+    color: #ffffff;
+    box-shadow: 0 4px 20px rgba(9, 44, 76, 0.15);
+}
+
+.primary-btn:hover {
+    background-color: #051a2c !important;
+    border: 1px solid #051a2c !important;
+    box-shadow: 0 3px 10px rgba(9, 44, 76, 0.5);
+}
+
+.secondary-btn {
+    cursor: pointer;
+    border-radius: 3px;
+    text-align: center;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    background-color: #FF0000 !important;
+    border: 1px solid #FF0000 !important;
+    color: #ffffff;
+    box-shadow: 0 4px 20px rgba(9, 44, 76, 0.15);
+}
+
+.secondary-btn:hover {
+    background-color: #db0000 !important;
+    border: 1px solid #db0000 !important;
+    box-shadow: 0 3px 10px rgba(255, 0, 0, 0.5);
 }
