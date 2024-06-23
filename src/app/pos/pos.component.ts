@@ -16,10 +16,10 @@ export class PosComponent {
   overallTotal: number = 0;
   totalQuantity: number = 0;
   selectedMemberId: number = 0;
+  selectedMemberName: string = 'Walk-in Customer';
   filteredMembers: any[] = [];
-  selectedMember: any = null;
   searchTerm: string = '';
-  selectedMemberName: string = '';
+  pc: any;
 
   constructor(
     public productService: ProductService,
@@ -42,6 +42,22 @@ export class PosComponent {
     });
   }
 
+  updateButtonState(): void {
+    this.pc = Number(this.pc);
+    if (this.pc > 0) {
+      const nextOrderButton = document.querySelector('.pos_selected_next');
+      if (nextOrderButton) {
+        nextOrderButton.classList.remove('disable');
+      }
+    } else {
+      const nextOrderButton = document.querySelector('.pos_selected_next');
+      if (nextOrderButton) {
+        nextOrderButton.classList.add('disable');
+      }
+    }
+    this.calculateOverallTotal();
+  }
+
   customSearchFn(term: string, item: any) {
     item.name = item.name.replace(',','');
     term = term.toLocaleLowerCase();
@@ -54,21 +70,9 @@ export class PosComponent {
     );
   }
 
-  // onMemberChange(event: Event): void {
-  //   const selectedValue = (event.target as HTMLSelectElement).value;
-  //   this.selectedMemberId = Number(selectedValue);
-  //   console.log('Selected Member ID:', this.selectedMemberId);
-  // }
-
   onMemberChange(): void {
-    // Find the selected member by ID
     const selectedMember = this.members.find(member => member.id === this.selectedMemberId);
-
-    // Update selectedMemberName
     this.selectedMemberName = selectedMember ? selectedMember.name : 'Walk-in Customer';
-
-    // Log the selected member's name
-    console.log('Selected Member:', this.selectedMemberName);
   }
 
   addToRightDiv(product: any) {
@@ -84,9 +88,10 @@ export class PosComponent {
   }
 
   calculateOverallTotal() {
+    this.pc = Number(this.pc); // Ensure pc is treated as a number
     this.overallTotal = this.selectedProducts.reduce((total, selectedProduct) => {
       return total + (selectedProduct.price * selectedProduct.counter);
-    }, 0);
+    }, 0) + this.pc; // Add the value of pc to overallTotal
     this.totalQuantity = this.selectedProducts.reduce((total, selectedProduct) => {
       return total + selectedProduct.counter;
     }, 0);
@@ -125,7 +130,6 @@ export class PosComponent {
     });
 
     if(this.selectedMemberId == 0) {
-      // this.selectedMemberId = 0;
       this.selectedMemberName = 'Walk-in Customer'
     }
 
@@ -137,13 +141,17 @@ export class PosComponent {
       total: this.overallTotal,
       transactionId: transactionId,
       dateTime: new Date().toISOString(),
-      customer: this.selectedMemberName
+      customer: this.selectedMemberName,
+      computer: this.pc
     };
 
-    console.log('Order Summary:', orderSummary, this.selectedMemberName, this.selectedMemberId);
+    console.log('Order Summary:', orderSummary, this.pc);
     this.addToSales(orderSummary);
+    this.selectedMemberId = 0;
     this.selectedProducts = [];
+    this.pc = ''
     this.calculateOverallTotal();
+    this.updateButtonState();
   }
 
   addToSales(transactionSales: any) {

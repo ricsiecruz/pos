@@ -85,24 +85,11 @@
     }
     &_five {
         width: 80px;
-        div {
-            cursor: pointer;
-            border-radius: 3px;
-            text-align: center;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            background-color: #092C4C !important;
-            border: 1px solid #092C4C !important;
-            color: #ffffff;
-            box-shadow: 0 4px 20px rgba(9, 44, 76, 0.15);
-        }
-        div:hover {
-            background-color: #051a2c !important;
-            border: 1px solid #051a2c !important;
-            box-shadow: 0 3px 10px rgba(9, 44, 76, 0.5);
-        }
     }
     &_six {
+        width: 80px;
+    }
+    &_seven {
         width: 80px;
         div {
             cursor: pointer;

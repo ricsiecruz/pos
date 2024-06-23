@@ -36,6 +36,11 @@
             </div>
         </div>
 
+        <div class="">
+            <div class="">PC</div>
+            <input [(ngModel)]="pc" placeholder="Enter load" (input)="updateButtonState()">
+        </div>
+
         <div class="pos_selected_total">
             <div class="pos_selected_total_qty">
                 <div class="pos_selected_total_qty_text">Quantity</div>
@@ -46,7 +51,7 @@
                 <div class="pos_selected_total_amount_amount">PHP {{ overallTotal }}</div>
             </div>
         </div>
-        
-        <div class="pos_selected_next" [class.disable]="selectedProducts.length === 0" (click)="clearSelectedProducts()">Next Order</div>
+        <div class="pos_selected_next" [class.disable]="selectedProducts.length === 0 || pc <= 0" (click)="clearSelectedProducts()">Next Order</div>
+
     </div>
 </div>

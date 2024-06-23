@@ -12,7 +12,8 @@
             <div class="table_three">Total</div>
             <div class="table_four">Date</div>
             <div class="table_five">Customer</div>
-            <div class="table_six"></div>
+            <div class="table_six">Computer</div>
+            <div class="table_seven"></div>
         </div>
         <div class="inventory_table_list" *ngFor="let data of products">
             <div class="table_one">
@@ -31,6 +32,9 @@
                 {{ data.customer }}
             </div>
             <div class="table_six">
+                {{ data.computer }}
+            </div>
+            <div class="table_seven">
                 <div (click)="openModal(data)">
                     view
                 </div>
