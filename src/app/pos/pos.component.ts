@@ -157,6 +157,10 @@ export class PosComponent {
       console.log('Credit due:', this.creditAmount);
     }
 
+    if(this.pc == '') {
+      this.pc = 0;
+    }
+
     this.subtotal = this.calculateSubtotal();
     const orderSummary = {
       orders: orders,

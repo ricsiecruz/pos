@@ -69,4 +69,10 @@ export class OrdersComponent {
   private calculateTotalCups(products: any[]): number {
     return products.reduce((acc, curr) => acc + parseFloat(curr.qty), 0);
   }
+  
+  pay(data: any) {
+    data.credit = null;
+    this.salesService.editTransaction(data.id, data)
+    console.log('Credit set to null for:', data);
+  }
 }

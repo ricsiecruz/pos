@@ -13,6 +13,7 @@
             <div class="table_four">Date</div>
             <div class="table_six">Computer</div>
             <div class="table_eight">Credit</div>
+            <div class="table_nine"></div>
             <div class="table_three">Total</div>
             <div class="table_seven"></div>
         </div>
@@ -41,6 +42,7 @@
                     PHP {{ data.credit }}
                 </ng-template>
             </div>
+            <div class="table_nine" (click)="pay(data)">pay</div>
             <div class="table_three">
                 PHP {{ data.total }}
             </div>
