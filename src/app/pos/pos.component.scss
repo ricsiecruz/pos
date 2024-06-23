@@ -7,6 +7,7 @@
     &_card {
         display: grid;
         column-gap: 40px;
+        padding-top: 20px;
         grid-template-columns: repeat(4, 1fr);
         &_drink {
             display: flex;
@@ -35,7 +36,8 @@
         }
     }
     &_selected {
-        width: 100%;
+        // width: 100%;
+        width: 504px;
         height: fit-content;
         padding: 24px;
         background-color: #ffffff;

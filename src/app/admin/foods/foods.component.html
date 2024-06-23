@@ -1,0 +1,31 @@
+<p>foods works!</p>
+<div class="products_title_add" (click)="addModal()">
+    Add drink
+</div>
+<div *ngFor="let data of products">
+    {{ data.food }} - {{ data.stocks }}
+</div>
+
+<ng-template #addProductModal let-d="dismiss">
+    <div class="modal-header">
+        Add drink
+    </div>
+    <div>
+        <div class="modal-body">
+            <form (submit)="addProduct()">
+                <label class="modal-body-label" for="productName">Product:</label>
+                <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newProduct.food" required>
+                <label class="modal-body-label" for="productPrice">Price:</label>
+                <input class="form-control" type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
+                <label class="modal-body-label" for="productStocks">Stocks:</label>
+                <input class="form-control" type="number" id="productStocks" name="productStocks" [(ngModel)]="newProduct.stocks" required>
+                <div class="modal-btns">
+                    <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
+                    <button class="btn modal-btns-add" type="submit">
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>

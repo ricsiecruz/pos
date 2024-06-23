@@ -1,17 +1,22 @@
 <div class="pos">
-    <div>
-        <div *ngIf="products && products.length" class="pos_card">
-            <div *ngFor="let product of products" class="pos_card_drink">
-                <div>
-                    {{ product.product }}
-                    <div class="pos_card_price">PHP {{ product.price }}</div>
+    <div style="width: 920px;">
+        <tabset>
+            <tab heading="Drinks">
+                <div *ngIf="products && products.length" class="pos_card">
+                    <div *ngFor="let product of products" class="pos_card_drink">
+                        <div>
+                            {{ product.product }}
+                            <div class="pos_card_price">PHP {{ product.price }}</div>
+                        </div>
+                        <button (click)="addToRightDiv(product)">Add</button>
+                    </div>
                 </div>
-                <button (click)="addToRightDiv(product)">Add</button>
-            </div>
-        </div>
-        <div *ngIf="!products || products.length === 0">
-            No products available.
-        </div>
+                <div *ngIf="!products || products.length === 0">
+                    No products available.
+                </div>
+            </tab>
+            <tab heading="Food">Basic content 2</tab>
+          </tabset>
     </div>
     <div class="pos_selected">
         <div class="pos_selected_orders">Orders</div>

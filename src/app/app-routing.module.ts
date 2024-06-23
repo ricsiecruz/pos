@@ -8,6 +8,7 @@ import { PosComponent } from './pos/pos.component';
 import { AdminComponent } from './admin/admin/admin.component';
 import { OrdersComponent } from './admin/orders/orders.component';
 import { MembersComponent } from './admin/members/members.component';
+import { FoodsComponent } from './admin/foods/foods.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,10 @@ const routes: Routes = [
       {
         path: 'products',
         component: ProductsComponent
+      },
+      {
+        path: 'foods',
+        component: FoodsComponent
       },
       {
         path: 'sales',

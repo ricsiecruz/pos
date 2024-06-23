@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,7 @@ import { AdminComponent } from './admin/admin/admin.component';
 import { NoDataComponent } from './admin/no-data/no-data.component';
 import { OrdersComponent } from './admin/orders/orders.component';
 import { MembersComponent } from './admin/members/members.component';
+import { FoodsComponent } from './admin/foods/foods.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { MembersComponent } from './admin/members/members.component';
     AdminComponent,
     NoDataComponent,
     OrdersComponent,
-    MembersComponent
+    MembersComponent,
+    FoodsComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +43,7 @@ import { MembersComponent } from './admin/members/members.component';
     FormsModule,
     CommonModule,
     NgSelectModule,
+    TabsModule.forRoot(),
     HttpClientModule,
     AppRoutingModule
   ],
