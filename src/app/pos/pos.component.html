@@ -36,9 +36,9 @@
             </div>
         </div>
 
-        <div class="">
+        <div class="pos_selected_pc">
             <div class="">PC</div>
-            <input [(ngModel)]="pc" placeholder="Enter load" (input)="updateButtonState()">
+            <input [(ngModel)]="pc" placeholder="Enter load" (input)="updateButtonState()" class="form-control">
         </div>
 
         <div class="pos_selected_total">
@@ -51,7 +51,8 @@
                 <div class="pos_selected_total_amount_amount">PHP {{ overallTotal }}</div>
             </div>
         </div>
-        <div class="pos_selected_next" [class.disable]="selectedProducts.length === 0 && (pc <= 0 || pc == '')" (click)="clearSelectedProducts()">Next Order</div>
+        <div class="pos_selected_next" [class.disable]="selectedProducts.length === 0 && (pc <= 0 || pc == '' || pc == undefined)" (click)="clearSelectedProducts()">Next Order</div>
+
         <!-- <div class="pos_selected_next" [class.disable]="selectedProducts.length === 0 && pc == ''" (click)="clearSelectedProducts()">Next Order</div> -->
     </div>
 </div>

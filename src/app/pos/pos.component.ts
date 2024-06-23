@@ -79,20 +79,19 @@ export class PosComponent {
     const existingProductIndex = this.selectedProducts.findIndex(selectedProduct => selectedProduct.product === product.product);
 
     if (existingProductIndex === -1) {
-        product.counter++;
-        this.selectedProducts.push(product);
+        const newProduct = { ...product, counter: 1 }; // Create a copy of the product with a counter set to 1
+        this.selectedProducts.push(newProduct);
     } else {
         this.selectedProducts[existingProductIndex].counter++;
     }
     this.calculateOverallTotal();
-    console.log('this.pc', this.pc)
   }
 
   calculateOverallTotal() {
-    this.pc = this.ensureNumber(this.pc); // Ensure pc is treated as a number
+    this.pc = this.ensureNumber(this.pc);
     this.overallTotal = this.selectedProducts.reduce((total, selectedProduct) => {
       return total + (selectedProduct.price * selectedProduct.counter);
-    }, 0) + this.pc; // Add the value of pc to overallTotal
+    }, 0) + this.pc;
     this.totalQuantity = this.selectedProducts.reduce((total, selectedProduct) => {
       return total + selectedProduct.counter;
     }, 0);
@@ -121,7 +120,8 @@ export class PosComponent {
   deleteProduct(index: number) {
     this.selectedProducts.splice(index, 1);
     this.calculateOverallTotal();
-  }
+    this.pc = this.selectedProducts.length === 0 ? undefined : this.pc; // Set pc to undefined if no selected products
+  }  
 
   clearSelectedProducts() {
     const transactionId = this.generateTransactionId();
@@ -137,8 +137,6 @@ export class PosComponent {
     if(this.selectedMemberId == 0) {
       this.selectedMemberName = 'Walk-in Customer'
     }
-
-    console.log('customer', this.selectedMemberId, this.selectedMemberName)
 
     const orderSummary = {
       orders: orders,

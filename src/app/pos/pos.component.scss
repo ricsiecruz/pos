@@ -99,6 +99,15 @@
                 }
             }
         }
+        &_pc {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            input {
+                width: 105px;
+            }
+        }
         &_total {
             color: #5B6670;
             background-color: #f3f6f9;
