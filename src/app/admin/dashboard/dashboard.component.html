@@ -34,4 +34,14 @@
             </div>
         </div>
     </div>
+    <!-- orders.component.html -->
+    <div *ngIf="mostOrdered.length > 0">
+        <h2>Most Ordered Products</h2>
+        <ul>
+        <li *ngFor="let product of mostOrdered">
+            {{ product.product }}: {{ product.total_quantity }}
+        </li>
+        </ul>
+    </div>
+  
 </div>
