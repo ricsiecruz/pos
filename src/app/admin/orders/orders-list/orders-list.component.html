@@ -1,87 +1,88 @@
 <div class="orders-list">
     <div class="orders-list_stat">
-        <div class="orders-list_stat_card">
-            Gross
-            <div>
-                PHP {{ sales | number:'1.2-2' }}
-            </div>
+      <div class="orders-list_stat_card">
+        Gross
+        <div>
+          PHP {{ sales | number:'1.2-2' }}
         </div>
-        <div class="orders-list_stat_card">
-            Expenses
-            <div>
-                PHP {{ expenses | number:'1.2-2' }}
-            </div>
+      </div>
+      <div class="orders-list_stat_card">
+        Expenses
+        <div>
+          PHP {{ expenses | number:'1.2-2' }}
         </div>
-        <div class="orders-list_stat_card">
-            Net
-            <div>
-                PHP {{ net | number:'1.2-2' }}
-            </div>
+      </div>
+      <div class="orders-list_stat_card">
+        Net
+        <div>
+          PHP {{ net | number:'1.2-2' }}
         </div>
-        <div class="orders-list_stat_card">
-            Credit
-            <div>
-                PHP {{ credit | number:'1.2-2' }}
-            </div>
+      </div>
+      <div class="orders-list_stat_card">
+        Credit
+        <div>
+          PHP {{ credit | number:'1.2-2' }}
         </div>
+      </div>
     </div>
     <div class="orders-list_stat" style="justify-content: flex-start; column-gap: 20px;">
-        <div class="orders-list_stat_card" style="margin: 0;">
-            PC
-            <div>
-                PHP {{ computer | number:'1.2-2' }}
-            </div>
+      <div class="orders-list_stat_card" style="margin: 0;">
+        PC
+        <div>
+          PHP {{ computer | number:'1.2-2' }}
         </div>
-        <div class="orders-list_stat_card" style="margin: 0;">
-            Food and drinks
-            <div>
-                PHP {{ foodDrinks | number:'1.2-2' }}
-            </div>
+      </div>
+      <div class="orders-list_stat_card" style="margin: 0;">
+        Food and drinks
+        <div>
+          PHP {{ foodDrinks | number:'1.2-2' }}
         </div>
+      </div>
     </div>
     <div class="orders-list_table_header">
-        <div class="table_five">Customer</div>
-        <div class="table_two">Qty</div>
-        <div class="table_four">Date</div>
-        <div class="table_six">Computer</div>
-        <div class="table_eight">Credit</div>
-        <div class="table_nine"></div>
-        <div class="table_three">Total</div>
-        <div class="table_seven"></div>
+      <div class="table_five">Customer</div>
+      <div class="table_two">Qty</div>
+      <div class="table_four">Date</div>
+      <div class="table_six">Computer</div>
+      <div class="table_eight">Credit</div>
+      <div class="table_nine"></div>
+      <div class="table_three">Total</div>
+      <div class="table_seven"></div>
     </div>
     <div class="orders-list_table_list" *ngFor="let data of dataSource">
-        <div class="table_five">
-            {{ data.customer }}
+      <div class="table_five">
+        {{ data.customer }}
+      </div>
+      <div class="table_two">
+        {{ data.qty }}
+      </div>
+      <div class="table_four">
+        {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}
+      </div>
+      <div class="table_six">
+        PHP {{ data.computer }}
+      </div>
+      <div class="table_eight">
+        <div *ngIf="data.credit == null || data.credit == '0.00'; else credit">
+          -
         </div>
-        <div class="table_two">
-            {{ data.qty }}
+        <ng-template #credit>
+          PHP {{ data.credit }}
+        </ng-template>
+      </div>
+      <div class="table_nine">
+        <div (click)="payCredit(data)" *ngIf="data.credit != null && data.credit != '0.00'" class="secondary-btn">
+          pay
         </div>
-        <div class="table_four">
-            {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}
+      </div>
+      <div class="table_three">
+        PHP {{ data.total }}
+      </div>
+      <div class="table_seven">
+        <div (click)="openModal(data)" class="primary-btn">
+          view
         </div>
-        <div class="table_six">
-            PHP {{ data.computer }}
-        </div>
-        <div class="table_eight">
-            <div *ngIf="data.credit == null || data.credit == '0.00'; else credit">
-                -
-            </div>
-            <ng-template #credit>
-                PHP {{ data.credit }}
-            </ng-template>
-        </div>
-        <div class="table_nine">
-            <div (click)="payCredit(data)" *ngIf="data.credit != null && data.credit != '0.00'" class="secondary-btn">
-                pay
-            </div>
-        </div>
-        <div class="table_three">
-            PHP {{ data.total }}
-        </div>
-        <div class="table_seven">
-            <div (click)="openModal(data)" class="primary-btn">
-                view
-            </div>
-        </div>
+      </div>
     </div>
-</div>
+  </div>
+  

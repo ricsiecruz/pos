@@ -1,7 +1,8 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { SalesService } from '../../services/sales.service';
 import { ModalService } from '../../modal.service';
 import { ExpensesService } from '../../services/expenses.service';
+import { OrdersListComponent } from './orders-list/orders-list.component'; // Import OrdersListComponent
 
 @Component({
   selector: 'app-orders',
@@ -9,7 +10,8 @@ import { ExpensesService } from '../../services/expenses.service';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent {
-  @ViewChild('sales') sales?: TemplateRef<any>;
+  @ViewChild('sales') sales!: OrdersListComponent; // ViewChild reference
+
   products: any[] = [];
   todayProducts: any[] = [];
   expenses: any[] = [];
@@ -93,7 +95,6 @@ export class OrdersComponent {
     this.foodDrinks = this.totalSalesSum - this.computer;
     this.foodDrinksToday = this.totalSalesSumToday - this.computerToday;
   }
-  
 
   filterTodayProducts() {
     const today = new Date();
@@ -158,5 +159,14 @@ export class OrdersComponent {
   pay(data: any) {
     data.credit = null;
     this.salesService.editTransaction(data.id, data);
+  }
+
+  // Export today's sales to Excel
+  exportTodaySalesToExcel(): void {
+    if (this.todayProducts.length > 0) {
+      this.sales.exportToExcel();
+    } else {
+      alert('No data available for export.');
+    }
   }
 }
