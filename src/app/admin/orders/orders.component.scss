@@ -40,7 +40,11 @@
             display: grid;
             overflow-x: auto;
         }
-
+        &_export {
+            display: flex;
+            justify-content: end;
+            margin-top: 10px;
+        }
         &_header {
             display: flex;
             justify-content: space-between;

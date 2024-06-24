@@ -32,7 +32,7 @@ export class OrdersListComponent {
       day: '2-digit'
     }).replace(/\//g, '-');
     
-    // Prepare data
+    // Prepare data including additional fields
     const dataToExport = this.dataSource.map(item => ({
       Customer: item.customer,
       Qty: item.qty,
@@ -47,7 +47,13 @@ export class OrdersListComponent {
       }),
       Computer: `PHP ${item.computer}`,
       Credit: item.credit ? `PHP ${item.credit}` : '-',
-      Total: `PHP ${item.total}`
+      Total: `PHP ${item.total}`,
+      Sales: `PHP ${this.sales}`,
+      Expenses: `PHP ${this.expenses}`,
+      Net: `PHP ${this.net}`,
+      CreditTotal: `PHP ${this.credit}`,
+      ComputerTotal: `PHP ${this.computer}`,
+      FoodDrinksTotal: `PHP ${this.foodDrinks}`
     }));
 
     // Convert data to worksheet

@@ -8,19 +8,23 @@
   
       <tabset>
         <tab heading="Today">
-          <app-orders-list 
-            #sales
-            [sales]="totalSalesSumToday" 
-            [expenses]="totalExpensesToday" 
-            [net]="netToday" 
-            [credit]="totalCreditCurrentDate" 
-            [computer]="computerToday"
-            [foodDrinks]="foodDrinksToday"
-            [dataSource]="todayProducts" 
-            [pay]="pay.bind(this)" 
-            [openModal]="openModal.bind(this)">
-          </app-orders-list>
+            <div class="inventory_table_export">
+                <button class="primary-btn" (click)="exportTodaySalesToExcel()">Export</button>
+            </div>
+            <app-orders-list 
+                #sales
+                [sales]="totalSalesSumToday" 
+                [expenses]="totalExpensesToday" 
+                [net]="netToday" 
+                [credit]="totalCreditCurrentDate" 
+                [computer]="computerToday"
+                [foodDrinks]="foodDrinksToday"
+                [dataSource]="todayProducts" 
+                [pay]="pay.bind(this)" 
+                [openModal]="openModal.bind(this)">
+            </app-orders-list>
         </tab>
+  
         <tab heading="All">
           <app-orders-list 
             #sales
@@ -36,9 +40,6 @@
           </app-orders-list>
         </tab>
       </tabset>
-  
-      <!-- Button to trigger export -->
-      <button class="primary-btn" (click)="exportTodaySalesToExcel()">Export Today's Sales</button>
     </div>
   </div>
   
