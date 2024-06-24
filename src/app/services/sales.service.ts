@@ -9,8 +9,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class SalesService implements OnDestroy {
-  // API_URL = environment.apiUrl;
-  API_URL = ('https://pos-backend-kt9t.vercel.app/');
+  API_URL = 'https://pos-backend-kt9t.vercel.app/';
   private salesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   sales$: Observable<any[]> = this.salesSubject.asObservable();
   private websocketSubscription: Subscription;
@@ -80,4 +79,15 @@ export class SalesService implements OnDestroy {
     return this.http.get<any[]>(this.API_URL + 'sales');
   }
 
+  getTotalSalesSum(): Observable<number> {
+    return this.http.get<{ total_sum: number }>(this.API_URL + 'sales/total-sum').pipe(
+      map(response => response.total_sum)
+    );
+  }
+
+  getTotalSalesSumToday(): Observable<number> {
+    return this.http.get<{ total_sum_today: number }>(this.API_URL + 'sales/total-sum-today').pipe(
+      map(response => response.total_sum_today)
+    );
+  }
 }

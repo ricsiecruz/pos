@@ -9,7 +9,7 @@
         <tabset>
             <tab heading="Today">
                 <app-orders-list 
-                    [sales]="todaySubtotal" 
+                    [sales]="totalSalesSumToday" 
                     [expenses]="totalExpensesToday" 
                     [net]="netToday" 
                     [credit]="totalCreditCurrentDate" 
@@ -20,7 +20,7 @@
             </tab>
             <tab heading="All">
                 <app-orders-list 
-                    [sales]="subtotal" 
+                    [sales]="totalSalesSum" 
                     [expenses]="totalExpenses" 
                     [net]="net" 
                     [credit]="totalCreditAllData" 
