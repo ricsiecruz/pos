@@ -1,0 +1,49 @@
+<div>
+    Gross: PHP {{ sales | number:'1.2-2' }}
+</div>
+
+<div class="inventory_table_header">
+    <div class="table_five">Customer</div>
+    <div class="table_two">Qty</div>
+    <div class="table_four">Date</div>
+    <div class="table_six">Computer</div>
+    <div class="table_eight">Credit</div>
+    <div class="table_nine"></div>
+    <div class="table_three">Total</div>
+    <div class="table_seven"></div>
+</div>
+<div class="inventory_table_list" *ngFor="let data of dataSource">
+    <div class="table_five">
+        {{ data.customer }}
+    </div>
+    <div class="table_two">
+        {{ data.qty }}
+    </div>
+    <div class="table_four">
+        {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}
+    </div>
+    <div class="table_six">
+        PHP {{ data.computer }}
+    </div>
+    <div class="table_eight">
+        <div *ngIf="data.credit == null || data.credit == '0.00'; else credit">
+            -
+        </div>
+        <ng-template #credit>
+            PHP {{ data.credit }}
+        </ng-template>
+    </div>
+    <div class="table_nine">
+        <div (click)="payCredit(data)" *ngIf="data.credit != null && data.credit != '0.00'" class="secondary-btn">
+            pay
+        </div>
+    </div>
+    <div class="table_three">
+        PHP {{ data.total }}
+    </div>
+    <div class="table_seven">
+        <div (click)="openModal(data)" class="primary-btn">
+            view
+        </div>
+    </div>
+</div>

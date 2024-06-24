@@ -27,10 +27,12 @@ interface OrderDetails {
 export class OrdersComponent {
   @ViewChild('sales') sales?: TemplateRef<any>;
   products: any[] = [];
+  todayProducts: any[] = [];
   details: OrderDetails | null = null;
   totalSum: number = 0;
   totalCups: number = 0;
-  subtotal: number = 0; // Variable to hold subtotal
+  subtotal: number = 0;
+  todaySubtotal: number = 0;
 
   constructor(
     private salesService: SalesService,
@@ -38,16 +40,25 @@ export class OrdersComponent {
   ) {}
 
   ngOnInit() {
-    console.log('this is sales page')
     this.salesService.sales$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products;
-        console.log('aaa', this.products)
+        this.filterTodayProducts();
         this.totalSum = this.calculateTotalSum(products);
         this.totalCups = this.calculateTotalCups(products);
-        this.subtotal = this.calculateSubtotal(products); // Calculate subtotal
+        this.subtotal = this.calculateSubtotal(products);
         console.log('subtotal', this.subtotal)
+        this.todaySubtotal = this.calculateSubtotal(this.todayProducts);
+        console.log('subtotal for today', this.todaySubtotal);
       }
+    });
+  }
+
+  filterTodayProducts() {
+    const today = new Date().setHours(0, 0, 0, 0);
+    this.todayProducts = this.products.filter(product => {
+      const productDate = new Date(product.datetime).setHours(0, 0, 0, 0);
+      return productDate === today;
     });
   }
 
@@ -73,6 +84,5 @@ export class OrdersComponent {
   pay(data: any) {
     data.credit = null;
     this.salesService.editTransaction(data.id, data)
-    console.log('Credit set to null for:', data);
   }
 }

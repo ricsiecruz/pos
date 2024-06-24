@@ -57,6 +57,9 @@ export class PosComponent {
 
   check() {
     this.credit = !this.credit;
+    if (!this.credit) {
+      this.creditAmount = 0;
+    }
   }
 
   updateButtonState(): void {
@@ -182,6 +185,7 @@ export class PosComponent {
     this.selectedMemberId = 0;
     this.selectedProducts = [];
     this.pc = '';
+    this.creditAmount = 0; // Reset creditAmount
     this.calculateOverallTotal();
     this.updateButtonState();
     this.credit = false;
@@ -198,15 +202,20 @@ export class PosComponent {
       return subtotal + (selectedProduct.price * selectedProduct.counter);
     }, 0);
   }
+  
   updatePaidAmount() {
     this.paidAmount = Number(this.paidAmount);
   }
 
   calculateCredit(): number {
-    if (this.paidAmount !== null) {
-      return this.overallTotal - this.paidAmount;
+    if (this.credit) {
+      if (this.paidAmount !== null) {
+        return this.overallTotal - this.paidAmount;
+      } else {
+        return this.overallTotal;
+      }
     } else {
-      return this.overallTotal;
+      return 0;
     }
   }
 

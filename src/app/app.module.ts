@@ -20,6 +20,7 @@ import { NoDataComponent } from './admin/no-data/no-data.component';
 import { OrdersComponent } from './admin/orders/orders.component';
 import { MembersComponent } from './admin/members/members.component';
 import { FoodsComponent } from './admin/foods/foods.component';
+import { OrdersListComponent } from './admin/orders/orders-list/orders-list.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { FoodsComponent } from './admin/foods/foods.component';
     NoDataComponent,
     OrdersComponent,
     MembersComponent,
-    FoodsComponent
+    FoodsComponent,
+    OrdersListComponent
   ],
   imports: [
     BrowserModule,
