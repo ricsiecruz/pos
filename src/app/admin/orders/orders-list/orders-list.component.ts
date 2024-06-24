@@ -12,6 +12,7 @@ export class OrdersListComponent {
   @Input() expenses: any;
   @Input() net: any;
   @Input() computer: any;
+  @Input() foodDrinks: any;
   @Input() dataSource: any[] = [];
   @Input() pay!: (data: any) => void;
   @Input() openModal!: (data: any) => void;

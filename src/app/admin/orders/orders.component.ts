@@ -26,6 +26,8 @@ export class OrdersComponent {
   computerToday: number = 0;
   totalSalesSum: number = 0;
   totalSalesSumToday: number = 0;
+  foodDrinks: number = 0;
+  foodDrinksToday: number = 0;
 
   constructor(
     private salesService: SalesService,
@@ -35,16 +37,8 @@ export class OrdersComponent {
 
   ngOnInit() {
     this.salesService.sales$.subscribe((products: any) => {
-    
       if (products && products.length > 0) {
-        this.products = [];
-        products.forEach((order: any) => {
-          this.products.push(...order.sales);
-          let totalSalesAmount = order.sales.reduce((acc: number, sale: any) => {
-            return acc + parseFloat(sale.total);
-          }, 0);
-        });
-    
+        this.products = products;
         this.updateCalculations();
       }
     });
@@ -59,7 +53,6 @@ export class OrdersComponent {
     this.salesService.getTotalSalesSum().subscribe(
       totalSum => {
         this.totalSalesSum = totalSum;
-        console.log('sum', this.totalSalesSum)
       },
       error => {
         console.error('Error fetching total sales sum:', error);
@@ -68,8 +61,8 @@ export class OrdersComponent {
 
     this.salesService.getTotalSalesSumToday().subscribe(
       totalSumToday => {
-        this.totalSalesSumToday = totalSumToday;
-        console.log('sum today', this.totalSalesSumToday)
+        this.totalSalesSumToday = totalSumToday;  
+        this.foodDrinksToday = this.totalSalesSumToday - this.computerToday;
       },
       error => {
         console.error('Error fetching total sales sum:', error);
@@ -80,24 +73,27 @@ export class OrdersComponent {
   private updateCalculations() {
     this.filterTodayProducts();
     this.filterTodayExpenses();
-
+  
     this.totalCups = this.calculateTotalCups(this.products);
-
+  
     // Net calculations
     this.totalExpenses = this.calculateTotalExpenses(this.expenses);
     this.totalExpensesToday = this.calculateTotalExpenses(this.todayExpenses);
     this.net = this.totalSalesSum - this.totalExpenses;
     this.netToday = this.totalSalesSumToday - this.totalExpensesToday;
-
+  
     // Credit calculations
     this.totalCreditAllData = this.calculateCredit(this.products);
     this.totalCreditCurrentDate = this.calculateCredit(this.todayProducts);
-
+  
     // Computer calculations
     this.computer = this.calculateComputer(this.products);
     this.computerToday = this.calculateComputer(this.todayProducts);
 
+    this.foodDrinks = this.totalSalesSum - this.computer;
+    this.foodDrinksToday = this.totalSalesSumToday - this.computerToday;
   }
+  
 
   filterTodayProducts() {
     const today = new Date();

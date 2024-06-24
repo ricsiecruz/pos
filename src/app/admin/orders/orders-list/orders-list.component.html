@@ -25,7 +25,20 @@
             </div>
         </div>
     </div>
-    computer {{ computer }}
+    <div class="orders-list_stat" style="justify-content: flex-start; column-gap: 20px;">
+        <div class="orders-list_stat_card" style="margin: 0;">
+            PC
+            <div>
+                PHP {{ computer | number:'1.2-2' }}
+            </div>
+        </div>
+        <div class="orders-list_stat_card" style="margin: 0;">
+            Food and drinks
+            <div>
+                PHP {{ foodDrinks | number:'1.2-2' }}
+            </div>
+        </div>
+    </div>
     <div class="orders-list_table_header">
         <div class="table_five">Customer</div>
         <div class="table_two">Qty</div>
