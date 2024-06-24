@@ -144,16 +144,13 @@ export class OrdersComponent {
     }, 0);
   }
   
-
   private calculateCredit(products: any): number {
     return products.reduce((acc: any, curr: any) => {
-      // Check if curr.credit is null or undefined before accessing toString()
       const credit = curr.credit !== null && curr.credit !== undefined ? parseFloat(curr.credit.toString()) : 0;
       return acc + credit;
     }, 0);
   }
   
-
   private calculateTotalExpenses(expenses: any[]): number {
     const totalExpenses = expenses.reduce((acc, curr) => {
       const parsedAmount = parseFloat(curr.amount?.toString() ?? '0');

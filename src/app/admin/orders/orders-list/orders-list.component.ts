@@ -11,6 +11,7 @@ export class OrdersListComponent {
   @Input() credit: any;
   @Input() expenses: any;
   @Input() net: any;
+  @Input() computer: any;
   @Input() dataSource: any[] = [];
   @Input() pay!: (data: any) => void;
   @Input() openModal!: (data: any) => void;
