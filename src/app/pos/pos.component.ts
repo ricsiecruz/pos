@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { ProductService } from '../services/product.service';
 import { SalesService } from '../services/sales.service';
 import { MembersService } from '../services/members.service';
+import { FoodsService } from '../services/foods.service';
 
 @Component({
   selector: 'app-pos',
@@ -11,6 +12,7 @@ import { MembersService } from '../services/members.service';
 export class PosComponent {
 
   products: any[] = [];
+  foods: any[] = [];
   selectedProducts: any[] = [];
   members: any[] = [];
   overallTotal: number = 0;
@@ -27,17 +29,23 @@ export class PosComponent {
 
   constructor(
     public productService: ProductService,
+    private foodsService: FoodsService,
     public salesService: SalesService,
     private membersService: MembersService
   ) { }
 
   ngOnInit() {
-    console.log('pos ')
     this.productService.products$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products.map(product => ({ ...product, counter: 0 }));
       }
     });
+
+    this.foodsService.foods$.subscribe((foods: any[]) => {
+      if(foods && foods.length > 0) {
+        this.foods = foods.map(food => ({ ...food, counter: 0 }))
+      }
+    })
 
     this.membersService.members$.subscribe((members: any[]) => {
       if (members && members.length > 0) {
@@ -53,7 +61,6 @@ export class PosComponent {
 
   updateButtonState(): void {
     this.pc = Number(this.pc);
-    console.log('pc', this.pc)
     if (this.pc > 0) {
       const nextOrderButton = document.querySelector('.pos_selected_next');
       if (nextOrderButton) {
@@ -151,11 +158,7 @@ export class PosComponent {
       this.selectedMemberName = 'Walk-in Customer';
     }
 
-    // Check if there is any credit due
     this.creditAmount = this.calculateCredit();
-    if (this.creditAmount > 0) {
-      console.log('Credit due:', this.creditAmount);
-    }
 
     if(this.pc == '') {
       this.pc = 0;
@@ -187,7 +190,6 @@ export class PosComponent {
   }
 
   addToSales(transactionSales: any) {
-    console.log('sale', transactionSales)
     this.salesService.addSales(transactionSales);
   }
 
@@ -198,13 +200,10 @@ export class PosComponent {
   }
   updatePaidAmount() {
     this.paidAmount = Number(this.paidAmount);
-
-    console.log('paid amount', this.paidAmount)
   }
 
   calculateCredit(): number {
     if (this.paidAmount !== null) {
-      console.log('aaa', this.overallTotal - this.paidAmount)
       return this.overallTotal - this.paidAmount;
     } else {
       return this.overallTotal;

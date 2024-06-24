@@ -18,7 +18,7 @@
         <div *ngIf="products.length > 0; else noData">
             <div class="products_table_list" *ngFor="let data of products">
                 <div class="table_one">
-                    {{ data.food }}
+                    {{ data.product }}
                 </div>
                 <div class="table_two">
                     {{ data.stocks }}
@@ -44,7 +44,7 @@
         <div class="modal-body">
             <form (submit)="addProduct()">
                 <label class="modal-body-label" for="productName">Product:</label>
-                <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newProduct.food" required>
+                <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newProduct.product" required>
                 <label class="modal-body-label" for="productPrice">Price:</label>
                 <input class="form-control" type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
                 <label class="modal-body-label" for="productStocks">Stocks:</label>
