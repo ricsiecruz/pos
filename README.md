@@ -23,3 +23,6 @@ docs
 - styles-X3F66FET.css
 
 push docs in git
+
+<!-- PACKAGES -->
+"@ng-select/ng-select": "^12.0.0",

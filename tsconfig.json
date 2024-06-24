@@ -11,6 +11,8 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "types": ["node"],
+    "typeRoots": ["node_modules/@types", "typings"],
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
