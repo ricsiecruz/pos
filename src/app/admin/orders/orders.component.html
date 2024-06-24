@@ -4,15 +4,30 @@
     </div>
     <div class="inventory_table">
         <div class="inventory_table_filter">
-            
         </div>
 
         <tabset>
             <tab heading="Today">
-                <app-orders-list [sales]="todaySubtotal" [expenses]="totalExpensesToday" [net]="netToday" [credit]="totalCreditCurrentDate" [dataSource]="todayProducts" [pay]="pay" [openModal]="openModal"></app-orders-list>
+                <app-orders-list 
+                    [sales]="todaySubtotal" 
+                    [expenses]="totalExpensesToday" 
+                    [net]="netToday" 
+                    [credit]="totalCreditCurrentDate" 
+                    [dataSource]="todayProducts" 
+                    [pay]="pay.bind(this)" 
+                    [openModal]="openModal.bind(this)">
+                </app-orders-list>
             </tab>
             <tab heading="All">
-                <app-orders-list [sales]="subtotal" [expenses]="totalExpenses" [net]="net" [credit]="totalCreditAllData" [dataSource]="products" [pay]="pay" [openModal]="openModal"></app-orders-list>
+                <app-orders-list 
+                    [sales]="subtotal" 
+                    [expenses]="totalExpenses" 
+                    [net]="net" 
+                    [credit]="totalCreditAllData" 
+                    [dataSource]="products" 
+                    [pay]="pay.bind(this)" 
+                    [openModal]="openModal.bind(this)">
+                </app-orders-list>
             </tab>
         </tabset>
     </div>

@@ -61,13 +61,8 @@ export class OrdersComponent {
         this.subtotal = this.calculateSubtotal(products);
         this.todaySubtotal = this.calculateSubtotal(this.todayProducts);
 
-        // Calculate net and netToday
         this.net = this.subtotal - this.totalExpenses;
         this.netToday = this.todaySubtotal - this.totalExpensesToday;
-
-        console.log('net', this.net, 'today', this.netToday)
-
-        console.log('subtotal', this.subtotal, 'today', this.todaySubtotal);
 
         this.totalCreditAllData = this.calculateCredit(products);
         this.totalCreditCurrentDate = this.calculateCredit(this.todayProducts);
@@ -81,11 +76,8 @@ export class OrdersComponent {
         this.totalExpenses = this.calculateTotalExpenses(expenses);
         this.totalExpensesToday = this.calculateTotalExpenses(this.todayExpenses);
 
-        // Update net and netToday after expenses are updated
         this.net = this.subtotal - this.totalExpenses;
         this.netToday = this.todaySubtotal - this.totalExpensesToday;
-
-        console.log('expenses', this.totalExpenses, 'today', this.totalExpensesToday);
       }
     });
   }
