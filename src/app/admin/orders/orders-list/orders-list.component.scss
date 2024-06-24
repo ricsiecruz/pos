@@ -2,7 +2,7 @@
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
 
-.inventory {
+.orders-list {
     @include media-breakpoint-down(sm) {
         padding: 20px;
     }
@@ -24,6 +24,27 @@
         }
         &_add:hover {
             background: #ffbb00;
+        }
+    }
+    &_stat {
+        display: flex;
+        justify-content: space-between;
+        &_card {
+            margin-bottom: 25px;
+            border-radius: 6px;
+            padding: 20px;
+            border: 1px solid #dbe0e6;
+            width: 275px;
+            margin-top: 20px;
+            font-weight: 400;
+            font-size: 14px;
+            color: #67748E;
+            div {
+                color: #092C4C;
+                font-weight: 700;
+                font-size: 18px;
+                margin-bottom: 5px;
+            }
         }
     }
     &_table {
