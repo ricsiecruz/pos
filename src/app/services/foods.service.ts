@@ -12,8 +12,8 @@ export class FoodsService implements OnDestroy {
   // API_URL = environment.apiUrl;
 API_URL = ('https://pos-backend-kt9t.vercel.app/');
 
-  private productsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  foods$: Observable<any[]> = this.productsSubject.asObservable();
+  private foodsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  foods$: Observable<any[]> = this.foodsSubject.asObservable();
   private websocketSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
@@ -50,22 +50,27 @@ API_URL = ('https://pos-backend-kt9t.vercel.app/');
   }
 
   private updateProducts(foods: any[]): void {
-    this.productsSubject.next(foods);
+    this.foodsSubject.next(foods);
   }
 
   private addOrUpdateProduct(food: any): void {
     console.log('f', food)
-    const existingProductIndex = this.productsSubject.value.findIndex(p => p.id === food.id);
+    const existingProductIndex = this.foodsSubject.value.findIndex(p => p.id === food.id);
     if (existingProductIndex === -1) {
-      this.productsSubject.next([...this.productsSubject.value, food]);
+      this.foodsSubject.next([...this.foodsSubject.value, food]);
     } else {
-      const updatedProducts = [...this.productsSubject.value];
+      const updatedProducts = [...this.foodsSubject.value];
       updatedProducts[existingProductIndex] = food;
-      this.productsSubject.next(updatedProducts);
+      this.foodsSubject.next(updatedProducts);
     }
   }
 
-  editProduct(id: string, updatedProduct: any) {
+  editProduct(productId: string, updatedFood: any) {
+    console.log('edit food', productId, updatedFood)
+    this.webSocketService.send({ action: 'editFood', productId, product: updatedFood });
+  }
+
+  addStocks(id: string, updatedProduct: any) {
     console.log('j', id, updatedProduct)
     this.webSocketService.send({ action: 'addFoodStock', id, food: updatedProduct });
   }

@@ -12,6 +12,7 @@ export class FoodsComponent {
 
   @ViewChild('addProductModal') addProductModal?: TemplateRef<any>;
   @ViewChild('addStockModal') addStockModal?: TemplateRef<any>;
+  @ViewChild('editProductModal') editProductModal?: TemplateRef<any>;
   products: any[] = [];
   newProduct: any = { product: '', price: '', stocks: '' };
   editingProduct: any = null;
@@ -37,6 +38,11 @@ export class FoodsComponent {
     });
   }
 
+  editProduct(product: any) {
+    this.editingProduct = { ...product };
+    this.modalService.openModal(this.editProductModal);
+  }
+
   addModal() {
     this.modalService.openModal(this.addProductModal);
   }
@@ -47,12 +53,21 @@ export class FoodsComponent {
     this.newProduct = { product: '', price: '', stocks: '' };
   }
 
-  editProduct(product: any) {
+  addStocks(product: any) {
     this.editingProduct = { ...product };
     this.modalService.openModal(this.addStockModal);
   }
 
   saveEditedProduct() {
+    if (this.editingProduct) {
+      console.log('drinks', this.editingProduct.id, this.editingProduct)
+      this.foodsService.editProduct(this.editingProduct.id, this.editingProduct)
+      this.modalService.closeModal();
+      this.editingProduct = null;
+    }
+  }
+
+  saveAddedStocks() {
     const newStocks = parseInt(this.qty, 10);
     if (!isNaN(newStocks)) {
       const currentStocks = parseInt(this.editingProduct.stocks, 10);
@@ -67,7 +82,7 @@ export class FoodsComponent {
       });
       this.products = updatedProducts;
 
-      this.foodsService.editProduct(this.editingProduct.id, this.editingProduct);
+      this.foodsService.addStocks(this.editingProduct.id, this.editingProduct);
       this.modalService.closeModal();
       this.editingProduct = null;
     } else {

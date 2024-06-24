@@ -24,17 +24,45 @@
                     {{ data.stocks }}
                 </div>
                 <div class="table_five">
-                    <div class="products_table_list_add" (click)="editProduct(data)">
+                    <div class="products_table_list_add" (click)="addStocks(data)">
                         Add stocks
                     </div>
                 </div>
                 <div class="table_three">
                     PHP {{ data.price }}
                 </div>
+                <div class="table_five">
+                    <div class="products_table_list_add" (click)="editProduct(data)">
+                        Edit
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<ng-template #editProductModal let-d="dismiss">
+    <div *ngIf="editingProduct">
+      <div class="modal-header">
+        Edit <span>{{ editingProduct?.product }}</span>
+      </div>
+      <div class="modal-body">
+        <form (submit)="saveEditedProduct()">
+          <div class="modal-body-label">
+            <label for="editProductPrice">Price:</label>
+            </div>
+            <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.price" required>
+            <div class="modal-btns">
+                <button class="btn modal-btns-cancel"  (click)="cancelForm()" type="button">Cancel</button>
+                <button class="btn modal-btns-add" type="submit">
+                    Save
+                </button>
+            </div>
+        </form>
+      </div>
+    </div>
+</ng-template>
 
 <ng-template #addProductModal let-d="dismiss">
     <div class="modal-header">
@@ -65,7 +93,7 @@
         Add stocks to<span>{{ editingProduct?.food }}</span>
     </div>
     <div class="modal-body">
-        <form (submit)="saveEditedProduct()">
+        <form (submit)="saveAddedStocks()">
             <div class="modal-body-label">
                 <label>Current stock:</label>
                 <div>{{ editingProduct?.stocks }}</div>
