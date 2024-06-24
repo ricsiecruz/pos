@@ -41,6 +41,7 @@ export class OrdersComponent {
     this.salesService.sales$.subscribe((products: any) => {
       if (products && products.length > 0) {
         this.products = products;
+        console.log('aaa', this.products)
         this.updateCalculations();
       }
     });
@@ -64,12 +65,18 @@ export class OrdersComponent {
     this.salesService.getTotalSalesSumToday().subscribe(
       totalSumToday => {
         this.totalSalesSumToday = totalSumToday;  
+        console.log('this.totalSalesSumToday', this.totalSalesSumToday )
         this.foodDrinksToday = this.totalSalesSumToday - this.computerToday;
       },
       error => {
         console.error('Error fetching total sales sum:', error);
       }
     );
+
+    // this.salesService.getCurrentDateSales().subscribe((res: any) => {
+    //   console.log('res', res)
+    //   this.todayProducts = res;
+    // })
   }
 
   private updateCalculations() {
@@ -106,6 +113,8 @@ export class OrdersComponent {
   
       return productDate.getTime() === today.getTime();
     });
+
+    console.log('today', this.todayProducts)
   }
 
   filterTodayExpenses() {

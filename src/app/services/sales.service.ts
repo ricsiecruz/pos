@@ -4,6 +4,7 @@ import { WebSocketService } from '../websocket-service';
 import { Observable, BehaviorSubject, merge, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { response } from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,9 @@ import { environment } from '../../environments/environment';
 export class SalesService implements OnDestroy {
   API_URL = 'https://pos-backend-kt9t.vercel.app/';
   private salesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  private salesCurrentDateSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   sales$: Observable<any[]> = this.salesSubject.asObservable();
+  salesCurrentDate$: Observable<any[]> = this.salesCurrentDateSubject.asObservable();
   private websocketSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
@@ -89,5 +92,11 @@ export class SalesService implements OnDestroy {
     return this.http.get<{ total_sum_today: number }>(this.API_URL + 'sales/total-sum-today').pipe(
       map(response => response.total_sum_today)
     );
+  }
+
+  getCurrentDateSales(): Observable<any> {
+    return this.http.get<{ today: any }>(this.API_URL + 'sales/today').pipe(
+      map(response => response.today)
+    )
   }
 }
