@@ -57,7 +57,6 @@ export class ExpensesComponent {
     this.newExpenses = { expense: '', month: '', date: '', amount: '', channel: '' };
   }
   
-  
   private calculateTotalSum(expenses: any[]): number {
     return expenses.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
   }
@@ -79,8 +78,8 @@ export class ExpensesComponent {
   }
 
   cancelForm() {
-    this.clearForm(); // Call the method to reset form fields
-    this.modalService.closeModal(); // Close the modal
+    this.clearForm();
+    this.modalService.closeModal();
   }  
 
   updateInventory() {

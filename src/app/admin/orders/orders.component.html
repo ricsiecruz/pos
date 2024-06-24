@@ -9,10 +9,10 @@
 
         <tabset>
             <tab heading="Today">
-                <app-orders-list [sales]="todaySubtotal" [credit]="totalCreditCurrentDate" [dataSource]="todayProducts" [pay]="pay" [openModal]="openModal"></app-orders-list>
+                <app-orders-list [sales]="todaySubtotal" [expenses]="totalExpensesToday" [net]="netToday" [credit]="totalCreditCurrentDate" [dataSource]="todayProducts" [pay]="pay" [openModal]="openModal"></app-orders-list>
             </tab>
             <tab heading="All">
-                <app-orders-list [sales]="subtotal" [credit]="totalCreditAllData" [dataSource]="products" [pay]="pay" [openModal]="openModal"></app-orders-list>
+                <app-orders-list [sales]="subtotal" [expenses]="totalExpenses" [net]="net" [credit]="totalCreditAllData" [dataSource]="products" [pay]="pay" [openModal]="openModal"></app-orders-list>
             </tab>
         </tabset>
     </div>

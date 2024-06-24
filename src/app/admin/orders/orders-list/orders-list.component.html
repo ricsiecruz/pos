@@ -6,6 +6,14 @@
     Credit: PHP {{ credit }}
 </div>
 
+<div>
+    Expenses: PHP {{ expenses | number:'1.2-2' }}
+</div>
+
+<div>
+    Net: PHP {{ net | number:'1.2-2' }}
+</div>
+
 <div class="inventory_table_header">
     <div class="table_five">Customer</div>
     <div class="table_two">Qty</div>
