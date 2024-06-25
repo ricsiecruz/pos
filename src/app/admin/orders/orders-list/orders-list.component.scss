@@ -93,7 +93,22 @@
 
 .table {
     &_one {
-        width: 240px;
+        width: 140px;
+        span {
+            cursor: pointer;
+            border-radius: 3px;
+            text-align: center;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            background-color: #17a2b8 !important;
+            border: 1px solid #17a2b8 !important;
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(9, 44, 76, 0.15);
+        }
+        span:hover {
+            background-color: #138698 !important;
+            border: 1px solid #138698 !important;
+        }
     }
     &_two {
         width: 70px;

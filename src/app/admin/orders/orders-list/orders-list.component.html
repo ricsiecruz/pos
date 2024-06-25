@@ -1,127 +1,196 @@
 <div class="orders-list">
-    <div class="orders-list_stat">
-      <div class="orders-list_stat_card">
-        Gross
-        <div>
-          PHP {{ sales | number:'1.2-2' }}
-        </div>
-      </div>
-      <div class="orders-list_stat_card">
-        Expenses
-        <div>
-          PHP {{ expenses | number:'1.2-2' }}
-        </div>
-      </div>
-      <div class="orders-list_stat_card">
-        Net
-        <div>
-          PHP {{ net | number:'1.2-2' }}
-        </div>
-      </div>
-      <div class="orders-list_stat_card">
-        Credit
-        <div>
-          PHP {{ credit | number:'1.2-2' }}
-        </div>
+  <div class="orders-list_stat">
+    <div class="orders-list_stat_card">
+      Gross
+      <div>
+        PHP {{ totalSales | number:'1.2-2' }}
       </div>
     </div>
-    <div class="orders-list_stat" style="justify-content: flex-start; column-gap: 20px;">
-      <div class="orders-list_stat_card" style="margin: 0;">
-        PC
-        <div>
-          PHP {{ computer | number:'1.2-2' }}
-        </div>
-      </div>
-      <div class="orders-list_stat_card" style="margin: 0;">
-        Food and drinks
-        <div>
-          PHP {{ foodDrinks | number:'1.2-2' }}
-        </div>
+    <div class="orders-list_stat_card">
+      Expenses
+      <div>
+        PHP {{ expenses | number:'1.2-2' }}
       </div>
     </div>
-    <div class="orders-list_table_header">
-      <div class="table_five">Customer</div>
-      <div class="table_two">Qty</div>
-      <div class="table_four">Date</div>
-      <div class="table_six">Computer</div>
-      <div class="table_one"></div>
-      <div class="table_eight">Credit</div>
-      <div class="table_nine"></div>
-      <div class="table_three">Total</div>
-      <div class="table_seven"></div>
-    </div>
-    <div *ngIf="dataSource.length > 0; else noData">
-      <div class="orders-list_table_list" *ngFor="let data of dataSource">
-        <div class="table_five">
-          {{ data.customer }}
-        </div>
-        <div class="table_two">
-          {{ data.qty }}
-        </div>
-        <div class="table_four">
-          {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}
-        </div>
-        <div class="table_six">
-          <div *ngIf="data.computer == null || data.computer == '0.00'; else computer">
-            -
-          </div>
-          <ng-template #computer>
-            PHP {{ data.computer }}
-          </ng-template>
-        </div>
-        <div class="table_one">
-          <div class="products_table_list_add" (click)="editProduct(data)">
-              Edit
-          </div>
-      </div>
-        <div class="table_eight">
-          <div *ngIf="data.credit == null || data.credit == '0.00'; else credit">
-            -
-          </div>
-          <ng-template #credit>
-            PHP {{ data.credit }}
-          </ng-template>
-        </div>
-        <div class="table_nine">
-          <div (click)="payCredit(data)" *ngIf="data.credit != null && data.credit != '0.00'" class="secondary-btn">
-            pay
-          </div>
-        </div>
-        <div class="table_three">
-          PHP {{ data.total }}
-        </div>
-        <div class="table_seven">
-          <div (click)="openModal(data)" class="primary-btn">
-            view
-          </div>
-        </div>
+    <div class="orders-list_stat_card">
+      Net
+      <div>
+        PHP {{ net | number:'1.2-2' }}
       </div>
     </div>
-    <ng-template #noData>
-      <div style="text-align: center; padding: 10px;">
-        No data
+    <div class="orders-list_stat_card">
+      Credit
+      <div>
+        PHP {{ credit | number:'1.2-2' }}
       </div>
-    </ng-template>
-    <ng-template #editProductModal let-d="dismiss">
-        <div *ngIf="editingProduct">
-          <div class="modal-header">
-            Edit <span>{{ editingProduct?.product }}</span>
-          </div>
-          <div class="modal-body">
-            <form (submit)="saveEditedProduct()">
-              <div class="modal-body-label">
-                <label for="editProductPrice">Load:</label>
-                </div>
-                <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.computer" required>
-                <div class="modal-btns">
-                    <button class="btn modal-btns-cancel"  (click)="cancelForm()" type="button">Cancel</button>
-                    <button class="btn modal-btns-add" type="submit">
-                        Save
-                    </button>
-                </div>
-            </form>
-          </div>
-        </div>
-    </ng-template>
+    </div>
   </div>
-  
+  <div class="orders-list_stat" style="justify-content: flex-start; column-gap: 20px;">
+    <div class="orders-list_stat_card" style="margin: 0;">
+      PC
+      <div>
+        PHP {{ computer | number:'1.2-2' }}
+      </div>
+    </div>
+    <div class="orders-list_stat_card" style="margin: 0;">
+      Food and drinks
+      <div>
+        PHP {{ foodDrinks | number:'1.2-2' }}
+      </div>
+    </div>
+  </div>
+  <div class="orders-list_table_header">
+    <div class="table_five">Customer</div>
+    <div class="table_two">Qty</div>
+    <div class="table_four">Date</div>
+    <div class="table_six">Computer</div>
+    <div class="table_one"></div>
+    <div class="table_eight">Credit</div>
+    <div class="table_nine"></div>
+    <div class="table_three">Total</div>
+    <div class="table_seven"></div>
+  </div>
+  <div *ngIf="dataSource.length > 0; else noData">
+    <div class="orders-list_table_list" *ngFor="let data of dataSource">
+      <div class="table_five">
+        {{ data.customer }}
+      </div>
+      <div class="table_two">
+        {{ data.qty }}
+      </div>
+      <div class="table_four">
+        {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}
+      </div>
+      <div class="table_six">
+        <div *ngIf="data.computer == null || data.computer == '0.00'; else computer">
+          -
+        </div>
+        <ng-template #computer>
+          PHP {{ data.computer }}
+        </ng-template>
+      </div>
+      <div class="table_one">
+        <span class="products_table_list_add" (click)="editProduct(data)">
+            Edit
+        </span>
+    </div>
+      <div class="table_eight">
+        <div *ngIf="data.credit == null || data.credit == '0.00'; else credit">
+          -
+        </div>
+        <ng-template #credit>
+          PHP {{ data.credit }}
+        </ng-template>
+      </div>
+      <div class="table_nine">
+        <div (click)="payCredit(data)" *ngIf="data.credit != null && data.credit != '0.00'" class="secondary-btn">
+          pay
+        </div>
+      </div>
+      <div class="table_three">
+        PHP {{ data.total }}
+      </div>
+      <div class="table_seven">
+        <div (click)="view(data)" class="primary-btn">
+          view
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #noData>
+    <div style="text-align: center; padding: 10px;">
+      No data
+    </div>
+  </ng-template>
+  <ng-template #editProductModal let-d="dismiss">
+      <div *ngIf="editingProduct">
+        <div class="modal-header">
+          Edit <span>{{ editingProduct?.product }}</span>
+        </div>
+        <div class="modal-body">
+          <form (submit)="saveEditedProduct()">
+            <div class="modal-body-label">
+              <label for="editProductPrice">Load:</label>
+              </div>
+              <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.computer" required>
+              <div class="modal-btns">
+                  <button class="btn modal-btns-cancel"  (click)="cancelForm()" type="button">Cancel</button>
+                  <button class="btn modal-btns-add" type="submit">
+                      Save
+                  </button>
+              </div>
+          </form>
+        </div>
+      </div>
+  </ng-template>
+  <ng-template #sales let-d="dismiss">
+    <div class="modal-content" style="width: 424px;">
+        <div class="invoice">
+            <div class="invoice_header">
+                <img src="assets/img/logo.png">
+                <div>
+                    <div>POS</div>
+                    <div>TECH HYBE</div>
+                </div>
+            </div>
+            <div class="invoice_text">
+                Invoice
+            </div>
+            <div class="invoice_body">
+                <div class="invoice_body_header">
+                    <div>Invoice #:</div>
+                    <div>{{ details?.transactionid }}</div>
+                </div>
+                <div class="invoice_body_header">
+                    <div>Date:</div>
+                    <div>{{ details?.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}</div>
+                </div>
+                <div class="invoice_body_table">
+                    <div class="invoice_body_table_header">
+                        <div class="table1_one">Item</div>
+                        <div class="table1_two">Price</div>
+                        <div class="table1_three">Qty</div>
+                        <div class="table1_four">Total</div>
+                    </div>
+                    <div *ngFor="let order of details?.orders" class="invoice_body_table_data">
+                        <div class="table1_one">
+                            {{ order.product }}
+                        </div>
+                        <div class="table1_two">
+                            PHP {{ order.price }}
+                        </div>
+                        <div class="table1_three">
+                            {{ order.quantity }}
+                        </div>
+                        <div class="table1_four">
+                            PHP {{ order.total }}
+                        </div>
+                    </div>
+                </div>
+                <div class="invoice_body_header">
+                    <div>Items:</div>
+                    <div>{{ details?.qty }}</div>
+                </div>
+                <div class="invoice_body_header">
+                    <div>
+                        Subtotal: 
+                    </div>
+                    <div>
+                        PHP {{ details?.subtotal }}
+                    </div>
+                    
+                </div>
+                <div class="invoice_body_header">
+                    <div>Computer:</div>
+                    <div>PHP {{ details?.computer }}</div>
+                </div>
+                <div class="invoice_body_total">
+                    <div>Total Payable:</div>
+                    <div>PHP {{ details?.total }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </ng-template>
+</div>

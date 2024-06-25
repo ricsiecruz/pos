@@ -9,16 +9,17 @@ import { ModalService } from '../../../modal.service';
   styleUrls: ['./orders-list.component.scss']
 })
 export class OrdersListComponent {
-  @Input() sales: any;
-  @Input() credit: any;
-  @Input() expenses: any;
-  @Input() net: any;
-  @Input() computer: any;
-  @Input() foodDrinks: any;
+  @Input() totalSales: number = 0;
+  @Input() credit: number = 0;
+  @Input() expenses: number = 0;
+  @Input() net: number = 0;
+  @Input() computer: number = 0;
+  @Input() foodDrinks: number = 0;
   @Input() dataSource: any[] = [];
+  @Input() details: any;
   @Input() pay!: (data: any) => void;
-  @Input() openModal!: (data: any) => void;
   @ViewChild('editProductModal') editProductModal?: TemplateRef<any>;
+  @ViewChild('sales') sales?: TemplateRef<any>;
   editingProduct: any = null;
 
   constructor(
@@ -34,6 +35,11 @@ export class OrdersListComponent {
   editProduct(product: any) {
     this.editingProduct = { ...product };
     this.modalService.openModal(this.editProductModal);
+  }
+
+  view(product: any) {
+    this.details = product
+    this.modalService.openModal(this.sales);
   }
 
   saveEditedProduct() {
@@ -72,7 +78,7 @@ export class OrdersListComponent {
       Computer: `PHP ${item.computer}`,
       Credit: item.credit ? `PHP ${item.credit}` : '-',
       Total: `PHP ${item.total}`,
-      Sales: `PHP ${this.sales}`,
+      Sales: `PHP ${this.totalSales}`,
       Expenses: `PHP ${this.expenses}`,
       Net: `PHP ${this.net}`,
       CreditTotal: `PHP ${this.credit}`,
