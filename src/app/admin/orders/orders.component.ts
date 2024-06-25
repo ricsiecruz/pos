@@ -62,6 +62,13 @@ export class OrdersComponent {
       }
     );
 
+    // this.salesService.getCurrentDateSales().subscribe((res: any) => {
+    //   console.log('res', res)
+    //   this.todayProducts = res;
+    // })
+  }
+
+  calculateSalesToday() {
     this.salesService.getTotalSalesSumToday().subscribe(
       totalSumToday => {
         this.totalSalesSumToday = totalSumToday;  
@@ -72,16 +79,12 @@ export class OrdersComponent {
         console.error('Error fetching total sales sum:', error);
       }
     );
-
-    // this.salesService.getCurrentDateSales().subscribe((res: any) => {
-    //   console.log('res', res)
-    //   this.todayProducts = res;
-    // })
   }
 
   private updateCalculations() {
     this.filterTodayProducts();
     this.filterTodayExpenses();
+    this.calculateSalesToday();
   
     this.totalCups = this.calculateTotalCups(this.products);
   
