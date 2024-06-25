@@ -100,6 +100,12 @@ export class SalesService implements OnDestroy {
     );
   }
 
+  getSumOfFoodsAndDrinksForToday(): Observable<number> {
+    return this.http.get<{ total_sum_of_foods_and_drinks_today: number }>(this.API_URL + 'sales/total-sum-of-foods-and-drinks-today').pipe(
+      map(response => response.total_sum_of_foods_and_drinks_today)
+    )
+  }
+
   getCurrentDateSales(): Observable<any> {
     return this.http.get<{ today: any }>(this.API_URL + 'sales/today').pipe(
       map(response => response.today)

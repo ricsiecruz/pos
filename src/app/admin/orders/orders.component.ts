@@ -30,6 +30,7 @@ export class OrdersComponent {
   totalSalesSumToday: number = 0;
   foodDrinks: number = 0;
   foodDrinksToday: number = 0;
+  totalFoodsAndDrinksToday: number = 0;
 
   constructor(
     private salesService: SalesService,
@@ -81,10 +82,23 @@ export class OrdersComponent {
     );
   }
 
+  calculateFoodsAndDrinksToday() {
+    this.salesService.getSumOfFoodsAndDrinksForToday().subscribe(
+      res => {
+        console.log('bbb', res)
+        this.totalFoodsAndDrinksToday = res;
+      },
+      error => {
+        console.error('Error:', error);
+      }
+    )
+  }
+
   private updateCalculations() {
     this.filterTodayProducts();
     this.filterTodayExpenses();
     this.calculateSalesToday();
+    this.calculateFoodsAndDrinksToday();
   
     this.totalCups = this.calculateTotalCups(this.products);
   
