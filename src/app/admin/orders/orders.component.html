@@ -13,33 +13,106 @@
             </div>
             <app-orders-list 
                 #sales
-                [sales]="totalSalesSumToday" 
+                [totalSales]="totalSalesSumToday" 
                 [expenses]="totalExpensesToday" 
                 [net]="netToday" 
                 [credit]="totalCreditCurrentDate" 
                 [computer]="computerToday"
                 [foodDrinks]="foodDrinksToday"
-                [dataSource]="todayProducts" 
+                [dataSource]="todayProducts"
+                [details]="details"
                 [pay]="pay.bind(this)" 
-                [openModal]="openModal.bind(this)">
+                >
             </app-orders-list>
+
         </tab>
   
         <tab heading="All">
-          <app-orders-list 
-            #sales
-            [sales]="totalSalesSum" 
-            [expenses]="totalExpenses" 
-            [net]="net" 
-            [credit]="totalCreditAllData" 
-            [computer]="computer"
-            [foodDrinks]="foodDrinks"
-            [dataSource]="products" 
-            [pay]="pay.bind(this)" 
-            [openModal]="openModal.bind(this)">
-          </app-orders-list>
+            <app-orders-list 
+                #sales
+                [totalSales]="totalSalesSum" 
+                [expenses]="totalExpenses" 
+                [net]="net" 
+                [credit]="totalCreditAllData" 
+                [computer]="computer"
+                [foodDrinks]="foodDrinks"
+                [dataSource]="products" 
+                [details]="details"
+                [pay]="pay.bind(this)" 
+                >
+            </app-orders-list>
+        
         </tab>
       </tabset>
     </div>
   </div>
   
+  <ng-template #sales let-d="dismiss">
+    <div class="modal-content" style="width: 424px;">
+        <div class="invoice">
+            <div class="invoice_header">
+                <img src="assets/img/logo.png">
+                <div>
+                    <div>POS</div>
+                    <div>TECH HYBE</div>
+                </div>
+            </div>
+            <div class="invoice_text">
+                Invoice
+            </div>
+            <div class="invoice_body">
+                <div class="invoice_body_header">
+                    <div>Invoice #:</div>
+                    <div>{{ details?.transactionid }}</div>
+                </div>
+                <div class="invoice_body_header">
+                    <div>Date:</div>
+                    <div>{{ details?.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}</div>
+                </div>
+                <div class="invoice_body_table">
+                    <div class="invoice_body_table_header">
+                        <div class="table1_one">Item</div>
+                        <div class="table1_two">Price</div>
+                        <div class="table1_three">Qty</div>
+                        <div class="table1_four">Total</div>
+                    </div>
+                    <div *ngFor="let order of details?.orders" class="invoice_body_table_data">
+                        <div class="table1_one">
+                            {{ order.product }}
+                        </div>
+                        <div class="table1_two">
+                            PHP {{ order.price }}
+                        </div>
+                        <div class="table1_three">
+                            {{ order.quantity }}
+                        </div>
+                        <div class="table1_four">
+                            PHP {{ order.total }}
+                        </div>
+                    </div>
+                </div>
+                <div class="invoice_body_header">
+                    <div>Items:</div>
+                    <div>{{ details?.qty }}</div>
+                </div>
+                <div class="invoice_body_header">
+                    <div>
+                        Subtotal: 
+                    </div>
+                    <div>
+                        PHP {{ details?.subtotal }}
+                    </div>
+                    
+                </div>
+                <div class="invoice_body_header">
+                    <div>Computer:</div>
+                    <div>PHP {{ details?.computer }}</div>
+                </div>
+                <div class="invoice_body_total">
+                    <div>Total Payable:</div>
+                    <div>PHP {{ details?.total }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -142,12 +142,11 @@ export class OrdersComponent {
 
   openModal(product: any) {
     this.details = product;
-    this.modalService.openModal(this.sales);
+    this.modalService.openModal(this.sales.editProductModal);
   }
 
   private calculateTotalCups(products: any): number {
     return products.reduce((acc: any, curr: any) => {
-      // Check if curr.qty is defined and not null before accessing toString()
       const qty = curr.qty !== undefined && curr.qty !== null ? parseFloat(curr.qty.toString()) : 0;
       return acc + qty;
     }, 0);
