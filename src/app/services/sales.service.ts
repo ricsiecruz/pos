@@ -63,6 +63,11 @@ export class SalesService implements OnDestroy {
     this.webSocketService.send({ action: 'updateSales', id, sales: updatedTransaction });
   }
 
+  editLoad(productId: string, updatedLoad: any) {
+    console.log('edit food', productId, updatedLoad)
+    this.webSocketService.send({ action: 'editSalesLoad', productId, product: updatedLoad });
+  }
+
   private addOrUpdateSale(sale: any): void {
     const existingSaleIndex = this.salesSubject.value.findIndex(s => s.id === sale.id);
     if (existingSaleIndex === -1) {

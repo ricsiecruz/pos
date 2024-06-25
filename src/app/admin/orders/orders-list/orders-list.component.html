@@ -44,6 +44,7 @@
       <div class="table_two">Qty</div>
       <div class="table_four">Date</div>
       <div class="table_six">Computer</div>
+      <div class="table_one"></div>
       <div class="table_eight">Credit</div>
       <div class="table_nine"></div>
       <div class="table_three">Total</div>
@@ -68,6 +69,11 @@
             PHP {{ data.computer }}
           </ng-template>
         </div>
+        <div class="table_one">
+          <div class="products_table_list_add" (click)="editProduct(data)">
+              Edit
+          </div>
+      </div>
         <div class="table_eight">
           <div *ngIf="data.credit == null || data.credit == '0.00'; else credit">
             -
@@ -95,6 +101,27 @@
       <div style="text-align: center; padding: 10px;">
         No data
       </div>
+    </ng-template>
+    <ng-template #editProductModal let-d="dismiss">
+        <div *ngIf="editingProduct">
+          <div class="modal-header">
+            Edit <span>{{ editingProduct?.product }}</span>
+          </div>
+          <div class="modal-body">
+            <form (submit)="saveEditedProduct()">
+              <div class="modal-body-label">
+                <label for="editProductPrice">Load:</label>
+                </div>
+                <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.computer" required>
+                <div class="modal-btns">
+                    <button class="btn modal-btns-cancel"  (click)="cancelForm()" type="button">Cancel</button>
+                    <button class="btn modal-btns-add" type="submit">
+                        Save
+                    </button>
+                </div>
+            </form>
+          </div>
+        </div>
     </ng-template>
   </div>
   

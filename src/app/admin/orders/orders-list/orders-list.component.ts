@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { SalesService } from '../../../services/sales.service';
 import * as XLSX from 'xlsx';
+import { ModalService } from '../../../modal.service';
 
 @Component({
   selector: 'app-orders-list',
@@ -17,12 +18,35 @@ export class OrdersListComponent {
   @Input() dataSource: any[] = [];
   @Input() pay!: (data: any) => void;
   @Input() openModal!: (data: any) => void;
+  @ViewChild('editProductModal') editProductModal?: TemplateRef<any>;
+  editingProduct: any = null;
 
-  constructor(private salesService: SalesService) {}
+  constructor(
+    private salesService: SalesService,
+    private modalService: ModalService,
+  ) {}
 
   payCredit(data: any) {
     data.credit = null;
     this.salesService.editTransaction(data.id, data);
+  }
+
+  editProduct(product: any) {
+    this.editingProduct = { ...product };
+    this.modalService.openModal(this.editProductModal);
+  }
+
+  saveEditedProduct() {
+    if (this.editingProduct) {
+      console.log('drinks', this.editingProduct.id, this.editingProduct)
+      this.salesService.editLoad(this.editingProduct.id, this.editingProduct)
+      this.modalService.closeModal();
+      this.editingProduct = null;
+    }
+  }
+
+  cancelForm() {
+    this.modalService.closeModal();
   }
 
   exportToExcel(): void {
