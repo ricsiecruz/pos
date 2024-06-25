@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { SalesService } from '../../services/sales.service';
 import { ModalService } from '../../modal.service';
 import { ExpensesService } from '../../services/expenses.service';
@@ -9,8 +9,8 @@ import { OrdersListComponent } from './orders-list/orders-list.component';
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss']
 })
-export class OrdersComponent {
-  @ViewChild('sales') sales!: OrdersListComponent;
+export class OrdersComponent implements AfterViewInit {
+  @ViewChild(OrdersListComponent) sales!: OrdersListComponent;
 
   products: any[] = [];
   todayProducts: any[] = [];
@@ -67,6 +67,10 @@ export class OrdersComponent {
     this.salesService.getCurrentDateSales().subscribe((res: any) => {
       this.todayProducts = res;
     })
+  }
+
+  ngAfterViewInit() {
+    // Now the sales component is accessible
   }
 
   filter(startDate: any, endDate: any) {
