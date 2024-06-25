@@ -2,7 +2,7 @@
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
 
-.inventory {
+.orders {
     @include media-breakpoint-down(sm) {
         padding: 20px;
     }
@@ -45,6 +45,19 @@
             justify-content: end;
             margin-top: 10px;
             column-gap: 10px;
+        }
+        &_filter {
+            display: flex;
+            font-weight: 400;
+            font-size: 14px;
+            color: #67748E;
+            column-gap: 10px;
+            margin-top: 10px;
+            justify-content: end;
+            &_date {
+                display: flex;
+                column-gap: 10px;
+            }
         }
         &_header {
             display: flex;
@@ -341,3 +354,7 @@ input {
     }
 }
 
+.orders_table_filter .btn {
+    height: 40px;
+    width: 80px;
+}

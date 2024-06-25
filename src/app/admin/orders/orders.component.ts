@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { SalesService } from '../../services/sales.service';
 import { ModalService } from '../../modal.service';
 import { ExpensesService } from '../../services/expenses.service';
-import { OrdersListComponent } from './orders-list/orders-list.component'; // Import OrdersListComponent
+import { OrdersListComponent } from './orders-list/orders-list.component';
 
 @Component({
   selector: 'app-orders',
@@ -10,7 +10,7 @@ import { OrdersListComponent } from './orders-list/orders-list.component'; // Im
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent {
-  @ViewChild('sales') sales!: OrdersListComponent; // ViewChild reference
+  @ViewChild('sales') sales!: OrdersListComponent;
 
   products: any[] = [];
   todayProducts: any[] = [];
@@ -31,6 +31,8 @@ export class OrdersComponent {
   foodDrinks: number = 0;
   foodDrinksToday: number = 0;
   totalFoodsAndDrinksToday: number = 0;
+  startDate: any;
+  endDate: any;
 
   constructor(
     private salesService: SalesService,
@@ -42,7 +44,6 @@ export class OrdersComponent {
     this.salesService.sales$.subscribe((products: any) => {
       if (products && products.length > 0) {
         this.products = products;
-        console.log('aaa', this.products)
         this.updateCalculations();
       }
     });
@@ -64,16 +65,43 @@ export class OrdersComponent {
     );
 
     this.salesService.getCurrentDateSales().subscribe((res: any) => {
-      console.log('res', res)
       this.todayProducts = res;
     })
+  }
+
+  filter(startDate: any, endDate: any) {
+    console.log('filter', startDate, endDate)
+    this.salesService.getFilteredSales(startDate, endDate).subscribe(
+      (data: any) => {
+        console.log('data', data)
+        this.products = data;
+        // Calculate other statistics based on filtered data if necessary.
+      },
+      (error: any) => {
+        console.error('Error fetching filtered sales data:', error);
+      }
+    );
+  }
+
+  clearFilter() {
+    this.startDate = null;
+    this.endDate = null;
+    this.salesService.getSales().subscribe(
+      (data: any) => {
+        console.log('clear', data, data.total_sum)
+        this.products = data.total_sum;
+        // Calculate other statistics based on all data if necessary.
+      },
+      (error: any) => {
+        console.error('Error fetching all sales data:', error);
+      }
+    );
   }
 
   calculateSalesToday() {
     this.salesService.getTotalSalesSumToday().subscribe(
       totalSumToday => {
         this.totalSalesSumToday = totalSumToday;  
-        console.log('this.totalSalesSumToday', this.totalSalesSumToday )
         this.foodDrinksToday = this.totalSalesSumToday - this.computerToday;
       },
       error => {
@@ -85,7 +113,6 @@ export class OrdersComponent {
   calculateFoodsAndDrinksToday() {
     this.salesService.getSumOfFoodsAndDrinksForToday().subscribe(
       res => {
-        console.log('bbb', res)
         this.totalFoodsAndDrinksToday = res;
       },
       error => {
@@ -99,23 +126,15 @@ export class OrdersComponent {
     this.filterTodayExpenses();
     this.calculateSalesToday();
     this.calculateFoodsAndDrinksToday();
-  
     this.totalCups = this.calculateTotalCups(this.products);
-  
-    // Net calculations
     this.totalExpenses = this.calculateTotalExpenses(this.expenses);
     this.totalExpensesToday = this.calculateTotalExpenses(this.todayExpenses);
     this.net = this.totalSalesSum - this.totalExpenses;
     this.netToday = this.totalSalesSumToday - this.totalExpensesToday;
-  
-    // Credit calculations
     this.totalCreditAllData = this.calculateCredit(this.products);
     this.totalCreditCurrentDate = this.calculateCredit(this.todayProducts);
-  
-    // Computer calculations
     this.computer = this.calculateComputer(this.products);
     this.computerToday = this.calculateComputer(this.todayProducts);
-
     this.foodDrinks = this.totalSalesSum - this.computer;
     this.foodDrinksToday = this.totalSalesSumToday - this.computerToday;
   }
@@ -123,35 +142,28 @@ export class OrdersComponent {
   filterTodayProducts() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-  
     this.todayProducts = this.products.filter(product => {
       const productDate = new Date(product.datetime);
       productDate.setHours(0, 0, 0, 0);
-  
       return productDate.getTime() === today.getTime();
     });
-
-    console.log('today', this.todayProducts)
   }
 
   filterTodayExpenses() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
     this.todayExpenses = this.expenses.filter(expense => {
       const expenseDate = new Date(expense.date);
       expenseDate.setHours(0, 0, 0, 0);
-
       return expenseDate.getTime() === today.getTime();
     });
   }  
 
   private calculateComputer(products: any): number {
-    const computer = products.reduce((acc: any, curr: any) => {
+    return products.reduce((acc: any, curr: any) => {
       const computerValue = parseFloat(curr.computer?.toString() ?? '0');
       return acc + computerValue;
     }, 0);
-    return computer;
   }
 
   openModal(product: any) {
@@ -174,11 +186,10 @@ export class OrdersComponent {
   }
   
   private calculateTotalExpenses(expenses: any[]): number {
-    const totalExpenses = expenses.reduce((acc, curr) => {
+    return expenses.reduce((acc, curr) => {
       const parsedAmount = parseFloat(curr.amount?.toString() ?? '0');
       return acc + parsedAmount;
     }, 0);
-    return totalExpenses;
   }
 
   pay(data: any) {

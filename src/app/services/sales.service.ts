@@ -1,3 +1,4 @@
+// sales service
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { WebSocketService } from '../websocket-service';
@@ -33,7 +34,6 @@ export class SalesService implements OnDestroy {
       ),
       this.http.get<any[]>(this.API_URL + 'sales')
     ).subscribe((data: any | any[]) => {
-      console.log('sales', data);
       if (Array.isArray(data)) {
         this.updateSales(data);
       } else if (data) {
@@ -52,10 +52,7 @@ export class SalesService implements OnDestroy {
     this.webSocketService.send({ action: 'addSales', sale });
   }
 
-  editTransaction(id: string, updatedTransaction: any) {
-    console.log('update sales', id, updatedTransaction);
-    
-    // Ensure updatedTransaction includes transactionid
+  editTransaction(id: string, updatedTransaction: any) {    
     if (!updatedTransaction.transactionid) {
       console.error('Transaction ID is required for updating sales.');
       return;
@@ -65,7 +62,6 @@ export class SalesService implements OnDestroy {
   }
 
   editLoad(productId: string, updatedLoad: any) {
-    console.log('edit food', productId, updatedLoad)
     this.webSocketService.send({ action: 'editSalesLoad', productId, product: updatedLoad });
   }
 
@@ -110,5 +106,9 @@ export class SalesService implements OnDestroy {
     return this.http.get<{ today: any }>(this.API_URL + 'sales/today').pipe(
       map(response => response.today)
     )
+  }
+
+  getFilteredSales(startDate: string, endDate: string): Observable<any[]> {
+    return this.http.post<any[]>(`${this.API_URL}sales`, { startDate, endDate });
   }
 }
