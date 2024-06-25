@@ -185,7 +185,7 @@ export class PosComponent {
     this.selectedMemberId = 0;
     this.selectedProducts = [];
     this.pc = '';
-    this.creditAmount = 0; // Reset creditAmount
+    this.creditAmount = 0;
     this.calculateOverallTotal();
     this.updateButtonState();
     this.credit = false;

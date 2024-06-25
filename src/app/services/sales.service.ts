@@ -11,6 +11,7 @@ import { response } from 'express';
 })
 export class SalesService implements OnDestroy {
   API_URL = 'https://pos-backend-kt9t.vercel.app/';
+  // API_URL = 'http://localhost:3000/';
   private salesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   private salesCurrentDateSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   sales$: Observable<any[]> = this.salesSubject.asObservable();
