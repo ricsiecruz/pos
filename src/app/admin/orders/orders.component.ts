@@ -62,10 +62,10 @@ export class OrdersComponent {
       }
     );
 
-    // this.salesService.getCurrentDateSales().subscribe((res: any) => {
-    //   console.log('res', res)
-    //   this.todayProducts = res;
-    // })
+    this.salesService.getCurrentDateSales().subscribe((res: any) => {
+      console.log('res', res)
+      this.todayProducts = res;
+    })
   }
 
   calculateSalesToday() {
