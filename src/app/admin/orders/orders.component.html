@@ -9,8 +9,9 @@
       <tabset>
         <tab heading="Today">
             <div class="inventory_table_export">
-                <button class="primary-btn" (click)="exportTodaySalesToExcel()">Export</button>
-            </div>
+                <button class="btn btn_success" (click)="exportTodaySalesToExcel()">Export to Excel</button>
+                <button class="btn btn_warning" (click)="exportTodaySalesToCsv()">Export to CSV</button>
+            </div>            
             <app-orders-list 
                 #sales
                 [totalSales]="totalSalesSumToday" 

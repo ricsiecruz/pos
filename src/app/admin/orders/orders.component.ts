@@ -186,7 +186,14 @@ export class OrdersComponent {
     this.salesService.editTransaction(data.id, data);
   }
 
-  // Export today's sales to Excel
+  exportTodaySalesToCsv(): void {
+    if (this.todayProducts.length > 0) {
+      this.sales.exportToCsv();
+    } else {
+      alert('No data available for export.');
+    }
+  }
+
   exportTodaySalesToExcel(): void {
     if (this.todayProducts.length > 0) {
       this.sales.exportToExcel();
