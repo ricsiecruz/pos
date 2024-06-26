@@ -17,6 +17,8 @@ export class DashboardComponent {
   totalSalesSum: number = 0;
   totalExpenses: number = 0;
   net: number = 0;
+  computer: number = 0;
+  foodDrinks: number = 0;
   totalCups: number = 0;
   
   chart: any;
@@ -28,6 +30,15 @@ export class DashboardComponent {
   ) {}
 
   ngOnInit() {
+    this.salesService.getSales().subscribe((res: any) => {
+      console.log('res', res, res.sales)
+      this.totalSalesSum = res.sales.income;
+      this.totalExpenses = res.sales.expenses;
+      this.net = res.sales.net;
+      this.computer = res.sales.computer;
+      this.foodDrinks = res.sales.food_and_drinks;
+    })
+
     this.salesService.sales$.subscribe((products: any) => {
       if (products && products.length > 0) {
         this.totalCups = this.calculateTotalCups(products);
@@ -37,20 +48,9 @@ export class DashboardComponent {
     this.expensesService.expenses$.subscribe((products: any) => {
       if (products && products.length > 0) {
         this.expenses = products;
-        this.totalExpenses = this.calculateTotalExpenses(products);
+        // this.totalExpenses = this.calculateTotalExpenses(products);
       }
     });
-
-    this.salesService.getTotalSalesSum().subscribe(
-      totalSum => {
-        this.totalSalesSum = totalSum;
-        this.net = this.totalSalesSum - this.totalExpenses;
-        // this.updateBarChart();
-      },
-      error => {
-        console.error('Error fetching total sales sum:', error);
-      }
-    );
 
     this.dashboardService.products$.subscribe(
       (data: any) => {
@@ -66,6 +66,9 @@ export class DashboardComponent {
     this.dashboardService.getStat().subscribe(
       (stats: any[]) => {
         if (stats && stats.length > 0) {
+          // Sort stats by date in ascending order
+          stats.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
           // Transform stats into suitable format for the chart
           const dates = stats.map(stat => this.formatDate(stat.date)); // Format date here
           const sales = stats.map(stat => parseFloat(stat.total_sales) || 0);

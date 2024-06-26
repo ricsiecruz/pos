@@ -34,6 +34,30 @@
             </div>
         </div>
     </div>
+    <div class="dashboard_cards" style="justify-content: flex-start; column-gap: 35px;">
+        <div class="dashboard_cards_computer">
+            <div>
+                <div class="dashboard_cards_computer_header">
+                    COMPUTER
+                </div>
+                PHP {{ computer }}
+            </div>
+            <div class="dashboard_cards_computer_icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 16H20V5H4V16ZM13 18V20H17V22H7V20H11V18H2.9918C2.44405 18 2 17.5511 2 16.9925V4.00748C2 3.45107 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44892 22 4.00748V16.9925C22 17.5489 21.5447 18 21.0082 18H13Z"></path></svg>
+            </div>
+        </div>
+        <div class="dashboard_cards_food">
+            <div>
+                <div class="dashboard_cards_food_header">
+                    FOOD AND DRINKS
+                </div>
+                PHP {{ foodDrinks }}
+            </div>
+            <div class="dashboard_cards_food_icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 2V22H19V15H15V8C15 4.68629 17.6863 2 21 2ZM19 4.53C18.17 5 17 6.17 17 8V13H19V4.53ZM9 13.9V22H7V13.9C4.71776 13.4367 3 11.419 3 9V3H5V10H7V3H9V10H11V3H13V9C13 11.419 11.2822 13.4367 9 13.9Z"></path></svg>
+            </div>
+        </div>
+    </div>
     <div [hidden]="!chart" class="dashboard_overview_chart">
         <canvas id="canvas"></canvas>
       </div>
