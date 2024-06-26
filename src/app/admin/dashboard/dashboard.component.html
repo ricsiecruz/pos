@@ -34,7 +34,9 @@
             </div>
         </div>
     </div>
-    <!-- orders.component.html -->
+    <div [hidden]="!chart" class="dashboard_overview_chart">
+        <canvas id="canvas"></canvas>
+      </div>
     <div *ngIf="mostOrdered.length > 0" class="dashboard_top">
         <h2>Most sold products</h2>
         <div class="dashboard_table_header">
