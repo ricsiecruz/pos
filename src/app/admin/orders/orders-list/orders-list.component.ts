@@ -26,7 +26,8 @@ export class OrdersListComponent {
   constructor(
     private salesService: SalesService,
     private modalService: ModalService,
-  ) {}
+  ) {
+  }
 
   payCredit(data: any) {
     data.credit = null;
@@ -61,7 +62,7 @@ export class OrdersListComponent {
       month: '2-digit',
       day: '2-digit'
     }).replace(/\//g, '-');
-    const filename: string = `sales_data_${today}.csv`;
+    const filename: string = `sales_${today}.csv`;
 
     // Prepare data including additional fields
     const dataToExport = this.dataSource.map(item => ({
@@ -77,20 +78,20 @@ export class OrdersListComponent {
         second: 'numeric'
       }),
       Computer: `PHP ${item.computer}`,
-      Credit: item.credit ? `PHP ${item.credit}` : '-',
       Total: `PHP ${item.total}`,
+      Credit: item.credit ? `PHP ${item.credit}` : '-',
+      CreditTotal: `PHP ${this.credit}`,
+      ComputerTotal: `PHP ${this.computer}`,
+      FoodDrinksTotal: `PHP ${this.foodDrinks}`,
       Sales: `PHP ${this.totalSales}`,
       Expenses: `PHP ${this.expenses}`,
       Net: `PHP ${this.net}`,
-      CreditTotal: `PHP ${this.credit}`,
-      ComputerTotal: `PHP ${this.computer}`,
-      FoodDrinksTotal: `PHP ${this.foodDrinks}`
     }));
 
     // Export to CSV
     new AngularCsv(dataToExport, filename, {
       showLabels: true, 
-      headers: ['Customer', 'Qty', 'Date', 'Computer', 'Credit', 'Total', 'Sales', 'Expenses', 'Net', 'CreditTotal', 'ComputerTotal', 'FoodDrinksTotal']
+      headers: ['Customer', 'Qty', 'Date', 'Computer', 'Total', 'Credit', 'CreditTotal', 'ComputerTotal', 'FoodDrinksTotal', 'Sales', 'Expenses', 'Net']
     });
   }
 
@@ -115,14 +116,14 @@ export class OrdersListComponent {
         second: 'numeric'
       }),
       Computer: `PHP ${item.computer}`,
-      Credit: item.credit ? `PHP ${item.credit}` : '-',
       Total: `PHP ${item.total}`,
+      Credit: item.credit ? `PHP ${item.credit}` : '-',
+      CreditTotal: `PHP ${this.credit}`,
+      ComputerTotal: `PHP ${this.computer}`,
+      FoodDrinksTotal: `PHP ${this.foodDrinks}`,
       Sales: `PHP ${this.totalSales}`,
       Expenses: `PHP ${this.expenses}`,
       Net: `PHP ${this.net}`,
-      CreditTotal: `PHP ${this.credit}`,
-      ComputerTotal: `PHP ${this.computer}`,
-      FoodDrinksTotal: `PHP ${this.foodDrinks}`
     }));
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
