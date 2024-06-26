@@ -57,4 +57,10 @@ export class DashboardService implements OnDestroy {
     this.productsSubject.next(products);
   }
 
+  getStat(): Observable<any> {
+    return this.http.get<any>(this.API_URL + 'dashboard/sales-expenses-summary').pipe(
+      map(res => res.sales_expenses_summary)
+    )
+  }
+
 }

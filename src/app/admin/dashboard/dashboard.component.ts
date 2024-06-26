@@ -1,5 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ModalService } from '../../modal.service';
+import { Component } from '@angular/core';
 import { SalesService } from '../../services/sales.service';
 import { ExpensesService } from '../../services/expenses.service';
 import { DashboardService } from '../../services/dashboard.service';
@@ -7,15 +6,15 @@ import { DashboardService } from '../../services/dashboard.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  @ViewChild('sales') sales?: TemplateRef<any>;
   mostOrdered: any[] = [];
   products: any[] = [];
   expenses: any[] = [];
-  totalSum: number = 0;
+  totalSalesSum: number = 0;
   totalExpenses: number = 0;
+  net: number = 0;
   totalCups: number = 0;
 
   constructor(
@@ -27,7 +26,6 @@ export class DashboardComponent {
   ngOnInit() {
     this.salesService.sales$.subscribe((products: any) => {
       if (products && products.length > 0) {
-        this.totalSum = this.calculateTotalSum(products);
         this.totalCups = this.calculateTotalCups(products);
       }
     });
@@ -39,23 +37,32 @@ export class DashboardComponent {
       }
     });
 
-    this.dashboardService.products$.subscribe((data: any) => {
-      console.log('Received data from dashboard service:', data, data[0].mostOrdered);
-      this.mostOrdered = data[0].mostOrdered
-      console.log('Most Ordered Products:', this.mostOrdered);
-      // if (data && data.most_ordered && data.most_ordered.length > 0) {
-      //   this.mostOrdered = data.most_ordered;
-      //   console.log('Most Ordered Products:', this.mostOrdered);
-      // } else {
-      //   console.warn('Unexpected data structure or empty data received.');
-      // }
-    }, error => {
-      console.error('Error fetching most ordered products:', error);
-    });
-  }
+    this.salesService.getTotalSalesSum().subscribe(
+      totalSum => {
+        this.totalSalesSum = totalSum;
+        this.net = this.totalSalesSum - this.totalExpenses
+        console.log('net', this.totalSalesSum - this.totalExpenses)
+      },
+      error => {
+        console.error('Error fetching total sales sum:', error);
+      }
+    );
 
-  private calculateTotalSum(products: any[]): number {
-    return products.reduce((acc, curr) => acc + parseFloat(curr.total), 0);
+    this.dashboardService.products$.subscribe(
+      (data: any) => {
+        if (data && data.length > 0 && data[0]) {
+          this.mostOrdered = data[0].mostOrdered;
+        }
+      },
+      error => {
+        console.error('Error fetching most ordered products:', error);
+      }
+    );
+
+    this.dashboardService.getStat().subscribe((res: any) => {
+      console.log('stat', res)
+    })
+
   }
 
   private calculateTotalExpenses(products: any[]): number {
