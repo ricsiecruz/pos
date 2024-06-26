@@ -9,7 +9,7 @@ import { OrdersListComponent } from './orders-list/orders-list.component';
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss']
 })
-export class OrdersComponent implements AfterViewInit {
+export class OrdersComponent {
   @ViewChild(OrdersListComponent) sales!: OrdersListComponent;
 
   products: any[] = [];
@@ -41,45 +41,45 @@ export class OrdersComponent implements AfterViewInit {
   ) {}
 
   ngOnInit() {
-    this.salesService.sales$.subscribe((products: any) => {
-      if (products && products.length > 0) {
-        this.products = products;
-        this.updateCalculations();
-      }
-    });
 
+    this.salesService.getSales().subscribe((res: any) => {
+      console.log('aaa', res, res.current_sales, res.current_sales.data)
+      this.todayProducts = res.current_sales.data;
+      this.totalSalesSumToday = res.current_sales.income;
+      this.totalExpensesToday = res.current_sales.expenses;
+      this.netToday = res.current_sales.net;
+      this.totalCreditCurrentDate = res.current_sales.credit;
+      this.computerToday = res.current_sales.computer;
+      this.totalFoodsAndDrinksToday = res.current_sales.food_and_drinks;
+
+      this.products = res.sales.data;
+      this.totalSalesSum = res.sales.income;
+      this.totalExpenses = res.sales.expenses;
+      this.net = res.sales.net;
+      this.totalCreditAllData = res.sales.credit;
+      this.computer = res.sales.computer;
+      this.foodDrinks = res.sales.food_and_drinks;
+    })
     this.expensesService.expenses$.subscribe((expenses: any[]) => {
       if (expenses && expenses.length > 0) {
         this.expenses = expenses;
         this.updateCalculations();
       }
     });
-
-    this.salesService.getTotalSalesSum().subscribe(
-      totalSum => {
-        this.totalSalesSum = totalSum;
-      },
-      error => {
-        console.error('Error fetching total sales sum:', error);
-      }
-    );
-
-    this.salesService.getCurrentDateSales().subscribe((res: any) => {
-      this.todayProducts = res;
-    })
-  }
-
-  ngAfterViewInit() {
-    // Now the sales component is accessible
   }
 
   filter(startDate: any, endDate: any) {
     console.log('filter', startDate, endDate)
     this.salesService.getFilteredSales(startDate, endDate).subscribe(
-      (data: any) => {
-        console.log('data', data)
-        this.products = data;
-        // Calculate other statistics based on filtered data if necessary.
+      (res: any) => {
+        console.log('filtered sales', res, res.sales.data)
+        this.products = res.sales.data;
+        this.totalSalesSum = res.sales.income;
+        this.totalExpenses = res.sales.expenses;
+        this.net = res.sales.net;
+        this.totalCreditAllData = res.sales.credit;
+        this.computer = res.sales.computer;
+        this.foodDrinks = res.sales.food_and_drinks;
       },
       (error: any) => {
         console.error('Error fetching filtered sales data:', error);
@@ -91,25 +91,18 @@ export class OrdersComponent implements AfterViewInit {
     this.startDate = null;
     this.endDate = null;
     this.salesService.getSales().subscribe(
-      (data: any) => {
-        console.log('clear', data, data.total_sum)
-        this.products = data.total_sum;
-        // Calculate other statistics based on all data if necessary.
+      (res: any) => {
+        console.log('clear', res, res.total_sum, res.sales)
+        this.products = res.sales.data;
+        this.totalSalesSum = res.sales.income;
+        this.totalExpenses = res.sales.expenses;
+        this.net = res.sales.net;
+        this.totalCreditAllData = res.sales.credit;
+        this.computer = res.sales.computer;
+        this.foodDrinks = res.sales.food_and_drinks;
       },
       (error: any) => {
         console.error('Error fetching all sales data:', error);
-      }
-    );
-  }
-
-  calculateSalesToday() {
-    this.salesService.getTotalSalesSumToday().subscribe(
-      totalSumToday => {
-        this.totalSalesSumToday = totalSumToday;  
-        this.foodDrinksToday = this.totalSalesSumToday - this.computerToday;
-      },
-      error => {
-        console.error('Error fetching total sales sum:', error);
       }
     );
   }
@@ -128,18 +121,7 @@ export class OrdersComponent implements AfterViewInit {
   private updateCalculations() {
     this.filterTodayProducts();
     this.filterTodayExpenses();
-    this.calculateSalesToday();
-    this.calculateFoodsAndDrinksToday();
     this.totalCups = this.calculateTotalCups(this.products);
-    this.totalExpenses = this.calculateTotalExpenses(this.expenses);
-    this.totalExpensesToday = this.calculateTotalExpenses(this.todayExpenses);
-    this.net = this.totalSalesSum - this.totalExpenses;
-    this.netToday = this.totalSalesSumToday - this.totalExpensesToday;
-    this.totalCreditAllData = this.calculateCredit(this.products);
-    this.totalCreditCurrentDate = this.calculateCredit(this.todayProducts);
-    this.computer = this.calculateComputer(this.products);
-    this.computerToday = this.calculateComputer(this.todayProducts);
-    this.foodDrinks = this.totalSalesSum - this.computer;
     this.foodDrinksToday = this.totalSalesSumToday - this.computerToday;
   }
 

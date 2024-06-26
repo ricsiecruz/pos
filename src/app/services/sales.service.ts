@@ -109,6 +109,6 @@ export class SalesService implements OnDestroy {
   }
 
   getFilteredSales(startDate: string, endDate: string): Observable<any[]> {
-    return this.http.post<any[]>(`${this.API_URL}sales`, { startDate, endDate });
+    return this.http.post<any[]>(`${this.API_URL}sales/date-range`, { startDate, endDate });
   }
 }
