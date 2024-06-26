@@ -29,14 +29,12 @@ export class OrdersComponent {
   totalSalesSum: number = 0;
   totalSalesSumToday: number = 0;
   foodDrinks: number = 0;
-  foodDrinksToday: number = 0;
   totalFoodsAndDrinksToday: number = 0;
   startDate: any;
   endDate: any;
 
   constructor(
     private salesService: SalesService,
-    private expensesService: ExpensesService,
     private modalService: ModalService
   ) {}
 
@@ -60,12 +58,6 @@ export class OrdersComponent {
       this.computer = res.sales.computer;
       this.foodDrinks = res.sales.food_and_drinks;
     })
-    this.expensesService.expenses$.subscribe((expenses: any[]) => {
-      if (expenses && expenses.length > 0) {
-        this.expenses = expenses;
-        this.updateCalculations();
-      }
-    });
   }
 
   filter(startDate: any, endDate: any) {
@@ -107,75 +99,9 @@ export class OrdersComponent {
     );
   }
 
-  calculateFoodsAndDrinksToday() {
-    this.salesService.getSumOfFoodsAndDrinksForToday().subscribe(
-      res => {
-        this.totalFoodsAndDrinksToday = res;
-      },
-      error => {
-        console.error('Error:', error);
-      }
-    )
-  }
-
-  private updateCalculations() {
-    this.filterTodayProducts();
-    this.filterTodayExpenses();
-    this.totalCups = this.calculateTotalCups(this.products);
-    this.foodDrinksToday = this.totalSalesSumToday - this.computerToday;
-  }
-
-  filterTodayProducts() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    this.todayProducts = this.products.filter(product => {
-      const productDate = new Date(product.datetime);
-      productDate.setHours(0, 0, 0, 0);
-      return productDate.getTime() === today.getTime();
-    });
-  }
-
-  filterTodayExpenses() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    this.todayExpenses = this.expenses.filter(expense => {
-      const expenseDate = new Date(expense.date);
-      expenseDate.setHours(0, 0, 0, 0);
-      return expenseDate.getTime() === today.getTime();
-    });
-  }  
-
-  private calculateComputer(products: any): number {
-    return products.reduce((acc: any, curr: any) => {
-      const computerValue = parseFloat(curr.computer?.toString() ?? '0');
-      return acc + computerValue;
-    }, 0);
-  }
-
   openModal(product: any) {
     this.details = product;
     this.modalService.openModal(this.sales.editProductModal);
-  }
-
-  private calculateTotalCups(products: any): number {
-    return products.reduce((acc: any, curr: any) => {
-      const qty = curr.qty !== undefined && curr.qty !== null ? parseFloat(curr.qty.toString()) : 0;
-      return acc + qty;
-    }, 0);
-  }
-  
-  private calculateCredit(products: any): number {
-    return products.reduce((acc: any, curr: any) => {
-      const credit = curr.credit !== null && curr.credit !== undefined ? parseFloat(curr.credit.toString()) : 0;
-      return acc + credit;
-    }, 0);
-  }
-  
-  private calculateTotalExpenses(expenses: any[]): number {
-    return expenses.reduce((acc, curr) => {
-      const parsedAmount = parseFloat(curr.amount?.toString() ?? '0');
-      return acc + parsedAmount;
-    }, 0);
   }
 
   pay(data: any) {
