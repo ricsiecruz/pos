@@ -21,6 +21,7 @@ export class ExpensesService implements OnDestroy {
           if (message.action === 'addExpenses') {
             return message.expense;
           } else if (message.action === 'initialize') {
+            console.log('bbb', message.expenses, message)
             return message.expenses;
           } else {
             return null;
@@ -59,12 +60,6 @@ export class ExpensesService implements OnDestroy {
   }
 
   addExpenses(expense: any) {
-    console.log('service', expense)
     this.webSocketService.send({ action: 'addExpenses', expense });
-  }
-  
-  editExpenses(expenseId: string, updatedExpenses: any) {
-    console.log('edit drinks', expenseId, updatedExpenses)
-    this.webSocketService.send({ action: 'editExpenses', expenseId, expense: updatedExpenses });
   }
 }

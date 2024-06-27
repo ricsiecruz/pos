@@ -1,7 +1,7 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { SalesService } from '../../services/sales.service';
 import { ModalService } from '../../modal.service';
-import { ExpensesService } from '../../services/expenses.service';
+import { WebSocketService } from '../../websocket-service';
 import { OrdersListComponent } from './orders-list/orders-list.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { OrdersListComponent } from './orders-list/orders-list.component';
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss']
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit {
   @ViewChild(OrdersListComponent) sales!: OrdersListComponent;
 
   products: any[] = [];
@@ -35,13 +35,36 @@ export class OrdersComponent {
 
   constructor(
     private salesService: SalesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private webSocketService: WebSocketService
   ) {}
 
   ngOnInit() {
+    // Subscribe to WebSocket messages
+    this.webSocketService.receive().subscribe((message: any) => {
+      console.log('WebSocket message received:', message); // Log entire message for inspection
+      
+      // Check for action type 'addExpensesResponse'
+      if (message.action === 'addExpensesResponse') {
+        console.log('Expense added:', message.expense);
 
+        // Update sales data upon expense addition
+        this.fetchSalesData();
+      }
+    });
+
+    // Fetch initial sales data
+    this.fetchSalesData();
+  }
+
+  ngOnDestroy() {
+    // Clean up subscriptions if needed
+  }
+
+  // Function to fetch sales data from SalesService
+  fetchSalesData() {
     this.salesService.getSales().subscribe((res: any) => {
-      console.log('aaa', res, res.current_sales, res.current_sales.data)
+      // Assign fetched data to component variables
       this.todayProducts = res.current_sales.data;
       this.totalSalesSumToday = res.current_sales.income;
       this.totalExpensesToday = res.current_sales.expenses;
@@ -57,14 +80,12 @@ export class OrdersComponent {
       this.totalCreditAllData = res.sales.credit;
       this.computer = res.sales.computer;
       this.foodDrinks = res.sales.food_and_drinks;
-    })
+    });
   }
 
   filter(startDate: any, endDate: any) {
-    console.log('filter', startDate, endDate)
     this.salesService.getFilteredSales(startDate, endDate).subscribe(
       (res: any) => {
-        console.log('filtered sales', res, res.sales.data)
         this.products = res.sales.data;
         this.totalSalesSum = res.sales.income;
         this.totalExpenses = res.sales.expenses;
@@ -84,7 +105,6 @@ export class OrdersComponent {
     this.endDate = null;
     this.salesService.getSales().subscribe(
       (res: any) => {
-        console.log('clear', res, res.total_sum, res.sales)
         this.products = res.sales.data;
         this.totalSalesSum = res.sales.income;
         this.totalExpenses = res.sales.expenses;
