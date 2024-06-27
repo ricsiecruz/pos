@@ -53,7 +53,7 @@
             color: #67748E;
             column-gap: 10px;
             margin-top: 10px;
-            justify-content: end;
+            justify-content: space-between;
             &_date {
                 display: flex;
                 column-gap: 10px;
@@ -356,5 +356,5 @@ input {
 
 .orders_table_filter .btn {
     height: 40px;
-    width: 80px;
+    width: 110px;
 }

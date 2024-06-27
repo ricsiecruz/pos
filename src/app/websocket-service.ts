@@ -12,7 +12,6 @@ export class WebSocketService {
   private socket$: WebSocketSubject<any>;
 
   constructor() {
-    console.log('Connecting to WebSocket at:', environment.wsUrl);
     this.socket$ = webSocket(environment.wsUrl);
 
     this.socket$.subscribe(

@@ -4,9 +4,21 @@
     <div class="orders_table">
       <tabset>
         <tab heading="Today">
-          <div class="orders_table_export">
-            <button class="btn btn_success" (click)="exportTodaySalesToExcel()">Export to Excel</button>
-            <button class="btn btn_warning" (click)="exportTodaySalesToCsv()">Export to CSV</button>
+          <div class="orders_table_filter">
+            <div style="width: 200px;">
+              <div class="pos_selected_orders">Orders</div>
+              <ng-select [(ngModel)]="selectedMemberId" (change)="onMemberChange()">
+                <ng-option [value]="0" selected>All</ng-option>
+                <ng-option [value]="1">Walk-in Customer</ng-option>
+                @for (car of members; track car.id) {
+                    <ng-option [value]="car.id">{{car.name}}</ng-option>
+                }
+              </ng-select>
+            </div>
+            <div class="orders_table_export">
+              <button class="btn btn_success" (click)="exportTodaySalesToExcel()">Export to Excel</button>
+              <button class="btn btn_warning" (click)="exportTodaySalesToCsv()">Export to CSV</button>
+            </div>
           </div>
           <app-orders-list
             [totalSales]="totalSalesSumToday"

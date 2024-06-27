@@ -3,6 +3,7 @@ import { SalesService } from '../../services/sales.service';
 import { ModalService } from '../../modal.service';
 import { WebSocketService } from '../../websocket-service';
 import { OrdersListComponent } from './orders-list/orders-list.component';
+import { MembersService } from '../../services/members.service';
 
 @Component({
   selector: 'app-orders',
@@ -14,8 +15,10 @@ export class OrdersComponent implements OnInit {
 
   products: any[] = [];
   todayProducts: any[] = [];
+  filteredTodayProducts: any[] = [];
   expenses: any[] = [];
   todayExpenses: any[] = [];
+  members: any[] = [];
   details: any;
   totalCups: number = 0;
   totalCreditCurrentDate: number = 0;
@@ -32,9 +35,14 @@ export class OrdersComponent implements OnInit {
   totalFoodsAndDrinksToday: number = 0;
   startDate: any;
   endDate: any;
+  selectedMemberId: number | null = null;
+  selectedMemberName: string = 'All';
+  filteredMembers: any[] = [];
+  searchTerm: string = '';
 
   constructor(
     private salesService: SalesService,
+    private membersService: MembersService,
     private modalService: ModalService,
     private webSocketService: WebSocketService
   ) {}
@@ -42,29 +50,45 @@ export class OrdersComponent implements OnInit {
   ngOnInit() {
     // Subscribe to WebSocket messages
     this.webSocketService.receive().subscribe((message: any) => {
-      console.log('WebSocket message received:', message); // Log entire message for inspection
-      
-      // Check for action type 'addExpensesResponse'
       if (message.action === 'addExpensesResponse') {
-        console.log('Expense added:', message.expense);
-
-        // Update sales data upon expense addition
         this.fetchSalesData();
       }
     });
 
-    // Fetch initial sales data
     this.fetchSalesData();
+
+    this.membersService.members$.subscribe((members: any[]) => {
+      if (members && members.length > 0) {
+        this.members = members;
+      }
+    });
   }
 
-  ngOnDestroy() {
-    // Clean up subscriptions if needed
+  filterMembers(): void {
+    this.filteredMembers = this.members.filter(member =>
+      member.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
   }
 
-  // Function to fetch sales data from SalesService
+  onMemberChange(): void {
+    this.filterTodayProducts();
+    const selectedMember = this.selectedMemberId === null
+      ? { name: 'All' }
+      : this.members.find(member => member.id === this.selectedMemberId);
+    this.selectedMemberName = selectedMember ? selectedMember.name : 'Walk-in Customer';
+    console.log('member', this.selectedMemberName, this.selectedMemberId);
+
+    if(this.selectedMemberName == 'All') {
+      this.fetchSalesData()
+    }
+
+    this.salesService.getFilteredMember(this.selectedMemberName).subscribe((res: any) => {
+      this.todayProducts = res.member_sales.data
+    })
+  }  
+
   fetchSalesData() {
     this.salesService.getSales().subscribe((res: any) => {
-      // Assign fetched data to component variables
       this.todayProducts = res.current_sales.data;
       this.totalSalesSumToday = res.current_sales.income;
       this.totalExpensesToday = res.current_sales.expenses;
@@ -80,7 +104,21 @@ export class OrdersComponent implements OnInit {
       this.totalCreditAllData = res.sales.credit;
       this.computer = res.sales.computer;
       this.foodDrinks = res.sales.food_and_drinks;
+
+      // Filter the products based on the selected member
+      this.filterTodayProducts();
     });
+  }
+
+  filterTodayProducts(): void {
+    if (this.selectedMemberId === null) {
+      this.filteredTodayProducts = this.todayProducts; // Show all products
+    } else if (this.selectedMemberId === 0) {
+      this.filteredTodayProducts = this.todayProducts.filter(product => product.customer === 'Walk-in Customer');
+    } else {
+      this.filteredTodayProducts = this.todayProducts.filter(product => product.customer_id === this.selectedMemberId);
+    }
+    console.log('aaa', this.filteredTodayProducts)
   }
 
   filter(startDate: any, endDate: any) {
@@ -130,7 +168,7 @@ export class OrdersComponent implements OnInit {
   }
 
   exportTodaySalesToCsv(): void {
-    if (this.todayProducts.length > 0) {
+    if (this.filteredTodayProducts.length > 0) {
       this.sales.exportToCsv();
     } else {
       alert('No data available for export.');
@@ -138,7 +176,7 @@ export class OrdersComponent implements OnInit {
   }
 
   exportTodaySalesToExcel(): void {
-    if (this.todayProducts.length > 0) {
+    if (this.filteredTodayProducts.length > 0) {
       this.sales.exportToExcel();
     } else {
       alert('No data available for export.');
