@@ -55,6 +55,13 @@ export class OrdersComponent implements OnInit {
       }
     });
 
+    this.salesService.sales$.subscribe((products: any) => {
+      if (products && products.length > 0) {
+        this.products = products;
+        this.fetchSalesData();
+      }
+    });
+
     this.fetchSalesData();
 
     this.membersService.members$.subscribe((members: any[]) => {
@@ -105,7 +112,6 @@ export class OrdersComponent implements OnInit {
       this.computer = res.sales.computer;
       this.foodDrinks = res.sales.food_and_drinks;
 
-      // Filter the products based on the selected member
       this.filterTodayProducts();
     });
   }
