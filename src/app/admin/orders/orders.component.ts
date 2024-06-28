@@ -127,22 +127,35 @@ export class OrdersComponent implements OnInit {
     console.log('aaa', this.filteredTodayProducts)
   }
 
-  filter(startDate: any, endDate: any) {
-    this.salesService.getFilteredSales(startDate, endDate).subscribe(
+  filter(startDate: any, endDate: any, selectedMemberName: any) {
+    console.log('payload', startDate, endDate, selectedMemberName);
+  
+    // Construct payload conditionally
+    const payload: any = { startDate, endDate };
+    if (selectedMemberName !== 'All') {
+      payload.customer = selectedMemberName;
+    }
+  
+    this.salesService.getFilteredSales(payload).subscribe(
       (res: any) => {
-        this.products = res.sales.data;
-        this.totalSalesSum = res.sales.income;
-        this.totalExpenses = res.sales.expenses;
-        this.net = res.sales.net;
-        this.totalCreditAllData = res.sales.credit;
-        this.computer = res.sales.computer;
-        this.foodDrinks = res.sales.food_and_drinks;
+        console.log('filter', res, res.salesData);
+        // Update your component state with the filtered data
+        this.products = res.salesData.data;
+        this.totalSalesSum = res.salesData.income;
+        this.totalExpenses = res.salesData.expenses;
+        this.net = res.salesData.net;
+        this.totalCreditAllData = res.salesData.credit;
+        this.computer = res.salesData.computer;
+        this.foodDrinks = res.salesData.food_and_drinks;
+
+        // Update other state variables if necessary
       },
       (error: any) => {
         console.error('Error fetching filtered sales data:', error);
       }
     );
   }
+  
 
   clearFilter() {
     this.startDate = null;
