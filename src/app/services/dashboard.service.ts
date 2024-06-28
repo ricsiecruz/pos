@@ -63,4 +63,10 @@ export class DashboardService implements OnDestroy {
     )
   }
 
+  getTopSpendersToday(): Observable<any> {
+    return this.http.get<any>(this.API_URL + 'dashboard/top-spenders-today').pipe(
+      map(res => res.top_spenders_today)
+    )
+  }
+
 }

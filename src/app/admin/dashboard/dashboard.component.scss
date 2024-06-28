@@ -106,7 +106,7 @@
         border: 1px solid #dbe0e6;
         box-shadow: none;
         padding: 24px;
-        width: 400px;
+        // width: 400px;
         height: fit-content;
     }
     &_table {
@@ -127,7 +127,7 @@
         &_header {
             display: flex;
             // justify-content: space-between;
-            padding: 0 24px;
+            padding: 0;
             padding-bottom: 0.75rem;
             /* border-top: 1px solid #dbe0e6; */
             border-bottom: 1px solid #dbe0e6;
@@ -138,7 +138,7 @@
         }
         &_list {
             display: flex;
-            padding: 24px;
+            padding: 24px 0;
             color: #092C4C;
             font-size: 14px;
             font-weight: 400;
@@ -175,16 +175,16 @@ h2 {
 
 .table {
     &_one {
-        width: 180px;
+        width: 150px;
     }
     &_two {
-        width: 180px;
+        width: 120px;
     }
     &_three {
-        width: 200px;
+        width: 150px;
     }
     &_four {
-        width: 120px;
+        width: 122px;
     }
     &_five {
         width: 150px;

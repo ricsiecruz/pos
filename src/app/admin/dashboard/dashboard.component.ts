@@ -21,6 +21,7 @@ export class DashboardComponent {
   foodDrinks: number = 0;
   totalCups: number = 0;
   topSpenders: any[] = [];
+  topSpendersToday: any[] = [];
   
   chart: any;
 
@@ -83,6 +84,11 @@ export class DashboardComponent {
         console.error('Error fetching statistics:', error);
       }
     );
+
+    this.dashboardService.getTopSpendersToday().subscribe((res: any) => {
+      console.log('res', res)
+      this.topSpendersToday = res;
+    })
   }
 
   updateBarChart(labels: string[], sales: number[], expenses: number[], net: number[]) {

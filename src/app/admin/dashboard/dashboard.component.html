@@ -79,7 +79,36 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="topSpenders.length > 0" class="dashboard_top" style="width: 100%;">
+        
+    </div>
+
+    <div style="display: flex; column-gap: 20px;">
+        <div *ngIf="topSpendersToday.length > 0; else noData" class="dashboard_top">
+            <h2>Top spender today</h2>
+            <div class="dashboard_table_header">
+                <div class="table_one">Customer</div>
+                <div class="table_two">Computer</div>
+                <div class="table_three">Food and drinks</div>
+                <div class="table_four">Total Spent</div>
+            </div>
+            <div *ngIf="topSpenders.length > 0; else noData">
+                <div class="dashboard_table_list" *ngFor="let data of topSpenders">
+                    <div class="table_one">
+                        {{ data.customer }}
+                    </div>
+                    <div class="table_two">
+                        PHP {{ data.total_computer }}
+                    </div>
+                    <div class="table_three">
+                        PHP {{ data.total_subtotal }}
+                    </div>
+                    <div class="table_four">
+                        PHP {{ data.total_spent }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="topSpenders.length > 0" class="dashboard_top">
             <h2>All time top spender</h2>
             <div class="dashboard_table_header">
                 <div class="table_one">Customer</div>
@@ -104,8 +133,8 @@
                 </div>
             </div>
         </div>
+        
     </div>
-  
 </div>
 
 <ng-template #noData>
