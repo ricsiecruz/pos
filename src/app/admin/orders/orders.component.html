@@ -1,70 +1,70 @@
 <!-- orders component -->
 <div class="orders">
-    <div class="orders_title">Sales</div>
-    <div class="orders_table">
-      <tabset>
-        <tab heading="Today">
-          <div class="orders_table_filter">
-            <div style="width: 200px;">
-              <div class="pos_selected_orders">Orders</div>
-              <ng-select [(ngModel)]="selectedMemberId" (change)="onMemberChange()">
-                <ng-option [value]="0" selected>All</ng-option>
-                <ng-option [value]="1">Walk-in Customer</ng-option>
-                @for (car of members; track car.id) {
-                    <ng-option [value]="car.id">{{car.name}}</ng-option>
-                }
-              </ng-select>
+  <div class="orders_title">Sales</div>
+  <div class="orders_table">
+    <tabset>
+      <!-- Dropdown for filtering by member -->
+      <div class="orders_table_filter">
+        <div style="width: 200px;">
+          <div class="pos_selected_orders">Orders</div>
+          <ng-select [(ngModel)]="selectedMemberId" (change)="onMemberChange()">
+            <ng-option [value]="0" selected>All</ng-option>
+            <ng-option [value]="1">Walk-in Customer</ng-option>
+            <ng-option *ngFor="let member of members" [value]="member.id">{{member.name}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="orders_table_export">
+          <button class="btn btn_success" (click)="exportTodaySalesToExcel()">Export to Excel</button>
+          <button class="btn btn_info" (click)="exportTodaySalesToCsv()">Export to CSV</button>
+        </div>
+      </div>
+
+      <tab heading="Today">
+        <app-orders-list
+          [totalSales]="totalSalesSumToday"
+          [expenses]="totalExpensesToday"
+          [net]="netToday"
+          [credit]="totalCreditCurrentDate"
+          [computer]="computerToday"
+          [foodDrinks]="totalFoodsAndDrinksToday"
+          [dataSource]="todayProducts"
+          [details]="details"
+          [pay]="pay.bind(this)"
+        ></app-orders-list>
+      </tab>
+
+      <tab heading="All">
+        <div class="orders_table_filter">
+          <div class="orders_table_filter_date">
+            <div>
+              <label for="startDate">From:</label>
+              <input class="form-control" type="date" id="startDate" [(ngModel)]="startDate">
             </div>
-            <div class="orders_table_export">
-              <button class="btn btn_success" (click)="exportTodaySalesToExcel()">Export to Excel</button>
-              <button class="btn btn_warning" (click)="exportTodaySalesToCsv()">Export to CSV</button>
+            <div>
+              <label for="endDate">To:</label>
+              <input class="form-control" type="date" id="endDate" [(ngModel)]="endDate">
             </div>
           </div>
-          <app-orders-list
-            [totalSales]="totalSalesSumToday"
-            [expenses]="totalExpensesToday"
-            [net]="netToday"
-            [credit]="totalCreditCurrentDate"
-            [computer]="computerToday"
-            [foodDrinks]="totalFoodsAndDrinksToday"
-            [dataSource]="todayProducts"
-            [details]="details"
-            [pay]="pay.bind(this)"
-          ></app-orders-list>
-        </tab>
-        <tab heading="All">
-            <div class="orders_table_filter">
-                <div class="orders_table_filter_date">
-                    <div>
-                        <label for="startDate">From:</label>
-                        <input class="form-control" type="date" id="startDate" [(ngModel)]="startDate">
-                    </div>
-                    <div>
-                        <label for="endDate">To:</label>
-                        <input class="form-control" type="date" id="endDate" [(ngModel)]="endDate">
-                    </div>
-                </div>
-                <div>
-                    <span style="visibility: hidden;">filter</span>
-                    <div style="column-gap: 10px; display: flex;">
-                        <button class="btn btn_primary" (click)="filter(startDate, endDate, selectedMemberName)">Filter</button>
-                        <button class="btn btn_warning" (click)="clearFilter()">Clear Filter</button>
-                    </div>
-                </div>
+          <div>
+            <span style="visibility: hidden;">filter</span>
+            <div style="column-gap: 10px; display: flex;">
+              <button class="btn btn_primary" (click)="filter(startDate, endDate, selectedMemberName)">Filter</button>
+              <button class="btn btn_warning" (click)="clearFilter()">Clear Filter</button>
             </div>
-          <app-orders-list
-            [totalSales]="totalSalesSum"
-            [expenses]="totalExpenses"
-            [net]="net"
-            [credit]="totalCreditAllData"
-            [computer]="computer"
-            [foodDrinks]="foodDrinks"
-            [dataSource]="products"
-            [details]="details"
-            [pay]="pay.bind(this)"
-          ></app-orders-list>
-        </tab>
-      </tabset>
-    </div>
+          </div>
+        </div>
+        <app-orders-list
+          [totalSales]="totalSalesSum"
+          [expenses]="totalExpenses"
+          [net]="net"
+          [credit]="totalCreditAllData"
+          [computer]="computer"
+          [foodDrinks]="foodDrinks"
+          [dataSource]="products"
+          [details]="details"
+          [pay]="pay.bind(this)"
+        ></app-orders-list>
+      </tab>
+    </tabset>
   </div>
-  
+</div>

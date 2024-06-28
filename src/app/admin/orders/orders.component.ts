@@ -160,6 +160,7 @@ export class OrdersComponent implements OnInit {
   clearFilter() {
     this.startDate = null;
     this.endDate = null;
+    this.selectedMemberId = 0;
     this.salesService.getSales().subscribe(
       (res: any) => {
         this.products = res.sales.data;
