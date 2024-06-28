@@ -1,0 +1,6 @@
+<ng-select [ngModel]="selectedMemberId" (ngModelChange)="onChange($event)">
+    <ng-option [value]="0">All</ng-option>
+    <ng-option [value]="1">Walk-in Customer</ng-option>
+    <ng-option *ngFor="let member of members" [value]="member.id">{{ member.name }}</ng-option>
+  </ng-select>
+  

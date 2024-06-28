@@ -21,6 +21,7 @@ import { OrdersComponent } from './admin/orders/orders.component';
 import { MembersComponent } from './admin/members/members.component';
 import { FoodsComponent } from './admin/foods/foods.component';
 import { OrdersListComponent } from './admin/orders/orders-list/orders-list.component';
+import { MemberFilterComponent } from './admin/member-filter/member-filter.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { OrdersListComponent } from './admin/orders/orders-list/orders-list.comp
     OrdersComponent,
     MembersComponent,
     FoodsComponent,
-    OrdersListComponent
+    OrdersListComponent,
+    MemberFilterComponent
   ],
   imports: [
     BrowserModule,

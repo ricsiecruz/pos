@@ -40,10 +40,13 @@
             display: grid;
             overflow-x: auto;
         }
-
+        &_filter {
+            width: 200px;
+            margin-bottom: 20px;
+        }
         &_header {
             display: flex;
-            justify-content: space-between;
+            // justify-content: space-between;
             padding: 0 24px;
             padding-bottom: 0.75rem;
             /* border-top: 1px solid #dbe0e6; */
@@ -55,7 +58,7 @@
         }
         &_list {
             display: flex;
-            justify-content: space-between;
+            // justify-content: space-between;
             padding: 24px;
             color: #092C4C;
             font-size: 14px;
@@ -87,19 +90,19 @@
         width: 200px;
     }
     &_two {
-        width: 100px;
+        width: 270px;
     }
     &_three {
-        width: 100px;
+        width: 130px;
     }
     &_four {
-        width: 100px;
+        width: 130px;
     }
     &_five {
-        width: 80px;
+        width: 150px;
     }
     &_six{
-        width: 80px;
+        width: 220px;
     }
 }
 
