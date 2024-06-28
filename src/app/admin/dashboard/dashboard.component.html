@@ -61,19 +61,46 @@
     <div [hidden]="!chart" class="dashboard_overview_chart">
         <canvas id="canvas"></canvas>
       </div>
-    <div *ngIf="mostOrdered.length > 0" class="dashboard_top">
-        <h2>Most sold products</h2>
-        <div class="dashboard_table_header">
-            <div class="table_one">Product</div>
-            <div class="table_two">Qty</div>
-        </div>
-        <div *ngIf="mostOrdered.length > 0; else noData">
-            <div class="dashboard_table_list" *ngFor="let data of mostOrdered">
-                <div class="table_one">
-                    {{ data.product }}
+    <div style="display: flex; column-gap: 20px;">
+        <div *ngIf="mostOrdered.length > 0" class="dashboard_top">
+            <h2>Most sold products</h2>
+            <div class="dashboard_table_header">
+                <div class="table_one">Product</div>
+                <div class="table_two">Qty</div>
+            </div>
+            <div *ngIf="mostOrdered.length > 0; else noData">
+                <div class="dashboard_table_list" *ngFor="let data of mostOrdered">
+                    <div class="table_one">
+                        {{ data.product }}
+                    </div>
+                    <div class="table_two">
+                        {{ data.total_quantity }}
+                    </div>
                 </div>
-                <div class="table_two">
-                    {{ data.total_quantity }}
+            </div>
+        </div>
+        <div *ngIf="topSpenders.length > 0" class="dashboard_top" style="width: 100%;">
+            <h2>Top spender</h2>
+            <div class="dashboard_table_header">
+                <div class="table_one">Customer</div>
+                <div class="table_two">Computer</div>
+                <div class="table_three">Food and drinks</div>
+                <div class="table_four">Total Spent</div>
+            </div>
+            <div *ngIf="topSpenders.length > 0; else noData">
+                <div class="dashboard_table_list" *ngFor="let data of topSpenders">
+                    <div class="table_one">
+                        {{ data.customer }}
+                    </div>
+                    <div class="table_two">
+                        PHP {{ data.total_computer }}
+                    </div>
+                    <div class="table_three">
+                        PHP {{ data.total_subtotal }}
+                    </div>
+                    <div class="table_four">
+                        PHP {{ data.total_spent }}
+                    </div>
                 </div>
             </div>
         </div>

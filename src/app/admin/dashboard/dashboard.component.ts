@@ -20,6 +20,7 @@ export class DashboardComponent {
   computer: number = 0;
   foodDrinks: number = 0;
   totalCups: number = 0;
+  topSpenders: any[] = [];
   
   chart: any;
 
@@ -55,7 +56,9 @@ export class DashboardComponent {
     this.dashboardService.products$.subscribe(
       (data: any) => {
         if (data && data.length > 0 && data[0]) {
+          console.log('dashboard', data, data[0].topSpenders)
           this.mostOrdered = data[0].mostOrdered;
+          this.topSpenders = data[0].topSpenders;
         }
       },
       error => {
