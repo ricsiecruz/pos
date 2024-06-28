@@ -49,7 +49,6 @@ export class DashboardComponent {
     this.expensesService.expenses$.subscribe((products: any) => {
       if (products && products.length > 0) {
         this.expenses = products;
-        // this.totalExpenses = this.calculateTotalExpenses(products);
       }
     });
 
@@ -152,10 +151,6 @@ export class DashboardComponent {
         },
       });
     }
-  }
-
-  private calculateTotalExpenses(products: any[]): number {
-    return products.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
   }
 
   private calculateTotalCups(products: any[]): number {

@@ -23,7 +23,7 @@
                     {{ data.name }}
                 </div>
                 <div class="table_two">
-                    {{ data.date_joined }}
+                    {{ data.date_joined | date:"EEEE, MMMM d, y, h:mm:ss" }}
                 </div>
                 <div class="table_three">
                     {{ data.coffee }}
@@ -35,7 +35,7 @@
                     {{ data.total_spent }}
                 </div>
                 <div class="table_six">
-                    {{ data.last_spent }}
+                    {{ data.last_spent | date:"EEEE, MMMM d, y, h:mm:ss" }}
                 </div>
             </div>
         </div>

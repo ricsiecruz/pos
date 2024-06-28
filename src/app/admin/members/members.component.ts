@@ -3,6 +3,7 @@ import { ModalService } from '../../modal.service';
 import { ProductService } from '../../services/product.service';
 import { WebSocketService } from '../../websocket-service';
 import { MembersService } from '../../services/members.service';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-members',
@@ -18,6 +19,7 @@ export class MembersComponent {
   constructor(
     private modalService: ModalService,
     private membersService: MembersService,
+    private dashboardService: DashboardService,
     private webSocketService: WebSocketService,
   ) {}
 
