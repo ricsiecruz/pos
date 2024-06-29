@@ -48,7 +48,10 @@
             <input class="form-control" type="number" id="categoryName" name="categoryName" [(ngModel)]="newExpenses.amount" required>
             <label class="modal-body-label" for="brandName">channel:</label>
             <input class="form-control" type="text" id="brandName" name="brandName" [(ngModel)]="newExpenses.channel" required>
-            <label class="modal-body-label" for="productStocks">Stocks:</label>
+            
+            <label class="modal-body-label" for="image">Image:</label>
+            <input class="form-control" type="file" id="image" name="image" (change)="onFileSelected($event)">
+
             <div class="modal-btns">
                 <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
                 <button class="btn modal-btns-add" type="submit">

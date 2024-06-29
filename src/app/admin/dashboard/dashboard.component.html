@@ -65,11 +65,13 @@
         <div *ngIf="mostOrdered.length > 0" class="dashboard_top">
             <h2>Most sold products</h2>
             <div class="dashboard_table_header">
+                <div class="table_five"></div>
                 <div class="table_one">Product</div>
                 <div class="table_two">Qty</div>
             </div>
             <div *ngIf="mostOrdered.length > 0; else noData">
-                <div class="dashboard_table_list" *ngFor="let data of mostOrdered">
+                <div class="dashboard_table_list" *ngFor="let data of mostOrdered; let i = index;">
+                    <div class="table_five">{{ i + 1 }}.</div>
                     <div class="table_one">
                         {{ data.product }}
                     </div>
@@ -86,13 +88,15 @@
         <div *ngIf="topSpendersToday.length > 0; else noData" class="dashboard_top">
             <h2>Top spender today</h2>
             <div class="dashboard_table_header">
+                <div class="table_six"></div>
                 <div class="table_one">Customer</div>
                 <div class="table_two">Computer</div>
                 <div class="table_three">Food and drinks</div>
                 <div class="table_four">Total Spent</div>
             </div>
             <div *ngIf="topSpendersToday.length > 0; else noData">
-                <div class="dashboard_table_list" *ngFor="let data of topSpendersToday">
+                <div class="dashboard_table_list" *ngFor="let data of topSpendersToday; let i = index;">
+                    <div class="table_six">{{ i + 1 }}.</div>
                     <div class="table_one">
                         {{ data.customer }}
                     </div>
