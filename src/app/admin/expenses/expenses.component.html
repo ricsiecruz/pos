@@ -32,32 +32,56 @@
             <div class="table_five">
                 {{ data.channel }}
             </div>
+            <div (click)="view(data)">view</div>
         </div>
     </div>
 </div>
 
+<ng-template #sales let-d="dismiss">
+    <div class="modal-header">
+        View {{ details.expense }}
+      </div>
+      <div class="modal-body">
+        <label>Month</label>
+        <input class="form-control" [value]="details.month" disabled >
+        <label>Amount</label>
+        <input class="form-control" [value]="details.amount" disabled >
+        <label>Channel</label>
+        <input class="form-control" [value]="details.channel" disabled >
+        <label>Date</label>
+        <div class="modal-date">{{ details.date | date:"EEEE, MMMM d, y, h:mm:ss" }}</div>
+        <img src="http://localhost:3000{{details.image_path}}" style="width: 200px;" >
+      </div>
+</ng-template>
+
 <ng-template #addInventoryModal let-d="dismiss">
     <div class="modal-header">
-        Add expense
+      Add expense
     </div>
     <div class="modal-body">
-        <form (submit)="addProduct()">
-            <label class="modal-body-label" for="productName">expense:</label>
-            <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newExpenses.expense" required>
-            <label class="modal-body-label" for="categoryName">amount:</label>
-            <input class="form-control" type="number" id="categoryName" name="categoryName" [(ngModel)]="newExpenses.amount" required>
-            <label class="modal-body-label" for="brandName">channel:</label>
-            <input class="form-control" type="text" id="brandName" name="brandName" [(ngModel)]="newExpenses.channel" required>
-            
-            <label class="modal-body-label" for="image">Image:</label>
-            <input class="form-control" type="file" id="image" name="image" (change)="onFileSelected($event)">
-
-            <div class="modal-btns">
-                <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
-                <button class="btn modal-btns-add" type="submit">
-                    Add
-                </button>
-            </div>
-        </form>
+      <form (submit)="addProduct()">
+        <label class="modal-body-label" for="productName">expense:</label>
+        <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newExpenses.expense" required>
+        <label class="modal-body-label" for="categoryName">amount:</label>
+        <input class="form-control" type="number" id="categoryName" name="categoryName" [(ngModel)]="newExpenses.amount" required>
+        <label class="modal-body-label" for="brandName">channel:</label>
+        <input class="form-control" type="text" id="brandName" name="brandName" [(ngModel)]="newExpenses.channel" required>
+  
+        <label class="modal-body-label" for="image">Image:</label>
+        <input class="form-control" type="file" id="image" name="image" (change)="onFileSelected($event)">
+  
+        <!-- Image Preview -->
+        <div *ngIf="imagePreviewUrl">
+          <img [src]="imagePreviewUrl" alt="Image Preview" style="max-width: 100%; height: auto;"/>
+        </div>
+  
+        <div class="modal-btns">
+          <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
+          <button class="btn modal-btns-add" type="submit">
+            Add
+          </button>
+        </div>
+      </form>
     </div>
-</ng-template>
+  </ng-template>
+  
