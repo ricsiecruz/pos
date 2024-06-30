@@ -41,6 +41,24 @@
             overflow-x: auto;
         }
 
+        &_credit {
+            margin-bottom: 25px;
+            border-radius: 6px;
+            padding: 20px;
+            border: 1px solid #dbe0e6;
+            width: 275px;
+            margin-top: 15px;
+            font-weight: 400;
+            font-size: 14px;
+            color: #67748E;
+            div {
+                color: #092C4C;
+                font-weight: 700;
+                font-size: 18px;
+                margin-bottom: 5px;
+            }
+        }
+
         &_header {
             display: flex;
             justify-content: space-between;

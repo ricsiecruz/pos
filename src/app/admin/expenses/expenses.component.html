@@ -6,8 +6,11 @@
         </div>
     </div>
     <div class="inventory_table">
-        <div class="inventory_table_filter">
-            {{ credit }}
+        <div class="inventory_table_credit">
+          Credit
+          <div>
+            PHP {{ credit | number:'1.2-2' }}
+          </div>
         </div>
         <div class="inventory_table_header">
             <div class="table_one">Expense</div>

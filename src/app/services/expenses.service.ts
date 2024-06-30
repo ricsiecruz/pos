@@ -62,4 +62,8 @@ export class ExpensesService implements OnDestroy {
   addExpenses(expense: any) {
     this.webSocketService.send({ action: 'addExpenses', expense });
   }
+
+  getExpenses(): Observable<any[]> {
+    return this.http.get<any[]>(this.API_URL + 'expenses');
+  }
 }

@@ -36,10 +36,8 @@ export class ExpensesComponent {
 
   ngOnInit() {
     this.expensesService.expenses$.subscribe((products: any[]) => {
-      this.credit = products[0].total_credit_amount;
       if (products && products.length > 0) {
-        this.expenses = products[0].data;
-        this.calculateTotalSum(products);
+        this.getExpenses();
       }
     });
 
@@ -48,6 +46,13 @@ export class ExpensesComponent {
         this.expenses.push(message.product);
       }
     });
+  }
+
+  getExpenses() {
+    this.expensesService.getExpenses().subscribe((res: any) => {
+      this.credit = res.total_credit_amount;
+      this.expenses = res.data;
+    })
   }
 
   onFileSelected(event: any) {
