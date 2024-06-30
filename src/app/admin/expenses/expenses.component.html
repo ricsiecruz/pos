@@ -14,14 +14,19 @@
         </div>
         <div class="inventory_table_header">
             <div class="table_one">Expense</div>
+            <div class="table_four">Amount</div>
             <div class="table_two">Month</div>
             <div class="table_three">Date</div>
-            <div class="table_four">Amount</div>
-            <div class="table_five">Channel</div>
+            <div class="table_five">Mode of payment</div>
+            <div class="table_six"></div>
+            <div></div>
         </div>
         <div class="inventory_table_list" *ngFor="let data of expenses">
             <div class="table_one">
                 {{ data.expense }}
+            </div>
+            <div class="table_four">
+                PHP {{ data.amount }}
             </div>
             <div class="table_two">
                 {{ data.month }}
@@ -29,12 +34,12 @@
             <div class="table_three">
                 {{ data.date | date:"EEEE, MMMM d, y, h:mm:ss" }}
             </div>
-            <div class="table_four">
-                PHP {{ data.amount }}
-            </div>
             <div class="table_five">
-                {{ data.channel }}
+                {{ data.mode_of_payment }}
             </div>
+            <div class="table_six">
+              <div *ngIf="data.credit == true" (click)="payExpense(data)">pay</div>
+            </div>            
             <div (click)="view(data)">view</div>
         </div>
     </div>
@@ -49,11 +54,11 @@
         <input class="form-control" [value]="details.month" disabled >
         <label>Amount</label>
         <input class="form-control" [value]="details.amount" disabled >
-        <label>Channel</label>
-        <input class="form-control" [value]="details.channel" disabled >
+        <label>mode_of_payment</label>
+        <input class="form-control" [value]="details.mode_of_payment" disabled >
         <label>Date</label>
         <div class="modal-date">{{ details.date | date:"EEEE, MMMM d, y, h:mm:ss" }}</div>
-        <img src="http://localhost:3000{{details.image_path}}" style="width: 200px;" >
+        <img src="http://localhost:3000{{details.image_path}}" style="width: 200px;" *ngIf="details.image_path != null" >
       </div>
 </ng-template>
 
@@ -67,8 +72,6 @@
         <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newExpenses.expense" required>
         <label class="modal-body-label" for="categoryName">amount:</label>
         <input class="form-control" type="number" id="categoryName" name="categoryName" [(ngModel)]="newExpenses.amount" required>
-        <label class="modal-body-label" for="brandName">channel:</label>
-        <input class="form-control" type="text" id="brandName" name="brandName" [(ngModel)]="newExpenses.channel" required>
   
         <label class="modal-body-label" for="image">Image:</label>
         <input class="form-control" type="file" id="image" name="image" (change)="onFileSelected($event)">
@@ -78,9 +81,17 @@
           <img [src]="imagePreviewUrl" alt="Image Preview" style="max-width: 100%; height: auto;"/>
         </div>
 
-        <div class="modal-body-credit" style="">
-            <input type="checkbox" id="credit" name="credit" [(ngModel)]="newExpenses.credit">
-            <label class="modal-body-label" for="credit">Credit</label>
+        <label class="modal-body-label" for="paidBy">Paid By:</label>
+        <ng-select [(ngModel)]="newExpenses.paid_by" name="paidBy">
+          <ng-option *ngFor="let data of paidBy" [value]="data.name">{{ data.name }}</ng-option>
+        </ng-select>
+
+
+        <div *ngIf="newExpenses.paid_by == 'Tech Hybe'"> <!-- Compare with id instead of name -->
+          <label class="modal-body-label" for="mode_of_payment">Mode of payment:</label>
+          <ng-select [(ngModel)]="newExpenses.mode_of_payment" name="mode_of_payment">
+            <ng-option *ngFor="let data of mode_of_payment" [value]="data.id">{{ data.mode_of_payment }}</ng-option>
+          </ng-select>
         </div>
   
         <div class="modal-btns">

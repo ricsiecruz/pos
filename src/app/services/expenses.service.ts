@@ -21,7 +21,7 @@ export class ExpensesService implements OnDestroy {
           if (message.action === 'addExpenses') {
             return message.expense;
           } else if (message.action === 'initialize') {
-            console.log('bbb', message.expenses, message)
+            console.log('bbb', message.expenses, message);
             return message.expenses;
           } else {
             return null;
@@ -65,5 +65,21 @@ export class ExpensesService implements OnDestroy {
 
   getExpenses(): Observable<any[]> {
     return this.http.get<any[]>(this.API_URL + 'expenses');
+  }
+
+  payExpense(id: number): Observable<any> {
+    return this.http.put<any>(`${this.API_URL}expenses/${id}/pay`, {});
+  }
+
+  getPaidBy(): Observable<any> {
+    return this.http.get<any>(this.API_URL + 'expenses/paid-by').pipe(
+      map(res => res.paid_by)
+    )
+  }
+
+  getModeOfPayment(): Observable<any> {
+    return this.http.get<any>(this.API_URL + 'expenses/mode-of-payment').pipe(
+      map(res => res.mode_of_payment)
+    )
   }
 }

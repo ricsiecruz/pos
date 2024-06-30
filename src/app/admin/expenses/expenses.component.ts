@@ -17,13 +17,14 @@ export class ExpensesComponent {
   expenses: any[] = [];
   expense: string = '';
   amount?: number | null;
-  channel: string = '';
   totalSum: number = 0;
-  newExpenses: any = { expense: '', month: '', date: '', amount: '', channel: '', credit: false };
+  newExpenses: any = { expense: '', month: '', date: '', amount: '', mode_of_payment: '', paid_by: '', settled_by: '', credit: false };
   selectedFile: File | null = null;
   imagePreviewUrl: string | null = null;  // Variable for image preview
   details: any;
   credit: any;
+  paidBy: any[] = [];
+  mode_of_payment: any[] = [];
 
   constructor(
     private http: HttpClient,
@@ -44,7 +45,24 @@ export class ExpensesComponent {
     this.webSocketService.receive().subscribe((message: any) => {
       if (message.action === 'addExpenses') {
         this.expenses.push(message.product);
+      } else if (message.action === 'deductCredit') {
+        this.expenses = this.expenses.map(expense => 
+          expense.id === message.expense ? { ...expense, credit: false } : expense
+        );
+        this.credit = message.totalCreditAmount;
       }
+    });
+
+    this.expensesService.getPaidBy().subscribe((res: any) => {
+      this.paidBy = res;
+      // Set default value for paidBy
+      this.setDefaultPaidBy();
+    });
+    
+    this.expensesService.getModeOfPayment().subscribe((res: any) => {
+      this.mode_of_payment = res;
+      // Set default value for mode_of_payment
+      this.setDefaultModeOfPayment();
     });
   }
 
@@ -52,7 +70,7 @@ export class ExpensesComponent {
     this.expensesService.getExpenses().subscribe((res: any) => {
       this.credit = res.total_credit_amount;
       this.expenses = res.data;
-    })
+    });
   }
 
   onFileSelected(event: any) {
@@ -74,6 +92,11 @@ export class ExpensesComponent {
     this.newExpenses.month = `${currentMonth} ${currentYear}`;
     this.newExpenses.date = new Date().toISOString();
 
+    if(this.newExpenses.paid_by !== 'Tech Hybe') {
+      this.newExpenses.credit = true;
+      this.newExpenses.mode_of_payment = null;
+    }
+
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('image', this.selectedFile, this.selectedFile.name);
@@ -92,9 +115,10 @@ export class ExpensesComponent {
   }
 
   sendExpenseData() {
+    console.log('add expense', this.newExpenses)
     this.expensesService.addExpenses(this.newExpenses);
     this.modalService.closeModal();
-    this.newExpenses = { expense: '', month: '', date: '', amount: '', channel: '', credit: false };
+    this.resetNewExpenses();
     this.imagePreviewUrl = null; // Clear the preview after submitting
   }
 
@@ -120,15 +144,49 @@ export class ExpensesComponent {
   clearForm() {
     this.expense = '';
     this.amount = null;
-    this.channel = '';
   }
 
   cancelForm() {
     this.clearForm();
     this.modalService.closeModal();
-  }  
+  }
 
   updateInventory() {
     this.loadInventory();
+  }
+
+  payExpense(expense: any) {
+    if (expense.credit) {
+      this.expensesService.payExpense(expense.id).subscribe(
+        (res: any) => {
+          this.credit -= expense.amount;
+          expense.credit = false; // Update the local state to reflect the change
+          this.getExpenses(); // Refresh the expenses list
+        },
+        (error) => {
+          console.error('Failed to pay expense:', error);
+        }
+      );
+    }
+  }
+
+  private setDefaultPaidBy() {
+    if (this.paidBy.length > 0) {
+      const defaultPaidBy = this.paidBy.find(data => data.name === 'Tech Hybe') || this.paidBy[0];
+      this.newExpenses.paid_by = defaultPaidBy.name;
+    }
+  }
+
+  private setDefaultModeOfPayment() {
+    if (this.mode_of_payment.length > 0) {
+      const defaultModeOfPayment = this.mode_of_payment.find(data => data.id === 1) || this.mode_of_payment[0];
+      this.newExpenses.mode_of_payment = defaultModeOfPayment.id;
+    }
+  }
+
+  private resetNewExpenses() {
+    this.newExpenses = { expense: '', month: '', date: '', amount: '', mode_of_payment: '', paid_by: '', credit: false };
+    this.setDefaultPaidBy(); // Reset to default paidBy value
+    this.setDefaultModeOfPayment(); // Reset to default mode_of_payment value
   }
 }
