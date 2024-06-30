@@ -38,12 +38,28 @@
                 {{ data.mode_of_payment }}
             </div>
             <div class="table_six">
-              <div *ngIf="data.credit == true" (click)="payExpense(data)">pay</div>
+              <!-- <div *ngIf="data.credit == true" (click)="payExpense(data)">pay</div> -->
+              <div *ngIf="data.credit == true" (click)="payModal(data)">pay</div>
             </div>            
             <div (click)="view(data)">view</div>
         </div>
     </div>
 </div>
+
+<ng-template #pay let-d="dismiss">
+  <div class="modal-header">
+    Pay {{ details.expense }}
+  </div>
+  <div class="modal-body">
+    <p>You are about to pay PHP {{ details.amount }} to {{ details.paid_by }} for {{ details.expense }}. Are you sure?</p>
+    <label class="modal-body-label" for="mode_of_payment">Mode of payment:</label>
+    <ng-select [(ngModel)]="selected_mode_of_payment" name="mode_of_payment">
+      <ng-option *ngFor="let data of mode_of_payment" [value]="data.id">{{ data.mode_of_payment }}</ng-option>
+    </ng-select>
+    <div (click)="payExpense(details)">yes</div>
+    <div (click)="d()">no</div> <!-- Dismiss the modal -->
+  </div>
+</ng-template>
 
 <ng-template #sales let-d="dismiss">
     <div class="modal-header">

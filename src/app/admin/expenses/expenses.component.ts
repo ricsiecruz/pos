@@ -14,6 +14,7 @@ import { environment } from '../../../environments/environment';
 export class ExpensesComponent {
   API_URL = environment.apiUrl;
   @ViewChild('sales') sales?: TemplateRef<any>;
+  @ViewChild('pay') pay?: TemplateRef<any>;
   expenses: any[] = [];
   expense: string = '';
   amount?: number | null;
@@ -25,6 +26,7 @@ export class ExpensesComponent {
   credit: any;
   paidBy: any[] = [];
   mode_of_payment: any[] = [];
+  selected_mode_of_payment: any;
 
   constructor(
     private http: HttpClient,
@@ -115,12 +117,17 @@ export class ExpensesComponent {
   }
 
   sendExpenseData() {
-    console.log('add expense', this.newExpenses)
+    // Adjust mode_of_payment to use an object containing both id and name
+    const selectedModeOfPayment = this.mode_of_payment.find(mp => mp.id === this.newExpenses.mode_of_payment);
+    this.newExpenses.mode_of_payment = selectedModeOfPayment.mode_of_payment;
+  
+    console.log('add expense', this.newExpenses);
     this.expensesService.addExpenses(this.newExpenses);
     this.modalService.closeModal();
     this.resetNewExpenses();
     this.imagePreviewUrl = null; // Clear the preview after submitting
   }
+  
 
   private calculateTotalSum(expenses: any[]): number {
     return expenses.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
@@ -155,21 +162,46 @@ export class ExpensesComponent {
     this.loadInventory();
   }
 
-  payExpense(expense: any) {
-    if (expense.credit) {
-      this.expensesService.payExpense(expense.id).subscribe(
-        (res: any) => {
-          this.credit -= expense.amount;
-          expense.credit = false; // Update the local state to reflect the change
-          this.getExpenses(); // Refresh the expenses list
-        },
-        (error) => {
-          console.error('Failed to pay expense:', error);
-        }
-      );
-    }
+  payModal(data: any) {
+    this.details = data;
+    console.log('pay data', data)
+    this.modalService.openModal(this.pay);
   }
 
+  payExpense(expense: any) {
+
+    const selectedModeOfPayment = this.mode_of_payment.find(mp => mp.id === this.selected_mode_of_payment);
+    this.selected_mode_of_payment = selectedModeOfPayment.mode_of_payment;
+  
+    console.log('paying expense', expense, expense.id, this.selected_mode_of_payment);
+
+    const payload = {
+      id: expense.id,
+      expense: expense.expense,
+      month: expense.month,
+      amount: expense.amount,
+      mode_of_payment: this.selected_mode_of_payment,
+      credit: expense.credit,
+      date: expense.date,
+      image_path: expense.image_path,
+      paid_by: expense.paid_by,
+      settled_by: 'Tech Hybe'
+    };
+
+    console.log('payload', payload)
+    this.expensesService.payExpense(expense.id).subscribe(
+      (res: any) => {
+        this.credit -= expense.amount;
+        expense.credit = false; // Update the local state to reflect the change
+        this.getExpenses(); // Refresh the expenses list
+        this.modalService.closeModal();
+      },
+      (error) => {
+        console.error('Failed to pay expense:', error);
+      }
+    );
+  }
+  
   private setDefaultPaidBy() {
     if (this.paidBy.length > 0) {
       const defaultPaidBy = this.paidBy.find(data => data.name === 'Tech Hybe') || this.paidBy[0];
@@ -181,6 +213,7 @@ export class ExpensesComponent {
     if (this.mode_of_payment.length > 0) {
       const defaultModeOfPayment = this.mode_of_payment.find(data => data.id === 1) || this.mode_of_payment[0];
       this.newExpenses.mode_of_payment = defaultModeOfPayment.id;
+      this.selected_mode_of_payment = defaultModeOfPayment.id;
     }
   }
 
