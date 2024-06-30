@@ -1,19 +1,22 @@
-import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ModalService } from '../../modal.service';
 import { MembersService } from '../../services/members.service';
 import { WebSocketService } from '../../websocket-service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-members',
   templateUrl: './members.component.html',
   styleUrls: ['./members.component.scss']
 })
-export class MembersComponent implements OnInit {
+export class MembersComponent implements OnInit, OnDestroy {
   @ViewChild('addProductModal') addProductModal?: TemplateRef<any>;
   members: any[] = [];
   filteredMembers: any[] = [];
   newProduct: any = { name: '' };
   selectedMemberId: number | null = null;
+  errorMessage: string = '';
+  errorSubscription?: Subscription;
 
   constructor(
     private modalService: ModalService,
@@ -29,12 +32,24 @@ export class MembersComponent implements OnInit {
       }
     });
 
-    this.webSocketService.receive().subscribe((message: any) => {
-      if (message.action === 'addMember') {
-        this.members.push(message.product);
-        this.filterMembers();
+    this.errorSubscription = this.webSocketService.receive().subscribe(
+      (message) => {
+        if (message.action === 'addMemberResponse' && message.error) {
+          this.errorMessage = message.error;
+          // Optionally, display error message to the user (e.g., using Toastr, MatSnackBar, etc.)
+          console.log('Error adding member:', message.error);
+        }
+      },
+      (error) => {
+        console.error('WebSocket error:', error);
       }
-    });
+    );
+  }
+  
+  ngOnDestroy(): void {
+    if (this.errorSubscription) {
+      this.errorSubscription.unsubscribe();
+    }
   }
 
   addModal() {
@@ -47,18 +62,29 @@ export class MembersComponent implements OnInit {
     this.newProduct.total_load = 0;
     this.newProduct.total_spent = 0;
     this.newProduct.last_spent = new Date().toISOString();
-    this.membersService.addProduct(this.newProduct);
-    this.modalService.closeModal();
-    this.newProduct = { name: '' };
+    
+    this.membersService.addMember(this.newProduct)
+      .then(() => {
+        // Reset form and close modal on success
+        this.clearForm();
+        this.modalService.closeModal();
+        this.errorMessage = ''; // Clear any previous error message
+      })
+      .catch((error) => {
+        console.log('Error adding member:', error);
+        this.errorMessage = 'Error adding member: ' + error; // Set error message
+      });
   }
 
   cancelForm() {
     this.clearForm();
     this.modalService.closeModal();
+    this.errorMessage = ''; // Clear error message when canceling form
   }
 
   clearForm() {
     this.newProduct = { name: '' };
+    this.errorMessage = ''; // Clear error message when clearing form
   }
 
   onMemberChange(memberId: number) {

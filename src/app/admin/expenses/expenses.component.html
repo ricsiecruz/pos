@@ -7,7 +7,7 @@
     </div>
     <div class="inventory_table">
         <div class="inventory_table_filter">
-            
+            {{ credit }}
         </div>
         <div class="inventory_table_header">
             <div class="table_one">Expense</div>
@@ -73,6 +73,11 @@
         <!-- Image Preview -->
         <div *ngIf="imagePreviewUrl">
           <img [src]="imagePreviewUrl" alt="Image Preview" style="max-width: 100%; height: auto;"/>
+        </div>
+
+        <div class="modal-body-credit" style="">
+            <input type="checkbox" id="credit" name="credit" [(ngModel)]="newExpenses.credit">
+            <label class="modal-body-label" for="credit">Credit</label>
         </div>
   
         <div class="modal-btns">

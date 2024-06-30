@@ -15,12 +15,14 @@ export class MembersService implements OnDestroy {
   private productsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   members$: Observable<any[]> = this.productsSubject.asObservable();
   private websocketSubscription: Subscription;
+  private errorSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
     this.websocketSubscription = merge(
       this.webSocketService.receive().pipe(
         map((message: any) => {
           if (message.action === 'addMember') {
+            console.log('aaa', message);
             return message.member;
           } else if (message.action === 'initialize') {
             return message.members;
@@ -37,11 +39,26 @@ export class MembersService implements OnDestroy {
         this.addOrUpdateProduct(data);
       }
     });
+
+    // Subscribe to error messages
+    this.errorSubscription = this.webSocketService.error$.subscribe(
+      (errorMessage) => {
+        if (errorMessage) {
+          // Handle error display to the user (e.g., show an alert or update UI)
+          console.log('WebSocket error:', errorMessage);
+          // Example: this.toastr.error(errorMessage, 'Error');
+          // You can use any notification library like Toastr, MatSnackBar, etc.
+        }
+      }
+    );
   }
 
   ngOnDestroy() {
     if (this.websocketSubscription) {
       this.websocketSubscription.unsubscribe();
+    }
+    if (this.errorSubscription) {
+      this.errorSubscription.unsubscribe();
     }
   }
 
@@ -60,13 +77,25 @@ export class MembersService implements OnDestroy {
     this.productsSubject.next(members);
   }
 
-  addProduct(member: any) {
-    console.log('eee', member)
-    this.webSocketService.send({ action: 'addMember', member });
+  addMember(member: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.webSocketService.send({ action: 'addMember', member });
+      
+      this.webSocketService.receive().subscribe((message: any) => {
+        if (message.action === 'errorResponse') {
+          if (message.error) {
+            reject(message.error);
+          } else {
+            resolve();
+          }
+        }
+      }, error => {
+        reject(error);
+      });
+    });
   }
 
   editProduct(productId: string, updatedProduct: any) {
-    console.log('edit drinks', productId, updatedProduct)
     this.webSocketService.send({ action: 'editProduct', productId, product: updatedProduct });
   }
 }

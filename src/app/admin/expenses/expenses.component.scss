@@ -118,6 +118,17 @@
     border-radius: 0.375rem;
 }
 
+.modal-body-credit {
+    display: flex;
+    column-gap: 5px;
+    padding: 10px 0;
+}
+
+.modal-body-credit input,
+.modal-body-credit label {
+    margin-bottom: 0;
+}
+
 .modal-btns {
     column-gap: 10px;
     display: flex;

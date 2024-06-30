@@ -56,6 +56,9 @@
         <form (submit)="addProduct()">
           <label class="modal-body-label" for="productName">Name:</label>
           <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newProduct.name" required>
+          <div *ngIf="errorMessage">
+            {{ errorMessage }}
+          </div>
           <div class="modal-btns">
             <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
             <button class="btn modal-btns-add" type="submit">

@@ -1,9 +1,7 @@
-// websocket.service.ts
-
 import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { environment } from '../environments/environment';
-// import { environment } from '../environments/environment.prod';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +9,26 @@ import { environment } from '../environments/environment';
 export class WebSocketService {
   private socket$: WebSocketSubject<any>;
 
+  // BehaviorSubject to handle server errors
+  private errorSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  error$: Observable<string> = this.errorSubject.asObservable();
+
   constructor() {
     this.socket$ = webSocket(environment.wsUrl);
 
     this.socket$.subscribe(
-      () => console.log('WebSocket connection established'),
-      (error) => {
-        console.error('WebSocket connection error:', error);
+      (message) => {
+        if (message.error) {
+          this.errorSubject.next(message.error); // Emit error message
+        } else {
+          console.log('Server response:', message);
+          // Handle successful response as needed
+        }
       },
-      () => console.log('WebSocket connection closed')
+      (error) => {
+        console.error('WebSocket error:', error);
+        this.errorSubject.next('WebSocket connection error'); // Emit connection error
+      }
     );
   }
 
