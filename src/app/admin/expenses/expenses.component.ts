@@ -99,29 +99,30 @@ export class ExpensesComponent {
       this.newExpenses.mode_of_payment = null;
     }
 
-    // if (this.selectedFile) {
-    //   const formData = new FormData();
-    //   formData.append('image', this.selectedFile, this.selectedFile.name);
-    //   this.http.post<{ imagePath: string }>(this.API_URL + 'expenses/upload', formData).subscribe(
-    //     (response) => {
-    //       this.newExpenses.image_path = response.imagePath;
-    //       this.sendExpenseData();
-    //     },
-    //     (error) => {
-    //       console.error('Image upload failed:', error);
-    //     }
-    //   );
-    // } else {
-    //   this.sendExpenseData();
-    // }
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('image', this.selectedFile, this.selectedFile.name);
+      this.http.post<{ imagePath: string }>(this.API_URL + 'expenses/upload', formData).subscribe(
+        (response) => {
+          console.log('image', response)
+          this.newExpenses.image_path = response.imagePath;
+          this.sendExpenseData();
+        },
+        (error) => {
+          console.error('Image upload failed:', error);
+        }
+      );
+    } else {
+      this.sendExpenseData();
+    }
 
-    this.sendExpenseData();
+    // this.sendExpenseData();
   }
 
   sendExpenseData() {
     // Adjust mode_of_payment to use an object containing both id and name
     const selectedModeOfPayment = this.mode_of_payment.find(mp => mp.id === this.newExpenses.mode_of_payment);
-    this.newExpenses.mode_of_payment = selectedModeOfPayment.mode_of_payment;
+    this.newExpenses.mode_of_payment = selectedModeOfPayment?.mode_of_payment;
   
     console.log('add expense', this.newExpenses);
     this.expensesService.addExpenses(this.newExpenses);

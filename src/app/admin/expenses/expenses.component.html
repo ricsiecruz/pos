@@ -74,7 +74,8 @@
         <input class="form-control" [value]="details.mode_of_payment" disabled >
         <label>Date</label>
         <div class="modal-date">{{ details.date | date:"EEEE, MMMM d, y, h:mm:ss" }}</div>
-        <img src="http://localhost:3000{{details.image_path}}" style="width: 200px;" *ngIf="details.image_path != null" >
+        <!-- <img src="http://localhost:3000{{details.image_path}}" style="width: 200px;" *ngIf="details.image_path != null" > -->
+        <img src="{{details.image_path}}" style="width: 200px;" *ngIf="details.image_path != null" >
       </div>
 </ng-template>
 
@@ -89,12 +90,12 @@
         <label class="modal-body-label" for="categoryName">amount:</label>
         <input class="form-control" type="number" id="categoryName" name="categoryName" [(ngModel)]="newExpenses.amount" required>
   
-        <!-- <label class="modal-body-label" for="image">Image:</label>
+        <label class="modal-body-label" for="image">Image:</label>
         <input class="form-control" type="file" id="image" name="image" (change)="onFileSelected($event)">
   
         <div *ngIf="imagePreviewUrl">
           <img [src]="imagePreviewUrl" alt="Image Preview" style="max-width: 100%; height: auto;"/>
-        </div> -->
+        </div>
 
         <label class="modal-body-label" for="paidBy">Paid By:</label>
         <ng-select [(ngModel)]="newExpenses.paid_by" name="paidBy">
