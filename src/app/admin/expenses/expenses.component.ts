@@ -99,21 +99,23 @@ export class ExpensesComponent {
       this.newExpenses.mode_of_payment = null;
     }
 
-    if (this.selectedFile) {
-      const formData = new FormData();
-      formData.append('image', this.selectedFile, this.selectedFile.name);
-      this.http.post<{ imagePath: string }>(this.API_URL + 'expenses/upload', formData).subscribe(
-        (response) => {
-          this.newExpenses.image_path = response.imagePath;
-          this.sendExpenseData();
-        },
-        (error) => {
-          console.error('Image upload failed:', error);
-        }
-      );
-    } else {
-      this.sendExpenseData();
-    }
+    // if (this.selectedFile) {
+    //   const formData = new FormData();
+    //   formData.append('image', this.selectedFile, this.selectedFile.name);
+    //   this.http.post<{ imagePath: string }>(this.API_URL + 'expenses/upload', formData).subscribe(
+    //     (response) => {
+    //       this.newExpenses.image_path = response.imagePath;
+    //       this.sendExpenseData();
+    //     },
+    //     (error) => {
+    //       console.error('Image upload failed:', error);
+    //     }
+    //   );
+    // } else {
+    //   this.sendExpenseData();
+    // }
+
+    this.sendExpenseData();
   }
 
   sendExpenseData() {
