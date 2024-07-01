@@ -89,13 +89,12 @@
         <label class="modal-body-label" for="categoryName">amount:</label>
         <input class="form-control" type="number" id="categoryName" name="categoryName" [(ngModel)]="newExpenses.amount" required>
   
-        <label class="modal-body-label" for="image">Image:</label>
+        <!-- <label class="modal-body-label" for="image">Image:</label>
         <input class="form-control" type="file" id="image" name="image" (change)="onFileSelected($event)">
   
-        <!-- Image Preview -->
         <div *ngIf="imagePreviewUrl">
           <img [src]="imagePreviewUrl" alt="Image Preview" style="max-width: 100%; height: auto;"/>
-        </div>
+        </div> -->
 
         <label class="modal-body-label" for="paidBy">Paid By:</label>
         <ng-select [(ngModel)]="newExpenses.paid_by" name="paidBy">
