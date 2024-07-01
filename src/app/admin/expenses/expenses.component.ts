@@ -4,7 +4,7 @@ import { ModalService } from '../../modal.service';
 import { ExpensesService } from '../../services/expenses.service';
 import { WebSocketService } from '../../websocket-service';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-expenses',
