@@ -60,6 +60,7 @@ export class ExpensesService implements OnDestroy {
   }
 
   addExpenses(expense: any) {
+    console.log('exp service', expense)
     this.webSocketService.send({ action: 'addExpenses', expense });
   }
 
