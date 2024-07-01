@@ -18,6 +18,7 @@
             <div class="table_two">Month</div>
             <div class="table_three">Date</div>
             <div class="table_five">Mode of payment</div>
+            <div class="table_seven">Paid by</div>
             <div class="table_six"></div>
             <div></div>
         </div>
@@ -37,6 +38,7 @@
             <div class="table_five">
                 {{ data.mode_of_payment }}
             </div>
+            <div class="table_seven">{{ data.paid_by }}</div>
             <div class="table_six">
               <!-- <div *ngIf="data.credit == true" (click)="payExpense(data)">pay</div> -->
               <div *ngIf="data.credit == true" (click)="payModal(data)">pay</div>
