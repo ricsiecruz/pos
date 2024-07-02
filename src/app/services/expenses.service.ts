@@ -9,8 +9,7 @@ import { environment } from '../../environments/environment.prod';
   providedIn: 'root'
 })
 export class ExpensesService implements OnDestroy {
-  API_URL = 'https://pos-backend-kt9t.vercel.app/';
-  // API_URL = 'http://localhost:3000/';
+  API_URL = environment.apiUrl;
   private expensesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   expenses$: Observable<any[]> = this.expensesSubject.asObservable();
   private websocketSubscription: Subscription;
@@ -22,7 +21,6 @@ export class ExpensesService implements OnDestroy {
           if (message.action === 'addExpenses') {
             return message.expense;
           } else if (message.action === 'initialize') {
-            console.log('bbb', message.expenses, message);
             return message.expenses;
           } else {
             return null;

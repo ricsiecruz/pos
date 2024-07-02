@@ -4,15 +4,14 @@ import { HttpClient } from '@angular/common/http';
 import { WebSocketService } from '../websocket-service';
 import { Observable, BehaviorSubject, merge, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 import { response } from 'express';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SalesService implements OnDestroy {
-  API_URL = 'https://pos-backend-kt9t.vercel.app/';
-  // API_URL = 'http://localhost:3000/';
+  API_URL = environment.apiUrl
   private salesSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   private salesCurrentDateSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   sales$: Observable<any[]> = this.salesSubject.asObservable();

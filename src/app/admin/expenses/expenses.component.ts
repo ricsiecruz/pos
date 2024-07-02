@@ -12,8 +12,7 @@ import { environment } from '../../../environments/environment.prod';
   styleUrls: ['./expenses.component.scss']
 })
 export class ExpensesComponent {
-  API_URL = 'https://pos-backend-kt9t.vercel.app/';
-  // API_URL = 'http://localhost:3000/';
+  API_URL = environment.apiUrl
   @ViewChild('sales') sales?: TemplateRef<any>;
   @ViewChild('pay') pay?: TemplateRef<any>;
   expenses: any[] = [];

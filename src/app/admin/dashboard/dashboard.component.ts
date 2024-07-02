@@ -4,6 +4,7 @@ import { ExpensesService } from '../../services/expenses.service';
 import { DashboardService } from '../../services/dashboard.service';
 import Chart from 'chart.js/auto';
 import 'chartjs-plugin-datalabels';
+import { format, toZonedTime } from 'date-fns-tz';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,13 +34,13 @@ export class DashboardComponent {
 
   ngOnInit() {
     this.salesService.getSales().subscribe((res: any) => {
-      console.log('res', res, res.sales)
+      console.log('res', res, res.sales);
       this.totalSalesSum = res.sales.income;
       this.totalExpenses = res.sales.expenses;
       this.net = res.sales.net;
       this.computer = res.sales.computer;
       this.foodDrinks = res.sales.food_and_drinks;
-    })
+    });
 
     this.salesService.sales$.subscribe((products: any) => {
       if (products && products.length > 0) {
@@ -56,7 +57,7 @@ export class DashboardComponent {
     this.dashboardService.products$.subscribe(
       (data: any) => {
         if (data && data.length > 0 && data[0]) {
-          console.log('dashboard', data, data[0].topSpenders)
+          console.log('dashboard', data, data[0].topSpenders);
           this.mostOrdered = data[0].mostOrdered;
           this.topSpenders = data[0].topSpenders;
         }
@@ -73,7 +74,8 @@ export class DashboardComponent {
           stats.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
           // Transform stats into suitable format for the chart
-          const dates = stats.map(stat => this.formatDate(stat.date)); // Format date here
+          const timeZone = 'Asia/Manila';
+          const dates = stats.map(stat => this.formatDateInTimeZone(stat.date, timeZone)); // Format date here
           const sales = stats.map(stat => parseFloat(stat.total_sales) || 0);
           const expenses = stats.map(stat => parseFloat(stat.total_expenses) || 0);
           const net = stats.map(stat => parseFloat(stat.net) || 0);
@@ -86,17 +88,36 @@ export class DashboardComponent {
     );
 
     this.dashboardService.getTopSpendersToday().subscribe((res: any) => {
-      console.log('res', res)
+      console.log('res', res);
       this.topSpendersToday = res;
-    })
+    });
+  }
+
+  formatDateInTimeZone(dateString: string, timeZone: string): string {
+    const date = new Date(dateString);
+    const zonedDate = toZonedTime(date, timeZone);
+    return format(zonedDate, 'yyyy-MM-dd', { timeZone });
   }
 
   updateBarChart(labels: string[], sales: number[], expenses: number[], net: number[]) {
+    // Adjust expenses and net only for bar height visualization
+    const adjustedExpenses = expenses.map((expense, index) => {
+      return expense > sales[index] ? sales[index] : expense;
+    });
+
+    const adjustedNet = net.map((netValue, index) => {
+      return netValue > sales[index] ? -1 : (netValue < 0 ? -1 : netValue);
+    });
+
+    console.log('net', adjustedNet);
+
     if (this.chart) {
       this.chart.data.labels = labels;
       this.chart.data.datasets[0].data = sales;
-      this.chart.data.datasets[1].data = expenses;
-      this.chart.data.datasets[2].data = net;
+      this.chart.data.datasets[1].data = adjustedExpenses;
+      this.chart.data.datasets[2].data = adjustedNet;
+      this.chart.data.datasets[3].data = expenses; // Add actual expenses for display
+      this.chart.data.datasets[4].data = net; // Add actual net for display
       this.chart.update();
     } else {
       this.chart = new Chart('canvas', {
@@ -112,18 +133,36 @@ export class DashboardComponent {
               borderWidth: 1
             },
             {
-              label: 'Total Expenses',
-              data: expenses,
+              label: 'Total Expenses (Adjusted)',
+              data: adjustedExpenses,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132, 1)',
               borderWidth: 1
             },
             {
-              label: 'Net',
-              data: net,
+              label: 'Net (Adjusted)',
+              data: adjustedNet,
               backgroundColor: 'rgba(75, 192, 192, 0.5)',
               borderColor: 'rgba(75, 192, 192, 1)',
               borderWidth: 1
+            },
+            {
+              label: 'Total Expenses (Actual)',
+              data: expenses,
+              type: 'line',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+              fill: false,
+              hidden: true // Hide the line to keep it for tooltip purposes only
+            },
+            {
+              label: 'Net (Actual)',
+              data: net,
+              type: 'line',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              backgroundColor: 'rgba(75, 192, 192, 0.5)',
+              fill: false,
+              hidden: true // Hide the line to keep it for tooltip purposes only
             }
           ],
         },
@@ -136,6 +175,21 @@ export class DashboardComponent {
                 usePointStyle: true,
                 padding: 30,
               },
+            },
+            tooltip: {
+              callbacks: {
+                label: function(tooltipItem: any) {
+                  const datasetIndex = tooltipItem.datasetIndex;
+                  const dataIndex = tooltipItem.dataIndex;
+                  if (datasetIndex === 1) { // Adjusted Expenses
+                    return `Total Expenses (Actual): ${expenses[dataIndex]}`;
+                  } else if (datasetIndex === 2) { // Adjusted Net
+                    return `Net (Actual): ${net[dataIndex]}`;
+                  } else {
+                    return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
+                  }
+                }
+              }
             },
             datalabels: {
               color: '#fff',
@@ -158,7 +212,7 @@ export class DashboardComponent {
       });
     }
   }
-
+  
   private calculateTotalCups(products: any[]): number {
     return products.reduce((acc, curr) => acc + parseFloat(curr.qty), 0);
   }
