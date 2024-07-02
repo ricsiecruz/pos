@@ -12,8 +12,9 @@
         <div class="products_table_header">
             <div class="table_one">Food</div>
             <div class="table_two">Stocks</div>
+            <div class="table_three"></div>
+            <div class="table_four">Price</div>
             <div class="table_five"></div>
-            <div class="table_three">Price</div>
         </div>
         <div *ngIf="products.length > 0; else noData">
             <div class="products_table_list" *ngFor="let data of products">
@@ -23,12 +24,12 @@
                 <div class="table_two">
                     {{ data.stocks }}
                 </div>
-                <div class="table_five">
+                <div class="table_three">
                     <div class="products_table_list_add" (click)="addStocks(data)">
                         Add stocks
                     </div>
                 </div>
-                <div class="table_three">
+                <div class="table_four">
                     PHP {{ data.price }}
                 </div>
                 <div class="table_five">

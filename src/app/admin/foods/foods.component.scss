@@ -43,7 +43,7 @@
 
         &_header {
             display: flex;
-            justify-content: space-between;
+            // justify-content: space-between;
             padding: 0 24px;
             padding-bottom: 0.75rem;
             /* border-top: 1px solid #dbe0e6; */
@@ -55,7 +55,7 @@
         }
         &_list {
             display: flex;
-            justify-content: space-between;
+            // justify-content: space-between;
             padding: 24px;
             color: #092C4C;
             font-size: 14px;
@@ -63,6 +63,7 @@
             line-height: normal;
             border-bottom: 1px solid #dbe0e6;
             &_add {
+                width: 80px;
                 cursor: pointer;
                 border-radius: 3px;
                 text-align: center;
@@ -84,19 +85,21 @@
 
 .table {
     &_one {
-        width: 200px;
+        width: 300px;
     }
     &_two {
-        width: 100px;
+        width: 200px;
     }
     &_three {
-        width: 100px;
+        width: 250px;
     }
     &_four {
-        width: 100px;
+        width: 250px;
     }
     &_five {
-        width: 80px;
+        width: 110px;
+        display: flex;
+        justify-content: end;
     }
 }
 

@@ -12,6 +12,7 @@ import { format, toZonedTime } from 'date-fns-tz';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
+  mostOrderedToday: any[] = [];
   mostOrdered: any[] = [];
   products: any[] = [];
   expenses: any[] = [];
@@ -58,6 +59,7 @@ export class DashboardComponent {
       (data: any) => {
         if (data && data.length > 0 && data[0]) {
           console.log('dashboard', data, data[0].topSpenders);
+          this.mostOrderedToday = data[0].mostOrderedToday;
           this.mostOrdered = data[0].mostOrdered;
           this.topSpenders = data[0].topSpenders;
         }

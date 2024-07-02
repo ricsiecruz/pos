@@ -5,7 +5,7 @@
                 <div class="dashboard_cards_income_header">
                     INCOME
                 </div>
-                PHP {{ totalSalesSum }}
+                PHP {{ totalSalesSum | number:'1.2-2' }}
             </div>
             <div class="dashboard_cards_income_icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.41085 14.5258L7.81249 11.1241L10.6409 13.9526L13.7978 10.7957L12.0049 9.00281H17.0049V14.0028L15.212 12.2099L10.6409 16.781L7.81249 13.9526L5.33834 16.4267C6.77158 18.5822 9.22233 20.0028 12.0049 20.0028C16.4232 20.0028 20.0049 16.4211 20.0049 12.0028C20.0049 7.58453 16.4232 4.00281 12.0049 4.00281C7.5866 4.00281 4.00488 7.58453 4.00488 12.0028C4.00488 12.8844 4.14747 13.7326 4.41085 14.5258ZM2.87288 16.084L2.86275 16.0739L2.86662 16.07C2.31276 14.8274 2.00488 13.4511 2.00488 12.0028C2.00488 6.47996 6.48204 2.00281 12.0049 2.00281C17.5277 2.00281 22.0049 6.47996 22.0049 12.0028C22.0049 17.5257 17.5277 22.0028 12.0049 22.0028C7.93574 22.0028 4.43426 19.5724 2.87288 16.084Z"></path></svg>
@@ -16,7 +16,7 @@
                 <div class="dashboard_cards_expenses_header">
                     EXPENSES
                 </div>
-                PHP {{ totalExpenses }}
+                PHP {{ totalExpenses | number:'1.2-2' }}
             </div>
             <div class="dashboard_cards_expenses_icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M22.0049 6.99979H23.0049V16.9998H22.0049V19.9998C22.0049 20.5521 21.5572 20.9998 21.0049 20.9998H3.00488C2.4526 20.9998 2.00488 20.5521 2.00488 19.9998V3.99979C2.00488 3.4475 2.4526 2.99979 3.00488 2.99979H21.0049C21.5572 2.99979 22.0049 3.4475 22.0049 3.99979V6.99979ZM20.0049 16.9998H14.0049C11.2435 16.9998 9.00488 14.7612 9.00488 11.9998C9.00488 9.23836 11.2435 6.99979 14.0049 6.99979H20.0049V4.99979H4.00488V18.9998H20.0049V16.9998ZM21.0049 14.9998V8.99979H14.0049C12.348 8.99979 11.0049 10.3429 11.0049 11.9998C11.0049 13.6566 12.348 14.9998 14.0049 14.9998H21.0049ZM14.0049 10.9998H17.0049V12.9998H14.0049V10.9998Z"></path></svg>
@@ -27,7 +27,7 @@
                 <div class="dashboard_cards_cups_header">
                     NET
                 </div>
-                PHP {{ net }}
+                PHP {{ net | number:'1.2-2' }}
             </div>
             <div class="dashboard_cards_cups_icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2 20H22V22H2V20ZM4 12H6V19H4V12ZM9 12H11V19H9V12ZM13 12H15V19H13V12ZM18 12H20V19H18V12ZM2 7L12 2L22 7V11H2V7ZM4 8.23607V9H20V8.23607L12 4.23607L4 8.23607ZM12 8C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7C13 7.55228 12.5523 8 12 8Z"></path></svg>
@@ -40,7 +40,7 @@
                 <div class="dashboard_cards_computer_header">
                     COMPUTER
                 </div>
-                PHP {{ computer }}
+                PHP {{ computer | number:'1.2-2' }}
             </div>
             <div class="dashboard_cards_computer_icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 16H20V5H4V16ZM13 18V20H17V22H7V20H11V18H2.9918C2.44405 18 2 17.5511 2 16.9925V4.00748C2 3.45107 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44892 22 4.00748V16.9925C22 17.5489 21.5447 18 21.0082 18H13Z"></path></svg>
@@ -51,7 +51,7 @@
                 <div class="dashboard_cards_food_header">
                     FOOD AND DRINKS
                 </div>
-                PHP {{ foodDrinks }}
+                PHP {{ foodDrinks | number:'1.2-2' }}
             </div>
             <div class="dashboard_cards_food_icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 2V22H19V15H15V8C15 4.68629 17.6863 2 21 2ZM19 4.53C18.17 5 17 6.17 17 8V13H19V4.53ZM9 13.9V22H7V13.9C4.71776 13.4367 3 11.419 3 9V3H5V10H7V3H9V10H11V3H13V9C13 11.419 11.2822 13.4367 9 13.9Z"></path></svg>
@@ -61,18 +61,18 @@
     <div [hidden]="!chart" class="dashboard_overview_chart">
         <canvas id="canvas"></canvas>
       </div>
-    <div style="display: flex; column-gap: 20px;">
-        <div *ngIf="mostOrdered.length > 0" class="dashboard_top">
-            <h2>Most sold products</h2>
+    <div style="display: flex; column-gap: 20px; margin-top: 20px;">
+        <div *ngIf="mostOrderedToday.length > 0" class="dashboard_top">
+            <h2>Most ordered products today</h2>
             <div class="dashboard_table_header">
                 <div class="table_five"></div>
-                <div class="table_one">Product</div>
+                <div class="table_one2">Product</div>
                 <div class="table_two">Qty</div>
             </div>
-            <div *ngIf="mostOrdered.length > 0; else noData">
-                <div class="dashboard_table_list" *ngFor="let data of mostOrdered; let i = index;">
+            <div *ngIf="mostOrderedToday.length > 0; else noData">
+                <div class="dashboard_table_list" *ngFor="let data of mostOrderedToday; let i = index;">
                     <div class="table_five">{{ i + 1 }}.</div>
-                    <div class="table_one">
+                    <div class="table_one2">
                         {{ data.product }}
                     </div>
                     <div class="table_two">
@@ -81,7 +81,25 @@
                 </div>
             </div>
         </div>
-        
+        <div *ngIf="mostOrdered.length > 0" class="dashboard_top">
+            <h2>All time most ordered products</h2>
+            <div class="dashboard_table_header">
+                <div class="table_five"></div>
+                <div class="table_one2">Product</div>
+                <div class="table_two">Qty</div>
+            </div>
+            <div *ngIf="mostOrdered.length > 0; else noData">
+                <div class="dashboard_table_list" *ngFor="let data of mostOrdered; let i = index;">
+                    <div class="table_five">{{ i + 1 }}.</div>
+                    <div class="table_one2">
+                        {{ data.product }}
+                    </div>
+                    <div class="table_two">
+                        {{ data.total_quantity }}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div style="display: flex; column-gap: 20px;">
