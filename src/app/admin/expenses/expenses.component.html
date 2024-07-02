@@ -41,9 +41,9 @@
             <div class="table_seven">{{ data.paid_by }}</div>
             <div class="table_six">
               <!-- <div *ngIf="data.credit == true" (click)="payExpense(data)">pay</div> -->
-              <div *ngIf="data.credit == true" (click)="payModal(data)">pay</div>
+              <span *ngIf="data.credit == true" (click)="payModal(data)" class="btn btn_secondary">pay</span>
             </div>            
-            <div (click)="view(data)">view</div>
+            <div (click)="view(data)" class="btn btn_primary">view</div>
         </div>
     </div>
 </div>

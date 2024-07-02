@@ -6,7 +6,7 @@
       <!-- Dropdown for filtering by member -->
       <div class="orders_table_filter">
         <div style="width: 200px;">
-          <div class="pos_selected_orders">Orders</div>
+          <div class="pos_selected_orders">Customer</div>
           <ng-select [(ngModel)]="selectedMemberId" (change)="onMemberChange()">
             <ng-option [value]="0" selected>All</ng-option>
             <ng-option [value]="1">Walk-in Customer</ng-option>
