@@ -109,6 +109,17 @@
         // width: 400px;
         height: fit-content;
     }
+    &_overview {
+        &_chart {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            @include media-breakpoint-down(sm) {
+                height: 300px;
+            }
+          }
+          
+    }
     &_table {
         margin-bottom: 1.5rem;
         background-color: #ffffff;

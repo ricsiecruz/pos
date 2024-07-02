@@ -104,13 +104,13 @@ export class DashboardComponent {
     const adjustedExpenses = expenses.map((expense, index) => {
       return expense > sales[index] ? sales[index] : expense;
     });
-
+  
     const adjustedNet = net.map((netValue, index) => {
       return netValue > sales[index] ? -1 : (netValue < 0 ? -1 : netValue);
     });
-
+  
     console.log('net', adjustedNet);
-
+  
     if (this.chart) {
       this.chart.data.labels = labels;
       this.chart.data.datasets[0].data = sales;
@@ -133,41 +133,24 @@ export class DashboardComponent {
               borderWidth: 1
             },
             {
-              label: 'Total Expenses (Adjusted)',
+              label: 'Total Expenses',
               data: adjustedExpenses,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132, 1)',
               borderWidth: 1
             },
             {
-              label: 'Net (Adjusted)',
+              label: 'Net',
               data: adjustedNet,
               backgroundColor: 'rgba(75, 192, 192, 0.5)',
               borderColor: 'rgba(75, 192, 192, 1)',
               borderWidth: 1
             },
-            {
-              label: 'Total Expenses (Actual)',
-              data: expenses,
-              type: 'line',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-              fill: false,
-              hidden: true // Hide the line to keep it for tooltip purposes only
-            },
-            {
-              label: 'Net (Actual)',
-              data: net,
-              type: 'line',
-              borderColor: 'rgba(75, 192, 192, 1)',
-              backgroundColor: 'rgba(75, 192, 192, 0.5)',
-              fill: false,
-              hidden: true // Hide the line to keep it for tooltip purposes only
-            }
           ],
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: {
               position: 'bottom',
@@ -178,13 +161,13 @@ export class DashboardComponent {
             },
             tooltip: {
               callbacks: {
-                label: function(tooltipItem: any) {
+                label: function (tooltipItem: any) {
                   const datasetIndex = tooltipItem.datasetIndex;
                   const dataIndex = tooltipItem.dataIndex;
                   if (datasetIndex === 1) { // Adjusted Expenses
-                    return `Total Expenses (Actual): ${expenses[dataIndex]}`;
+                    return `Total Expenses: ${expenses[dataIndex]}`;
                   } else if (datasetIndex === 2) { // Adjusted Net
-                    return `Net (Actual): ${net[dataIndex]}`;
+                    return `Net: ${net[dataIndex]}`;
                   } else {
                     return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
                   }
@@ -212,6 +195,7 @@ export class DashboardComponent {
       });
     }
   }
+  
   
   private calculateTotalCups(products: any[]): number {
     return products.reduce((acc, curr) => acc + parseFloat(curr.qty), 0);

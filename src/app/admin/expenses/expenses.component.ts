@@ -70,7 +70,8 @@ export class ExpensesComponent {
 
   getExpenses() {
     this.expensesService.getExpenses().subscribe((res: any) => {
-      this.credit = res.total_credit_amount;
+      console.log('res', res, res.total_credit_amount, res.total_credit_amount.totalCreditAmount, res.total_credit_amount.creditCount)
+      this.credit = res.total_credit_amount.totalCreditAmount;
       this.expenses = res.data;
     });
   }
