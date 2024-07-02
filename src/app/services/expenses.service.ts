@@ -60,10 +60,46 @@ export class ExpensesService implements OnDestroy {
     this.expensesSubject.next(expenses);
   }
 
-  addExpenses(expense: any) {
-    console.log('exp service', expense)
-    this.webSocketService.send({ action: 'addExpenses', expense });
+  // addExpenses(expense: any) {
+  //   console.log('exp service', expense)
+  //   this.webSocketService.send({ action: 'addExpenses', expense });
+  // }
+
+  addExpenses(expense: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.webSocketService.send({ action: 'addExpenses', expense });
+      
+      this.webSocketService.receive().subscribe((message: any) => {
+        if (message.action === 'errorResponse') {
+          if (message.error) {
+            reject(message.error);
+          } else {
+            resolve();
+          }
+        }
+      }, error => {
+        reject(error);
+      });
+    });
   }
+
+  // addMember(member: any): Promise<void> {
+  //   return new Promise((resolve, reject) => {
+  //     this.webSocketService.send({ action: 'addMember', member });
+      
+  //     this.webSocketService.receive().subscribe((message: any) => {
+  //       if (message.action === 'errorResponse') {
+  //         if (message.error) {
+  //           reject(message.error);
+  //         } else {
+  //           resolve();
+  //         }
+  //       }
+  //     }, error => {
+  //       reject(error);
+  //     });
+  //   });
+  // }
 
   getExpenses(): Observable<any[]> {
     return this.http.get<any[]>(this.API_URL + 'expenses');
