@@ -1,11 +1,12 @@
-import { Component, HostListener } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrl: './admin.component.scss'
+  styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
   @HostListener('window: resize', ['$event'])
   onResize(event: any) {
     this.isMobile = this.getIsMobile();
@@ -24,14 +25,15 @@ export class AdminComponent {
   getIsMobile(): boolean {
     const w = document.documentElement.clientWidth;
     const breakpoint = 992;
-    if (w < breakpoint) {
-      return true;
-    } else {
-      return false;
-    }
+    return w < breakpoint;
   }
 
   toggleDrawer() {
     this.isOpen = !this.isOpen;
+    if (this.isOpen) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
   }
 }
