@@ -30,7 +30,6 @@ export class InventoryService implements OnDestroy {
       ),
       this.http.get<any[]>(this.API_URL + 'inventory')
     ).subscribe((data: any | any[]) => {
-      console.log('inventory', data);
       if (Array.isArray(data)) {
         this.updateInventory(data);
       } else if (data) {

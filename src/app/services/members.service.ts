@@ -22,7 +22,6 @@ export class MembersService implements OnDestroy {
       this.webSocketService.receive().pipe(
         map((message: any) => {
           if (message.action === 'addMember') {
-            console.log('aaa', message);
             return message.member;
           } else if (message.action === 'initialize') {
             return message.members;

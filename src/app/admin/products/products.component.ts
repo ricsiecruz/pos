@@ -27,7 +27,6 @@ export class ProductsComponent {
     this.productService.products$.subscribe((products: any[]) => {
       if (products && products.length > 0) {
         this.products = products;
-        console.log('products', this.products)
       }
     });
 

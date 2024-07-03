@@ -1,4 +1,3 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
@@ -35,5 +34,10 @@ export class AdminComponent implements OnInit {
     } else {
       document.body.classList.remove('no-scroll');
     }
+  }
+
+  closeSidebar() {
+    this.isOpen = false;
+    document.body.classList.remove('no-scroll');
   }
 }

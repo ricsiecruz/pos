@@ -35,7 +35,6 @@ export class DashboardComponent {
 
   ngOnInit() {
     this.salesService.getSales().subscribe((res: any) => {
-      console.log('res', res, res.sales);
       this.totalSalesSum = res.sales.income;
       this.totalExpenses = res.sales.expenses;
       this.net = res.sales.net;
@@ -58,7 +57,6 @@ export class DashboardComponent {
     this.dashboardService.products$.subscribe(
       (data: any) => {
         if (data && data.length > 0 && data[0]) {
-          console.log('dashboard', data, data[0].topSpenders);
           this.mostOrderedToday = data[0].mostOrderedToday;
           this.mostOrdered = data[0].mostOrdered;
           this.topSpenders = data[0].topSpenders;
@@ -90,7 +88,6 @@ export class DashboardComponent {
     );
 
     this.dashboardService.getTopSpendersToday().subscribe((res: any) => {
-      console.log('res', res);
       this.topSpendersToday = res;
     });
   }
@@ -110,8 +107,6 @@ export class DashboardComponent {
     const adjustedNet = net.map((netValue, index) => {
       return netValue > sales[index] ? -1 : (netValue < 0 ? -1 : netValue);
     });
-  
-    console.log('net', adjustedNet);
   
     if (this.chart) {
       this.chart.data.labels = labels;

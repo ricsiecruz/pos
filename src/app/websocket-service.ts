@@ -45,7 +45,6 @@ export class WebSocketService {
   }
 
   send(message: any) {
-    console.log('aaa', message, this.socket$)
     if (this.socket$) {
       console.log('bbb', message)
       this.socket$.next(message);

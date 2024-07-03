@@ -14,7 +14,7 @@
       <div class="admin_mobile_sidenav_user">
         <div>
           <div style="margin-top: 10px;">
-            <app-sidebar></app-sidebar>
+            <app-sidebar [isOpen]="isOpen" (menuClicked)="closeSidebar()"></app-sidebar>
           </div>
         </div>
       </div>
@@ -25,7 +25,7 @@
     </div>
   </div>
   <div *ngIf="!isMobile" class="admin_content">
-    <app-sidebar></app-sidebar>
+    <app-sidebar [isOpen]="isOpen" (menuClicked)="closeSidebar()"></app-sidebar>
     <div class="admin_content_web">
       <router-outlet></router-outlet>
     </div>

@@ -124,7 +124,6 @@ export class OrdersComponent implements OnInit {
     } else {
       this.filteredTodayProducts = this.todayProducts.filter(product => product.customer_id === this.selectedMemberId);
     }
-    console.log('aaa', this.filteredTodayProducts)
   }
 
   filter(startDate: any, endDate: any, selectedMemberName: any) {
