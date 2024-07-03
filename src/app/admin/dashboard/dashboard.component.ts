@@ -21,6 +21,7 @@ export class DashboardComponent {
   net: number = 0;
   computer: number = 0;
   foodDrinks: number = 0;
+  credit: number = 0;
   totalCups: number = 0;
   topSpenders: any[] = [];
   topSpendersToday: any[] = [];
@@ -40,6 +41,10 @@ export class DashboardComponent {
       this.net = res.sales.net;
       this.computer = res.sales.computer;
       this.foodDrinks = res.sales.food_and_drinks;
+    });
+
+    this.expensesService.getExpenses().subscribe((res: any) => {
+      this.credit = res.total_credit_amount.totalCreditAmount;
     });
 
     this.salesService.sales$.subscribe((products: any) => {
