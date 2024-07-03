@@ -16,17 +16,13 @@ export class DashboardComponent {
   mostOrdered: any[] = [];
   products: any[] = [];
   expenses: any[] = [];
-  totalSalesSum: number = 0;
-  totalExpenses: number = 0;
-  net: number = 0;
-  computer: number = 0;
-  foodDrinks: number = 0;
   credit: number = 0;
   totalCups: number = 0;
   topSpenders: any[] = [];
-  topSpendersToday: any[] = [];
-  
+  topSpendersToday: any[] = [];  
   chart: any;
+
+  salesData: any;
 
   constructor(
     private dashboardService: DashboardService,
@@ -36,11 +32,7 @@ export class DashboardComponent {
 
   ngOnInit() {
     this.salesService.getSales().subscribe((res: any) => {
-      this.totalSalesSum = res.sales.income;
-      this.totalExpenses = res.sales.expenses;
-      this.net = res.sales.net;
-      this.computer = res.sales.computer;
-      this.foodDrinks = res.sales.food_and_drinks;
+      this.salesData = res.sales;
     });
 
     this.expensesService.getExpenses().subscribe((res: any) => {
@@ -198,13 +190,8 @@ export class DashboardComponent {
     }
   }
   
-  
   private calculateTotalCups(products: any[]): number {
     return products.reduce((acc, curr) => acc + parseFloat(curr.qty), 0);
   }
 
-  private formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toISOString().split('T')[0]; // Returns "YYYY-MM-DD"
-  }
 }

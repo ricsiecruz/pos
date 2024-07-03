@@ -203,7 +203,6 @@ h2 {
     font-weight: 700;
     color: #092C4C;
     font-size: 18px;
-    margin-bottom: 24px;
 }
 
 .table {
@@ -214,7 +213,7 @@ h2 {
         }
     }
     &_one2 {
-        width: 250px;
+        width: 440px;
         @include media-breakpoint-down(sm) {
             min-width: 250px;
         }
@@ -226,7 +225,7 @@ h2 {
         }
     }
     &_two2 {
-        width: 120px;
+        width: 50px;
         @include media-breakpoint-down(sm) {
             min-width: fit-content;
         }
