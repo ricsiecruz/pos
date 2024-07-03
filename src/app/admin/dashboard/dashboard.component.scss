@@ -139,9 +139,9 @@
             display: flex;
             // justify-content: space-between;
             padding: 0;
-            padding-bottom: 0.75rem;
+            // padding-bottom: 0.75rem;
             /* border-top: 1px solid #dbe0e6; */
-            border-bottom: 1px solid #dbe0e6;
+            // border-bottom: 1px solid #dbe0e6;
             div {
                 font-weight: 600;
                 font-size: 15px;
@@ -149,12 +149,12 @@
         }
         &_list {
             display: flex;
-            padding: 24px 0;
+            // padding: 24px 0;
             color: #092C4C;
             font-size: 14px;
             font-weight: 400;
             line-height: normal;
-            border-bottom: 1px solid #dbe0e6;
+            // border-bottom: 1px solid #dbe0e6;
             &_add {
                 cursor: pointer;
                 border-radius: 3px;
@@ -171,6 +171,23 @@
                 border: 1px solid #051a2c !important;
                 box-shadow: 0 3px 10px rgba(9, 44, 76, 0.5);
             }
+        }
+    }
+    &_stats {
+        display: flex;
+        column-gap: 20px;
+        margin-top: 20px;
+        @include media-breakpoint-down(sm) {
+            display: block;
+        }
+    }
+    &_spender {
+        display: flex;
+        column-gap: 20px;
+        @include media-breakpoint-down(sm) {
+            display: block;
+            // width: 350px;
+            // overflow-x: auto;
         }
     }
 }
@@ -215,4 +232,53 @@ h2 {
     &_nine {
         width: 50px;
     }
+}
+
+.dashboard_top {
+    // overflow: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+//   .dashboard_table_header {
+//     display: flex;
+//     background-color: #f8f8f8;
+//     padding: 10px 0;
+//     position: sticky;
+//     top: 0;
+//     z-index: 1;
+//   }
+  
+  .dashboard_table_content {
+    // overflow-x: auto;
+    // white-space: nowrap;
+  }
+  
+  .dashboard_table_list {
+    display: flex;
+    // padding: 10px 0;
+  }
+  
+  .table_six, .table_one, .table_one2, .table_two, .table_three, .table_four, .table_five {
+    // flex: 1;
+    // min-width: 120px; /* Adjust as needed */
+    padding: 0 10px;
+  }
+  
+  .table_six {
+    flex: 0.5;
+    min-width: 50px;
+  }
+  
+.table_one,
+.table_one2,
+.table_two,
+.table_three,
+.table_four,
+.table_five,
+.table_six {
+  @include media-breakpoint-down(sm) {
+    padding: 10px 0;
+    border-bottom: 1px solid #dbe0e6;
+  }
 }
