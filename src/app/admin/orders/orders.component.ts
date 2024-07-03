@@ -39,6 +39,8 @@ export class OrdersComponent implements OnInit {
   selectedMemberName: string = 'All';
   filteredMembers: any[] = [];
   searchTerm: string = '';
+  cash: any;
+  gcash: any;
 
   constructor(
     private salesService: SalesService,
@@ -103,6 +105,8 @@ export class OrdersComponent implements OnInit {
       this.totalCreditCurrentDate = res.current_sales.credit;
       this.computerToday = res.current_sales.computer;
       this.totalFoodsAndDrinksToday = res.current_sales.food_and_drinks;
+      this.cash = res.current_sales.cash;
+      this.gcash = res.current_sales.gcash;
 
       this.products = res.sales.data;
       this.totalSalesSum = res.sales.income;

@@ -93,7 +93,7 @@
 
 .table {
     &_one {
-        width: 140px;
+        width: 100px;
         span {
             cursor: pointer;
             border-radius: 3px;
@@ -117,7 +117,7 @@
         width: 120px;
     }
     &_four {
-        width: 230px;
+        width: 270px;
     }
     &_five {
         width: 150px;
@@ -129,10 +129,13 @@
         width: 80px;
     }
     &_eight {
-        width: 110px;
+        width: 50px;
     }
     &_nine {
         width: 50px;
+    }
+    &_ten {
+        width: 80px;
     }
 }
 

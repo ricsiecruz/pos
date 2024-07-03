@@ -68,6 +68,14 @@
             <input [(ngModel)]="pc" placeholder="Enter load" (input)="updateButtonState()" class="form-control">
         </div>
 
+        <div class="pos_selected_pc">
+            <label for="mode_of_payment">Mode of payment</label>
+            <select [(ngModel)]="mode_of_payment" name="mode_of_payment" class="form-control" style="text-align: left;">
+                <option [value]="'cash'">Cash</option>
+                <option [value]="'gcash'">Gcash</option>
+            </select>
+        </div>
+
         <div class="pos_selected_total">
             <div class="pos_selected_total_qty">
                 <div class="pos_selected_total_qty_text">Quantity</div>

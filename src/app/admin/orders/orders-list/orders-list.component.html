@@ -38,6 +38,18 @@
         PHP {{ foodDrinks | number:'1.2-2' }}
       </div>
     </div>
+    <div class="orders-list_stat_card" style="margin: 0;">
+      Cash
+      <div>
+        PHP {{ cash | number:'1.2-2' }}
+      </div>
+    </div>
+    <div class="orders-list_stat_card" style="margin: 0;">
+      Gcash
+      <div>
+        PHP {{ gcash | number:'1.2-2' }}
+      </div>
+    </div>
   </div>
   <div class="orders-list_table_header">
     <div class="table_five">Customer</div>
@@ -48,6 +60,7 @@
     <div class="table_eight">Credit</div>
     <div class="table_nine"></div>
     <div class="table_three">Total</div>
+    <div class="table_ten"></div>
     <div class="table_seven"></div>
   </div>
   <div *ngIf="dataSource.length > 0; else noData">
@@ -89,6 +102,9 @@
       </div>
       <div class="table_three">
         PHP {{ data.total }}
+      </div>
+      <div class="table_ten">
+        {{ data.mode_of_payment }}
       </div>
       <div class="table_seven">
         <div (click)="view(data)" class="btn btn_primary">

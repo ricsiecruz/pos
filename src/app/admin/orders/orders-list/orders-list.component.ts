@@ -16,6 +16,8 @@ export class OrdersListComponent {
   @Input() net: number = 0;
   @Input() computer: number = 0;
   @Input() foodDrinks: number = 0;
+  @Input() cash: number = 0;
+  @Input() gcash: number = 0;
   @Input() dataSource: any[] = [];
   @Input() details: any;
   @Input() pay!: (data: any) => void;

@@ -26,6 +26,7 @@ export class PosComponent {
   paidAmount: number | null = null;
   credit: boolean = false;
   creditAmount: number = 0;
+  mode_of_payment: string = 'cash';
 
   constructor(
     public productService: ProductService,
@@ -177,6 +178,7 @@ export class PosComponent {
       dateTime: new Date().toISOString(),
       customer: this.selectedMemberName,
       computer: this.pc,
+      mode_of_payment: this.mode_of_payment,
       credit: this.creditAmount
     };
 
@@ -186,6 +188,7 @@ export class PosComponent {
     this.selectedProducts = [];
     this.pc = '';
     this.creditAmount = 0;
+    this.mode_of_payment = 'cash';
     this.calculateOverallTotal();
     this.updateButtonState();
     this.credit = false;
