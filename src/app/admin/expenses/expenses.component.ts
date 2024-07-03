@@ -18,7 +18,6 @@ export class ExpensesComponent {
   expenses: any[] = [];
   expense: string = '';
   amount?: number | null;
-  totalSum: number = 0;
   newExpenses: any = { expense: '', month: '', date: '', amount: '', mode_of_payment: '', paid_by: '', settled_by: '', credit: false };
   selectedFile: File | null = null;
   imagePreviewUrl: string | null = null;  // Variable for image preview
@@ -116,7 +115,6 @@ export class ExpensesComponent {
       this.sendExpenseData();
     }
 
-    // this.sendExpenseData();
   }
 
   sendExpenseData() {
@@ -129,11 +127,6 @@ export class ExpensesComponent {
     this.modalService.closeModal();
     this.resetNewExpenses();
     this.imagePreviewUrl = null; // Clear the preview after submitting
-  }
-  
-
-  private calculateTotalSum(expenses: any[]): number {
-    return expenses.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
   }
 
   loadInventory() {
@@ -191,7 +184,6 @@ export class ExpensesComponent {
       settled_by: 'Tech Hybe'
     };
 
-    console.log('payload', payload)
     this.expensesService.payExpense(expense.id).subscribe(
       (res: any) => {
         this.credit -= expense.amount;
@@ -222,7 +214,7 @@ export class ExpensesComponent {
 
   private resetNewExpenses() {
     this.newExpenses = { expense: '', month: '', date: '', amount: '', mode_of_payment: '', paid_by: '', credit: false };
-    this.setDefaultPaidBy(); // Reset to default paidBy value
-    this.setDefaultModeOfPayment(); // Reset to default mode_of_payment value
+    this.setDefaultPaidBy();
+    this.setDefaultModeOfPayment();
   }
 }

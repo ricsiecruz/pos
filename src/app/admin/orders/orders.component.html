@@ -1,4 +1,3 @@
-<!-- orders component -->
 <div class="orders">
   <div class="orders_title">Sales</div>
   <div class="orders_table">
@@ -21,21 +20,22 @@
 
       <tab heading="Today">
         <app-orders-list
-          [totalSales]="totalSalesSumToday"
-          [expenses]="totalExpensesToday"
-          [net]="netToday"
-          [credit]="totalCreditCurrentDate"
-          [computer]="computerToday"
-          [foodDrinks]="totalFoodsAndDrinksToday"
-          [cash]="cash"
-          [gcash]="gcash"
+          [totalSales]="currentSales.income"
+          [expenses]="currentSales.expenses"
+          [net]="currentSales.net"
+          [credit]="currentSales.credit"
+          [computer]="currentSales.computer"
+          [foodDrinks]="currentSales.food_and_drinks"
+          [cash]="currentSales.cash"
+          [gcash]="currentSales.gcash"
           [dataSource]="todayProducts"
           [details]="details"
           [pay]="pay.bind(this)"
         ></app-orders-list>
       </tab>
 
-      <tab heading="All">
+      <!-- <tab [heading]="'All ' + creditCount"> -->
+      <tab [heading]="'All (Credit: ' + creditCount + ')'">
         <div class="orders_table_filter">
           <div class="orders_table_filter_date">
             <div>
@@ -56,12 +56,12 @@
           </div>
         </div>
         <app-orders-list
-          [totalSales]="totalSalesSum"
-          [expenses]="totalExpenses"
-          [net]="net"
-          [credit]="totalCreditAllData"
-          [computer]="computer"
-          [foodDrinks]="foodDrinks"
+          [totalSales]="allSales.income"
+          [expenses]="allSales.expenses"
+          [net]="allSales.net"
+          [credit]="allSales.credit"
+          [computer]="allSales.computer"
+          [foodDrinks]="allSales.food_and_drinks"
           [dataSource]="products"
           [details]="details"
           [pay]="pay.bind(this)"
