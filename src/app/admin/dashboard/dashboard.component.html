@@ -67,7 +67,7 @@
             <div class="dashboard_table_header">
                 <div class="table_five"></div>
                 <div class="table_one2">Product</div>
-                <div class="table_two">Qty</div>
+                <div class="table_two2">Qty</div>
             </div>
             <div *ngIf="mostOrderedToday.length > 0; else noData">
                 <div class="dashboard_table_list" *ngFor="let data of mostOrderedToday; let i = index;">
@@ -75,7 +75,7 @@
                     <div class="table_one2">
                         {{ data.product }}
                     </div>
-                    <div class="table_two">
+                    <div class="table_two2">
                         {{ data.total_quantity }}
                     </div>
                 </div>
@@ -86,7 +86,7 @@
             <div class="dashboard_table_header">
                 <div class="table_five"></div>
                 <div class="table_one2">Product</div>
-                <div class="table_two">Qty</div>
+                <div class="table_two2">Qty</div>
             </div>
             <div *ngIf="mostOrdered.length > 0; else noData">
                 <div class="dashboard_table_list" *ngFor="let data of mostOrdered; let i = index;">
@@ -94,7 +94,7 @@
                     <div class="table_one2">
                         {{ data.product }}
                     </div>
-                    <div class="table_two">
+                    <div class="table_two2">
                         {{ data.total_quantity }}
                     </div>
                 </div>
@@ -139,20 +139,12 @@
                 <div class="table_three">Food and drinks</div>
                 <div class="table_four">Total Spent</div>
             </div>
-            <div *ngIf="topSpenders.length > 0; else noData">
+            <div class="dashboard_table_content">
                 <div class="dashboard_table_list" *ngFor="let data of topSpenders">
-                    <div class="table_one">
-                        {{ data.customer }}
-                    </div>
-                    <div class="table_two">
-                        PHP {{ data.total_computer }}
-                    </div>
-                    <div class="table_three">
-                        PHP {{ data.total_subtotal }}
-                    </div>
-                    <div class="table_four">
-                        PHP {{ data.total_spent }}
-                    </div>
+                    <div class="table_one">{{ data.customer }}</div>
+                    <div class="table_two">PHP {{ data.total_computer }}</div>
+                    <div class="table_three">PHP {{ data.total_subtotal }}</div>
+                    <div class="table_four">PHP {{ data.total_spent }}</div>
                 </div>
             </div>
         </div>

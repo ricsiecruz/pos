@@ -106,15 +106,20 @@
         border: 1px solid #dbe0e6;
         box-shadow: none;
         padding: 24px;
-        // width: 400px;
+        width: 590px;
         height: fit-content;
+        @include media-breakpoint-down(sm) {
+            width: 100%;
+        }
     }
     &_overview {
         &_chart {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
+            // width: 100%;
+            // max-width: 100%;
+            // height: auto;
+            width: 1200px;
             @include media-breakpoint-down(sm) {
+                width: 360px;
                 height: 300px;
             }
           }
@@ -137,11 +142,7 @@
 
         &_header {
             display: flex;
-            // justify-content: space-between;
             padding: 0;
-            // padding-bottom: 0.75rem;
-            /* border-top: 1px solid #dbe0e6; */
-            // border-bottom: 1px solid #dbe0e6;
             div {
                 font-weight: 600;
                 font-size: 15px;
@@ -149,12 +150,10 @@
         }
         &_list {
             display: flex;
-            // padding: 24px 0;
             color: #092C4C;
             font-size: 14px;
             font-weight: 400;
             line-height: normal;
-            // border-bottom: 1px solid #dbe0e6;
             &_add {
                 cursor: pointer;
                 border-radius: 3px;
@@ -186,8 +185,6 @@
         column-gap: 20px;
         @include media-breakpoint-down(sm) {
             display: block;
-            // width: 350px;
-            // overflow-x: auto;
         }
     }
 }
@@ -204,21 +201,42 @@ h2 {
 .table {
     &_one {
         width: 150px;
+        @include media-breakpoint-down(sm) {
+            min-width: 150px;
+        }
     }
     &_one2 {
         width: 250px;
+        @include media-breakpoint-down(sm) {
+            min-width: 250px;
+        }
     }
     &_two {
         width: 120px;
+        @include media-breakpoint-down(sm) {
+            min-width: 110px;
+        }
+    }
+    &_two2 {
+        width: 120px;
+        @include media-breakpoint-down(sm) {
+            min-width: fit-content;
+        }
     }
     &_three {
         width: 150px;
+        @include media-breakpoint-down(sm) {
+            min-width: 140px;
+        }
     }
     &_four {
         width: 110px;
     }
     &_five {
         width: 30px;
+        @include media-breakpoint-down(sm) {
+            min-width: 20px;
+        }
     }
     &_six {
         width: 30px;
@@ -235,34 +253,12 @@ h2 {
 }
 
 .dashboard_top {
-    // overflow: hidden;
     overflow-x: auto;
     white-space: nowrap;
   }
   
-//   .dashboard_table_header {
-//     display: flex;
-//     background-color: #f8f8f8;
-//     padding: 10px 0;
-//     position: sticky;
-//     top: 0;
-//     z-index: 1;
-//   }
-  
-  .dashboard_table_content {
-    // overflow-x: auto;
-    // white-space: nowrap;
-  }
-  
   .dashboard_table_list {
     display: flex;
-    // padding: 10px 0;
-  }
-  
-  .table_six, .table_one, .table_one2, .table_two, .table_three, .table_four, .table_five {
-    // flex: 1;
-    // min-width: 120px; /* Adjust as needed */
-    padding: 0 10px;
   }
   
   .table_six {
@@ -273,12 +269,11 @@ h2 {
 .table_one,
 .table_one2,
 .table_two,
+.table_two2,
 .table_three,
 .table_four,
 .table_five,
 .table_six {
-  @include media-breakpoint-down(sm) {
     padding: 10px 0;
     border-bottom: 1px solid #dbe0e6;
-  }
 }
