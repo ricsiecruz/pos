@@ -82,15 +82,11 @@
             </div>
             <div *ngIf="mostOrderedToday.length > 0; else noData">
                 <div class="dashboard_table_list" *ngFor="let data of mostOrderedToday; let i = index;">
-                    <div class="table_five">{{ i + 1 }}.</div>
-                    <div class="table_one2">
-                        {{ data.product }}
-                    </div>
-                    <div class="table_two2">
-                        {{ data.total_quantity }}
-                    </div>
+                  <div class="table_five">{{ i + 1 }}.</div>
+                  <div class="table_one2">{{ data.product }}</div>
+                  <div class="table_two2">{{ data.total_quantity }}</div>
                 </div>
-            </div>
+              </div>
         </div>
         <div *ngIf="mostOrdered.length > 0" class="dashboard_top">
             <h2>All time most ordered products</h2>
@@ -101,15 +97,11 @@
             </div>
             <div *ngIf="mostOrdered.length > 0; else noData">
                 <div class="dashboard_table_list" *ngFor="let data of mostOrdered; let i = index;">
-                    <div class="table_five">{{ i + 1 }}.</div>
-                    <div class="table_one2">
-                        {{ data.product }}
-                    </div>
-                    <div class="table_two2">
-                        {{ data.total_quantity }}
-                    </div>
+                  <div class="table_five">{{ i + 1 }}.</div>
+                  <div class="table_one2">{{ data.product }}</div>
+                  <div class="table_two2">{{ data.total_quantity }}</div>
                 </div>
-            </div>
+              </div>
         </div>
     </div>
 
@@ -124,41 +116,33 @@
               <div class="table_four">Total Spent</div>
             </div>
             <div *ngIf="topSpendersToday.length > 0; else noData" class="dashboard_table_content">
-              <div class="dashboard_table_list" *ngFor="let data of topSpendersToday; let i = index;">
-                <div class="table_six">{{ i + 1 }}.</div>
-                <div class="table_one">
-                  {{ data.customer }}
-                </div>
-                <div class="table_two">
-                  PHP {{ data.total_computer }}
-                </div>
-                <div class="table_three">
-                  PHP {{ data.total_subtotal }}
-                </div>
-                <div class="table_four">
-                  PHP {{ data.total_spent }}
+                <div class="dashboard_table_list" *ngFor="let data of topSpendersToday; let i = index;">
+                  <div class="table_six">{{ i + 1 }}.</div>
+                  <div class="table_one">{{ data.customer }}</div>
+                  <div class="table_two">PHP {{ data.total_computer }}</div>
+                  <div class="table_three">PHP {{ data.total_subtotal }}</div>
+                  <div class="table_four">PHP {{ data.total_spent }}</div>
                 </div>
               </div>
-            </div>
         </div>
           
         <div *ngIf="topSpenders.length > 0" class="dashboard_top">
             <h2>All time top spender</h2>
             <div class="dashboard_table_header">
-                <div class="table_one">Customer</div>
-                <div class="table_two">Computer</div>
-                <div class="table_three">Food and drinks</div>
-                <div class="table_four">Total Spent</div>
+              <div class="table_one">Customer</div>
+              <div class="table_two">Computer</div>
+              <div class="table_three">Food and drinks</div>
+              <div class="table_four">Total Spent</div>
             </div>
             <div class="dashboard_table_content">
-                <div class="dashboard_table_list" *ngFor="let data of topSpenders">
-                    <div class="table_one">{{ data.customer }}</div>
-                    <div class="table_two">PHP {{ data.total_computer }}</div>
-                    <div class="table_three">PHP {{ data.total_subtotal }}</div>
-                    <div class="table_four">PHP {{ data.total_spent }}</div>
-                </div>
+              <div class="dashboard_table_list" *ngFor="let data of topSpenders">
+                <div class="table_one">{{ data.customer }}</div>
+                <div class="table_two">PHP {{ data.total_computer }}</div>
+                <div class="table_three">PHP {{ data.total_subtotal }}</div>
+                <div class="table_four">PHP {{ data.total_spent }}</div>
+              </div>
             </div>
-        </div>
+          </div>
         
     </div>
 </div>

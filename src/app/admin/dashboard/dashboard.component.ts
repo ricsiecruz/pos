@@ -53,13 +53,19 @@ export class DashboardComponent {
 
     this.dashboardService.products$.subscribe(
       (data: any) => {
-        if (data && data.length > 0 && data[0]) {
-          this.mostOrderedToday = data[0].mostOrderedToday;
-          this.mostOrdered = data[0].mostOrdered;
-          this.topSpenders = data[0].topSpenders;
+        if (data) {
+          if (data.mostOrderedToday) {
+            this.mostOrderedToday = data.mostOrderedToday;
+          }
+          if (data.mostOrdered) {
+            this.mostOrdered = data.mostOrdered;
+          }
+          if (data.topSpenders) {
+            this.topSpenders = data.topSpenders;
+          }
         }
       },
-      error => {
+      (error) => {
         console.error('Error fetching most ordered products:', error);
       }
     );
@@ -79,7 +85,7 @@ export class DashboardComponent {
           this.updateBarChart(dates, sales, expenses, net);
         }
       },
-      error => {
+      (error) => {
         console.error('Error fetching statistics:', error);
       }
     );
