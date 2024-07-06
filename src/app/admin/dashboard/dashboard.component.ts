@@ -96,6 +96,13 @@ export class DashboardComponent {
   }
 
   updateBarChart(labels: string[], sales: number[], expenses: number[], net: number[]) {
+    // Utility function to get the day of the week
+    const getDayOfWeek = (dateString: string) => {
+      const date = new Date(dateString);
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return daysOfWeek[date.getUTCDay()];
+    };
+  
     // Adjust expenses and net only for bar height visualization
     const adjustedExpenses = expenses.map((expense, index) => {
       return expense > sales[index] ? sales[index] : expense;
@@ -155,15 +162,17 @@ export class DashboardComponent {
             },
             tooltip: {
               callbacks: {
-                label: function (tooltipItem: any) {
+                label: (tooltipItem: any) => {
                   const datasetIndex = tooltipItem.datasetIndex;
                   const dataIndex = tooltipItem.dataIndex;
+                  const dayOfWeek = getDayOfWeek(labels[dataIndex]);
+  
                   if (datasetIndex === 1) { // Adjusted Expenses
-                    return `Total Expenses: ${expenses[dataIndex]}`;
+                    return `Total Expenses: ${expenses[dataIndex]} (${dayOfWeek})`;
                   } else if (datasetIndex === 2) { // Adjusted Net
-                    return `Net: ${net[dataIndex]}`;
+                    return `Net: ${net[dataIndex]} (${dayOfWeek})`;
                   } else {
-                    return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
+                    return `${tooltipItem.dataset.label}: ${tooltipItem.raw} (${dayOfWeek})`;
                   }
                 }
               }
@@ -188,7 +197,7 @@ export class DashboardComponent {
         },
       });
     }
-  }
+  }  
   
   private calculateTotalCups(products: any[]): number {
     return products.reduce((acc, curr) => acc + parseFloat(curr.qty), 0);

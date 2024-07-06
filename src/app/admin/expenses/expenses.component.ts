@@ -167,7 +167,7 @@ export class ExpensesComponent {
   payExpense(expense: any) {
 
     const selectedModeOfPayment = this.mode_of_payment.find(mp => mp.id === this.selected_mode_of_payment);
-    this.selected_mode_of_payment = selectedModeOfPayment.mode_of_payment;
+    this.selected_mode_of_payment = selectedModeOfPayment?.mode_of_payment;
   
     console.log('paying expense', expense, expense.id, this.selected_mode_of_payment);
 
@@ -205,11 +205,12 @@ export class ExpensesComponent {
   }
 
   private setDefaultModeOfPayment() {
-    if (this.mode_of_payment.length > 0) {
+    // if (this.mode_of_payment.length > 0) {
       const defaultModeOfPayment = this.mode_of_payment.find(data => data.id === 1) || this.mode_of_payment[0];
       this.newExpenses.mode_of_payment = defaultModeOfPayment.id;
       this.selected_mode_of_payment = defaultModeOfPayment.id;
-    }
+      console.log('mode of payment', this.selected_mode_of_payment)
+    // }
   }
 
   private resetNewExpenses() {
