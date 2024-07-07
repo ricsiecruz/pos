@@ -27,6 +27,10 @@
         }
     }
     &_table {
+        overflow-x: auto;
+        white-space: nowrap;
+        width: 100%;
+
         margin-bottom: 1.5rem;
         background-color: #ffffff;
         transition: all 0.5s ease-in-out;
@@ -62,10 +66,10 @@
         &_header {
             display: flex;
             // justify-content: space-between;
-            padding: 0 24px;
-            padding-bottom: 0.75rem;
+            // padding: 0 24px;
+            // padding-bottom: 0.75rem;
             /* border-top: 1px solid #dbe0e6; */
-            border-bottom: 1px solid #dbe0e6;
+            // border-bottom: 1px solid #dbe0e6;
             div {
                 font-weight: 600;
                 font-size: 15px;
@@ -73,13 +77,14 @@
         }
         &_list {
             display: flex;
-            // justify-content: space-between;
-            padding: 24px;
+            /* padding: 24px; */
+            /* align-items: center; */
+            /* padding-bottom: 0; */
             color: #092C4C;
             font-size: 14px;
             font-weight: 400;
             line-height: normal;
-            border-bottom: 1px solid #dbe0e6;
+            align-items: center;
             &_add:hover {
                 background-color: #051a2c !important;
                 border: 1px solid #051a2c !important;
@@ -91,25 +96,28 @@
 
 .table {
     &_one {
-        width: 200px;
+        min-width: 200px;
     }
     &_two {
-        width: 120px;
+        min-width: 120px;
     }
     &_three {
-        width: 230px;
+        min-width: 230px;
     }
     &_four {
-        width: 120px;
+        min-width: 120px;
     }
     &_five {
-        width: 170px;
+        min-width: 170px;
     }
     &_six {
-        width: 100px;
+        min-width: 100px;
     }
     &_seven {
-        width: 120px;
+        min-width: 120px;
+    }
+    &_eight {
+        min-width: 80px;
     }
 }
 
@@ -250,4 +258,21 @@ input {
 
 ::placeholder {
     color: #8b949b;
+}
+
+.table_one,
+.table_one2,
+.table_two,
+.table_two2,
+.table_three,
+.table_four,
+.table_five,
+.table_six,
+.table_seven,
+.table_eight {
+    height: 70px;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #dbe0e6;
+    display: flex;
 }

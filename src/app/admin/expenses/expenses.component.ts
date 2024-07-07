@@ -103,7 +103,6 @@ export class ExpensesComponent {
       formData.append('image', this.selectedFile, this.selectedFile.name);
       this.http.post<{ imagePath: string }>(this.API_URL + 'expenses/upload', formData).subscribe(
         (response) => {
-          console.log('image', response)
           this.newExpenses.image_path = response.imagePath;
           this.sendExpenseData();
         },
@@ -122,7 +121,6 @@ export class ExpensesComponent {
     const selectedModeOfPayment = this.mode_of_payment.find(mp => mp.id === this.newExpenses.mode_of_payment);
     this.newExpenses.mode_of_payment = selectedModeOfPayment?.mode_of_payment;
   
-    console.log('add expense', this.newExpenses);
     this.expensesService.addExpenses(this.newExpenses);
     this.modalService.closeModal();
     this.resetNewExpenses();
@@ -160,7 +158,6 @@ export class ExpensesComponent {
 
   payModal(data: any) {
     this.details = data;
-    console.log('pay data', data)
     this.modalService.openModal(this.pay);
   }
 
@@ -168,21 +165,6 @@ export class ExpensesComponent {
 
     const selectedModeOfPayment = this.mode_of_payment.find(mp => mp.id === this.selected_mode_of_payment);
     this.selected_mode_of_payment = selectedModeOfPayment?.mode_of_payment;
-  
-    console.log('paying expense', expense, expense.id, this.selected_mode_of_payment);
-
-    const payload = {
-      id: expense.id,
-      expense: expense.expense,
-      month: expense.month,
-      amount: expense.amount,
-      mode_of_payment: this.selected_mode_of_payment,
-      credit: expense.credit,
-      date: expense.date,
-      image_path: expense.image_path,
-      paid_by: expense.paid_by,
-      settled_by: 'Tech Hybe'
-    };
 
     this.expensesService.payExpense(expense.id).subscribe(
       (res: any) => {
@@ -205,12 +187,9 @@ export class ExpensesComponent {
   }
 
   private setDefaultModeOfPayment() {
-    // if (this.mode_of_payment.length > 0) {
-      const defaultModeOfPayment = this.mode_of_payment.find(data => data.id === 1) || this.mode_of_payment[0];
-      this.newExpenses.mode_of_payment = defaultModeOfPayment.id;
-      this.selected_mode_of_payment = defaultModeOfPayment.id;
-      console.log('mode of payment', this.selected_mode_of_payment)
-    // }
+    const defaultModeOfPayment = this.mode_of_payment.find(data => data.id === 1) || this.mode_of_payment[0];
+    this.newExpenses.mode_of_payment = defaultModeOfPayment.id;
+    this.selected_mode_of_payment = defaultModeOfPayment.id;
   }
 
   private resetNewExpenses() {
