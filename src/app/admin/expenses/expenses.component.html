@@ -20,7 +20,8 @@
             <div class="table_five">Mode of payment</div>
             <div class="table_seven">Paid by</div>
             <div class="table_six"></div>
-            <div></div>
+            <div class="table_three">Date settled</div>
+            <div class="table_eight"></div>
         </div>
         <div class="inventory_table_list" *ngFor="let data of expenses">
             <div class="table_one">
@@ -37,16 +38,36 @@
             </div>
             <div class="table_five">
                 {{ data.mode_of_payment }}
+                <div *ngIf="data.mode_of_payment == null">
+                  -
+                </div>
             </div>
-            <div class="table_seven">{{ data.paid_by }}</div>
+            <div class="table_seven">
+              {{ data.paid_by }}
+              <div *ngIf="data.paid_by == null">
+                -
+              </div>
+            </div>
             <div class="table_six">
-              <!-- <div *ngIf="data.credit == true" (click)="payExpense(data)">pay</div> -->
-              <span *ngIf="data.credit == true" (click)="payModal(data)" class="btn btn_secondary">pay</span>
-            </div>            
-            <div (click)="view(data)" class="btn btn_primary">view</div>
+              <span *ngIf="data.credit == true; else none" (click)="payModal(data)" class="btn btn_secondary">pay</span>
+            </div>
+            <div class="table_three">
+              <div *ngIf="data.date_settled != null; else none">
+                {{ data.date_settled | date:"EEEE, MMMM d, y, h:mm:ss" }}
+              </div>
+            </div>
+            <div class="table_eight">
+              <span (click)="view(data)" class="btn btn_primary">
+                view
+              </span>
+            </div>
         </div>
     </div>
 </div>
+
+<ng-template #none>
+  -
+</ng-template>
 
 <ng-template #pay let-d="dismiss">
   <div class="modal-header">
