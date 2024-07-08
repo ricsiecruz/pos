@@ -28,7 +28,7 @@
                 {{ data.expense }}
             </div>
             <div class="table_four">
-                PHP {{ data.amount }}
+                PHP {{ data.amount | number:'1.2-2' }}
             </div>
             <div class="table_two">
                 {{ data.month }}
@@ -97,7 +97,7 @@
         <label>Month</label>
         <input class="form-control" [value]="details.month" disabled >
         <label>Amount</label>
-        <input class="form-control" [value]="details.amount" disabled >
+        <input class="form-control" [value]="details.amount | currency:'PHP':'symbol':'1.2-2'" disabled >
         <label>Mode of payment</label>
         <input class="form-control" [value]="details.mode_of_payment" disabled >
         <label>Date</label>
