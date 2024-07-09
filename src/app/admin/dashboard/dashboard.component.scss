@@ -124,7 +124,7 @@
         &_chart {
             // width: 100%;
             // max-width: 100%;
-            // height: auto;
+            height: auto;
             width: 1200px;
             @include media-breakpoint-down(sm) {
                 width: 360px;
