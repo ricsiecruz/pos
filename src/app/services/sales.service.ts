@@ -34,7 +34,6 @@ export class SalesService implements OnDestroy {
       if (Array.isArray(data)) {
         this.updateSales(data);
       } else if (data) {
-        console.log('data', data)
         this.addOrUpdateSale(data);
         this.handleNewSale(data);
       }
@@ -48,7 +47,6 @@ export class SalesService implements OnDestroy {
   }
 
   private handleNewSale(sale: any): void {
-    console.log('New sale received:', sale);
     this.updateDashboardData();
   }
 
@@ -76,7 +74,6 @@ export class SalesService implements OnDestroy {
   }
 
   private addOrUpdateSale(sale: any): void {
-    console.log('sale', sale)
     const currentSales = this.salesSubject.value;
 
     if (!Array.isArray(currentSales)) {

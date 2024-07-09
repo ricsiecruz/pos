@@ -35,6 +35,7 @@ export class InventoryComponent {
     this.inventoryService.inventory$.subscribe((inventory: any[]) => {
       if (inventory && inventory.length > 0) {
         this.inventory = inventory;
+        console.log('inventory', this.inventory)
       }
     });
 
@@ -43,12 +44,6 @@ export class InventoryComponent {
         this.inventory.push(message.product);
         console.log('...', message.product)
       }
-    });
-  }
-
-  loadInventory() {
-    this.inventoryService.getInventory().subscribe((res: any) => {
-      this.inventory = res;
     });
   }
 
@@ -97,9 +92,5 @@ export class InventoryComponent {
     this.category = '';
     this.brand = '';
     this.qty = '';
-  }
-
-  updateInventory() {
-    this.loadInventory();
   }
 }

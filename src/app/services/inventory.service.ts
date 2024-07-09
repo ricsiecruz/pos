@@ -9,8 +9,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class InventoryService implements OnDestroy {
-  // API_URL = environment.apiUrl;
-  API_URL = ('https://pos-backend-kt9t.vercel.app/');
+  API_URL = environment.apiUrl;
   private inventorySubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   inventory$: Observable<any[]> = this.inventorySubject.asObservable();
   private websocketSubscription: Subscription;
@@ -23,6 +22,8 @@ export class InventoryService implements OnDestroy {
             return message.addInventory;
           } else if (message.action === 'initialize') {
             return message.inventory;
+          } else if (message.action === 'newSale') {
+            return message.data;
           } else {
             return null;
           }
@@ -34,6 +35,7 @@ export class InventoryService implements OnDestroy {
         this.updateInventory(data);
       } else if (data) {
         this.addOrUpdateInventory(data);
+        this.handleNewSale(data);
       }
     });
   }
@@ -42,6 +44,17 @@ export class InventoryService implements OnDestroy {
     if (this.websocketSubscription) {
       this.websocketSubscription.unsubscribe();
     }
+  }
+
+  private handleNewSale(sale: any): void {
+    this.updateDashboardData();
+  }
+
+  private updateDashboardData(): void {
+    this.http.get<any>(this.API_URL + 'inventory').subscribe((data: any) => {
+      console.log('data', data)
+      this.inventorySubject.next(data);
+    });
   }
 
   addInventory(inventory: any) {
