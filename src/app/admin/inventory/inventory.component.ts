@@ -23,6 +23,7 @@ export class InventoryComponent {
   newInventory: any = { product: '', category: '', brand: '', stocks: '' };
   editingProduct: any = null;
   qty: string = '';
+  low: number = 0;
 
   constructor(
     private inventoryService: InventoryService,
@@ -33,8 +34,10 @@ export class InventoryComponent {
   ngOnInit() {
     console.log('this is inventory page')
     this.inventoryService.inventory$.subscribe((inventory: any[]) => {
+      console.log('aaa', inventory)
       if (inventory && inventory.length > 0) {
-        this.inventory = inventory;
+        this.inventory = inventory[0].data;
+        this.low = inventory[0].low;
         console.log('inventory', this.inventory)
       }
     });

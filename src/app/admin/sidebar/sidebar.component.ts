@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ExpensesService } from '../../services/expenses.service';
 import { NavigationEnd, Router } from '@angular/router';
+import { InventoryService } from '../../services/inventory.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,8 +13,10 @@ export class SidebarComponent {
   @Output() menuClicked = new EventEmitter<void>();
 
   credit_count: number = 0;
+  inventory: number = 0;
 
   constructor(
+    private inventoryService: InventoryService,
     private expensesService: ExpensesService,
     private router: Router
   ) {
@@ -21,6 +24,14 @@ export class SidebarComponent {
       if (event instanceof NavigationEnd) {
         // Close the sidebar when navigating
         this.isOpen = false;
+      }
+    });
+
+    this.inventoryService.inventory$.subscribe((inventory: any[]) => {
+      console.log('aaa', inventory)
+      if (inventory && inventory.length > 0) {
+        this.inventory = inventory[0].low;
+        console.log('inventory', this.inventory)
       }
     });
 
