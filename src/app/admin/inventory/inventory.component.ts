@@ -32,22 +32,27 @@ export class InventoryComponent {
   ) {}
 
   ngOnInit() {
-    console.log('this is inventory page')
-    this.inventoryService.inventory$.subscribe((inventory: any[]) => {
-      console.log('aaa', inventory)
-      if (inventory && inventory.length > 0) {
-        this.inventory = inventory[0].data;
-        this.low = inventory[0].low;
-        console.log('inventory', this.inventory)
+    this.inventoryService.inventory$.subscribe((inventory: any) => {
+      if (inventory.data && inventory.data.length > 0) {
+        this.getInventory()
+      } else {
+        this.inventory = [];
+        this.low = 0;
+        console.log('No inventory data available');
       }
     });
 
     this.webSocketService.receive().subscribe((message: any) => {
-      if (message.action === 'addProduct') {
-        this.inventory.push(message.product);
-        console.log('...', message.product)
+      if (message.action === 'updatedInventory') {
+        this.getInventory()
       }
-    });
+    });    
+  }
+
+  getInventory() {
+    this.inventoryService.getInventory().subscribe((res: any) => {
+      this.inventory = res.data;
+    })
   }
 
   openAddInventoryModal(modalContent: any) {

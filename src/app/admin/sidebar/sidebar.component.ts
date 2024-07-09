@@ -28,10 +28,8 @@ export class SidebarComponent {
     });
 
     this.inventoryService.inventory$.subscribe((inventory: any[]) => {
-      console.log('aaa', inventory)
       if (inventory && inventory.length > 0) {
         this.inventory = inventory[0].low;
-        console.log('inventory', this.inventory)
       }
     });
 

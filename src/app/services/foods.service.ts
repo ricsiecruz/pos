@@ -9,8 +9,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class FoodsService implements OnDestroy {
-  // API_URL = environment.apiUrl;
-  API_URL = ('https://pos-backend-kt9t.vercel.app/');
+  API_URL = environment.apiUrl;
 
   private foodsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   foods$: Observable<any[]> = this.foodsSubject.asObservable();

@@ -19,7 +19,7 @@ export class InventoryService implements OnDestroy {
       this.webSocketService.receive().pipe(
         map((message: any) => {
           if (message.action === 'addInventory') {
-            return message.addInventory;
+            return message.inventory;
           } else if (message.action === 'initialize') {
             return message.inventory;
           } else if (message.action === 'newSale') {
@@ -52,7 +52,6 @@ export class InventoryService implements OnDestroy {
 
   private updateDashboardData(): void {
     this.http.get<any>(this.API_URL + 'inventory').subscribe((data: any) => {
-      console.log('data', data)
       this.inventorySubject.next(data);
     });
   }
@@ -62,12 +61,15 @@ export class InventoryService implements OnDestroy {
   }
 
   private addOrUpdateInventory(inventory: any): void {
-    const existinginventoryIndex = this.inventorySubject.value.findIndex(s => s.id === inventory.id);
-    if (existinginventoryIndex === -1) {
-      this.inventorySubject.next([...this.inventorySubject.value, inventory]);
+    const currentInventory = Array.isArray(this.inventorySubject.value) ? this.inventorySubject.value : [];
+
+    const existingInventoryIndex = currentInventory.findIndex(s => s.id === inventory.id);
+
+    if (existingInventoryIndex === -1) {
+      this.inventorySubject.next([...currentInventory, inventory]);
     } else {
-      const updatedInventory = [...this.inventorySubject.value];
-      updatedInventory[existinginventoryIndex] = inventory;
+      const updatedInventory = [...currentInventory];
+      updatedInventory[existingInventoryIndex] = inventory;
       this.inventorySubject.next(updatedInventory);
     }
   }
@@ -77,12 +79,10 @@ export class InventoryService implements OnDestroy {
   }
 
   editProduct(id: string, updatedProduct: any) {
-    console.log('d', id, updatedProduct)
     this.webSocketService.send({ action: 'addStock', id, inventory: updatedProduct });
   }
 
   getInventory(): Observable<any[]> {
     return this.http.get<any[]>(this.API_URL + 'inventory');
   }
-
 }

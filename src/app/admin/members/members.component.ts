@@ -67,13 +67,14 @@ export class MembersComponent implements OnInit, OnDestroy {
       .then(() => {
         // Reset form and close modal on success
         this.clearForm();
-        this.modalService.closeModal();
         this.errorMessage = ''; // Clear any previous error message
       })
       .catch((error) => {
         console.log('Error adding member:', error);
         this.errorMessage = 'Error adding member: ' + error; // Set error message
       });
+
+      this.modalService.closeModal();
   }
 
   cancelForm() {
