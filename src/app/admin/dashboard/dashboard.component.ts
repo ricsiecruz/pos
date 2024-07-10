@@ -21,8 +21,9 @@ export class DashboardComponent {
   topSpenders: any[] = [];
   topSpendersToday: any[] = [];  
   chart: any;
-
   salesData: any;
+  all_time_low: any;
+  all_time_high: any;
 
   constructor(
     private dashboardService: DashboardService,
@@ -71,17 +72,20 @@ export class DashboardComponent {
     );
 
     this.dashboardService.getStat().subscribe(
-      (stats: any[]) => {
-        if (stats && stats.length > 0) {
+      (stats: any) => {
+        console.log('stats', stats, stats.data, stats.all_time_low, stats.all_time_high)
+        this.all_time_low = stats.all_time_low;
+        this.all_time_high = stats.all_time_high;
+        if (stats.data && stats.data.length > 0) {
           // Sort stats by date in ascending order
-          stats.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+          stats.data.sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
           // Transform stats into suitable format for the chart
           const timeZone = 'Asia/Manila';
-          const dates = stats.map(stat => this.formatDateInTimeZone(stat.date, timeZone)); // Format date here
-          const sales = stats.map(stat => parseFloat(stat.total_sales) || 0);
-          const expenses = stats.map(stat => parseFloat(stat.total_expenses) || 0);
-          const net = stats.map(stat => parseFloat(stat.net) || 0);
+          const dates = stats.data.map((stat: any) => this.formatDateInTimeZone(stat.date, timeZone)); // Format date here
+          const sales = stats.data.map((stat: any) => parseFloat(stat.total_sales) || 0);
+          const expenses = stats.data.map((stat: any) => parseFloat(stat.total_expenses) || 0);
+          const net = stats.data.map((stat: any) => parseFloat(stat.net) || 0);
           this.updateBarChart(dates, sales, expenses, net);
         }
       },

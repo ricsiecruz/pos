@@ -12,7 +12,7 @@
         @include media-breakpoint-down(sm) {
             display: block;
         }
-        &_income, &_expenses, &_cups, &_computer, &_food, &_credit {
+        &_income, &_expenses, &_cups, &_computer, &_food, &_credit, &_ath, &_atl {
             font-weight: 700;
             font-size: 18px;
             color: #ffffff;
@@ -101,6 +101,26 @@
             &_icon {
                 svg {
                     fill: #7367F0;
+                }
+            }
+        }
+        &_ath {
+            background-color: #f8f9fa;
+            border: 1px solid #dbe0e6;
+            color: #5B6670;
+            font-size: 14px;
+            &_icon {
+                svg {
+                    fill: #f8f9fa;
+                }
+            }
+        }
+        &_atl {
+            background-color: #17a2b8;
+            font-size: 14px;
+            &_icon {
+                svg {
+                    fill: #17a2b8;
                 }
             }
         }
