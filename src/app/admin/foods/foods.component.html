@@ -66,7 +66,7 @@
 
 <ng-template #addProductModal let-d="dismiss">
     <div class="modal-header">
-        Add drink
+        Add food
     </div>
     <div>
         <div class="modal-body">
@@ -77,6 +77,12 @@
                 <input class="form-control" type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
                 <label class="modal-body-label" for="productStocks">Stocks:</label>
                 <input class="form-control" type="number" id="productStocks" name="productStocks" [(ngModel)]="newProduct.stocks" required>
+                
+                <div style="column-gap: 5px; display: flex; align-items: center;">
+                    <input type="checkbox" id="utensils" name="utensils" [(ngModel)]="newProduct.utensils" style="margin-bottom: 0;">
+                    <label class="modal-body-label" for="utensils" style="margin-bottom: 0; text-transform: none;">Need utensils</label>
+                </div>
+                
                 <div class="modal-btns">
                     <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
                     <button class="btn modal-btns-add" type="submit">

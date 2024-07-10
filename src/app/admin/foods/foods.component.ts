@@ -14,7 +14,7 @@ export class FoodsComponent {
   @ViewChild('addStockModal') addStockModal?: TemplateRef<any>;
   @ViewChild('editProductModal') editProductModal?: TemplateRef<any>;
   products: any[] = [];
-  newProduct: any = { product: '', price: '', stocks: '' };
+  newProduct: any = { product: '', price: '', stocks: '', utensils: false };
   editingProduct: any = null;
   qty: string = '';
 
@@ -50,7 +50,7 @@ export class FoodsComponent {
   addProduct() {
     this.foodsService.addProduct(this.newProduct);
     this.modalService.closeModal();
-    this.newProduct = { product: '', price: '', stocks: '' };
+    this.newProduct = { product: '', price: '', stocks: '', utensils: false };
   }
 
   addStocks(product: any) {
@@ -97,6 +97,6 @@ export class FoodsComponent {
   }
 
   clearForm() {
-    this.newProduct = { product: '', price: '', stocks: '' };
+    this.newProduct = { product: '', price: '', stocks: '', utensils: false };
   }
 }
