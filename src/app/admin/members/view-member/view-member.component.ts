@@ -9,6 +9,7 @@ import { MembersService } from '../../../services/members.service';
 })
 export class ViewMemberComponent {
   member: any;
+  transactions: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -24,7 +25,8 @@ export class ViewMemberComponent {
     this.membersService.getMemberById(id).subscribe(
       (data: any) => {
         this.member = data;
-        console.log('member', this.member)
+        this.transactions = this.member.transactions
+        console.log('member', this.member, this.transactions)
       },
       (error: any) => {
         console.error('Error fetching member details:', error);

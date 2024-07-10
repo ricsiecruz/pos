@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { SalesService } from '../../../services/sales.service';
 import * as XLSX from 'xlsx';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
@@ -10,6 +10,7 @@ import { ModalService } from '../../../modal.service';
   styleUrls: ['./orders-list.component.scss']
 })
 export class OrdersListComponent {
+  @Input() showStats: boolean = true;
   @Input() totalSales: number = 0;
   @Input() credit: number = 0;
   @Input() expenses: number = 0;
@@ -21,6 +22,7 @@ export class OrdersListComponent {
   @Input() dataSource: any[] = [];
   @Input() details: any;
   @Input() pay!: (data: any) => void;
+  @Input() columns!: string[];
   @ViewChild('editProductModal') editProductModal?: TemplateRef<any>;
   @ViewChild('sales') sales?: TemplateRef<any>;
   editingProduct: any = null;
@@ -29,6 +31,10 @@ export class OrdersListComponent {
     private salesService: SalesService,
     private modalService: ModalService,
   ) {
+  }
+
+  isColumnVisible(column: string): boolean {
+    return this.columns?.includes(column);
   }
 
   payCredit(data: any) {
@@ -41,7 +47,7 @@ export class OrdersListComponent {
     this.modalService.openModal(this.editProductModal);
   }
 
-  view(product: any) {
+  viewModal(product: any) {
     this.details = product;
     this.modalService.openModal(this.sales);
   }

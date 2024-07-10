@@ -72,7 +72,10 @@
         
     </div>
 
-    <div *ngFor="let data of member.transactions">
-        {{ data.datetime | date:"EEEE, MMMM d, y" }}
-    </div>
+    <app-orders-list
+        [dataSource]="transactions"
+        [columns]="['qty', 'date', 'computer', 'total', 'view']"
+        [showStats]="false"
+    ></app-orders-list>
+
 </div>
