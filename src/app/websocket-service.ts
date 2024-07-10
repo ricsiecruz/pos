@@ -29,7 +29,7 @@ export class WebSocketService {
           if (message.error) {
             this.errorSubject.next(message.error); // Emit error message
           } else {
-            console.log('Server response:', message);
+            // console.log('Server response:', message);
             // Handle successful response as needed
           }
         },
@@ -46,7 +46,6 @@ export class WebSocketService {
 
   send(message: any) {
     if (this.socket$) {
-      console.log('bbb', message)
       this.socket$.next(message);
     } else {
       console.log('WebSocket is not initialized.');

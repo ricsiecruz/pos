@@ -1,4 +1,5 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+// orders.component.ts
+import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SalesService } from '../../services/sales.service';
 import { ModalService } from '../../modal.service';
 import { WebSocketService } from '../../websocket-service';
@@ -30,9 +31,11 @@ export class OrdersComponent implements OnInit {
   gcash: any;
   currentSales: any = {};
   allSales: any = {};
-  creditCount: number = 0;
+
+  private _creditCount: number = 0;
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private salesService: SalesService,
     private membersService: MembersService,
     private modalService: ModalService,
@@ -50,7 +53,7 @@ export class OrdersComponent implements OnInit {
       if(message.action === 'newSale') {
         this.fetchSalesData();
       }
-    })
+    });
 
     this.salesService.sales$.subscribe((products: any) => {
       if (products && products.length > 0) {
@@ -66,6 +69,14 @@ export class OrdersComponent implements OnInit {
     });
 
     this.fetchSalesData();
+  }
+
+  get creditCount(): number {
+    return this._creditCount;
+  }
+
+  set creditCount(value: number) {
+    this._creditCount = value;
   }
 
   filterMembers(): void {
@@ -92,15 +103,18 @@ export class OrdersComponent implements OnInit {
 
   fetchSalesData() {
     this.salesService.getSales().subscribe((res: any) => {
-      console.log('credit count', res.sales.credit_count);
+      console.log('API Response:', res);  // Log the entire response
       this.currentSales = res.current_sales;
       this.allSales = res.sales;
-      this.creditCount = res.sales.credit_count;
+      this.creditCount = res.sales.credit_count;  // Update creditCount
+      console.log('Updated creditCount:', this.creditCount);  // Log the updated creditCount
       this.todayProducts = this.currentSales.data;
       this.products = this.allSales.data;
       this.filterTodayProducts();
+      this.cdr.detectChanges();  // Force change detection
+      console.log('Change detection triggered');  // Log after triggering change detection
     });
-  }
+  }  
 
   filterTodayProducts(): void {
     if (this.selectedMemberId === null) {

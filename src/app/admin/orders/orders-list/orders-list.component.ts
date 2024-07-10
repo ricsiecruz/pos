@@ -38,7 +38,7 @@ export class OrdersListComponent {
   }
 
   payCredit(data: any) {
-    data.credit = null;
+    data.credit = 0.00;
     this.salesService.editTransaction(data.id, data);
   }
 
