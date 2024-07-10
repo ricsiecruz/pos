@@ -12,7 +12,8 @@
         @include media-breakpoint-down(sm) {
             display: block;
         }
-        &_income, &_expenses, &_cups, &_computer, &_food, &_credit, &_ath, &_atl {
+        &_income, &_expenses, &_cups, &_computer, &_food, &_credit, &_ath, &_atl, &_date {
+            text-transform: uppercase;
             font-weight: 700;
             font-size: 18px;
             color: #ffffff;
@@ -121,6 +122,14 @@
             &_icon {
                 svg {
                     fill: #17a2b8;
+                }
+            }
+        }
+        &_date {
+            background-color: #29344a;
+            &_icon {
+                svg {
+                    fill: #29344a;
                 }
             }
         }

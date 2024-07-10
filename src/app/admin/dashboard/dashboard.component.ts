@@ -24,6 +24,7 @@ export class DashboardComponent {
   salesData: any;
   all_time_low: any;
   all_time_high: any;
+  start_date: any;
 
   constructor(
     private dashboardService: DashboardService,
@@ -63,6 +64,9 @@ export class DashboardComponent {
           }
           if (data.topSpenders) {
             this.topSpenders = data.topSpenders;
+          }
+          if( data.startDate) {
+            this.start_date = data.startDate;
           }
         }
       },
