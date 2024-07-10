@@ -63,8 +63,15 @@
             <form (submit)="addProduct()">
                 <label class="modal-body-label" for="productName">Product:</label>
                 <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newProduct.product" required>
+            
                 <label class="modal-body-label" for="productPrice">Price:</label>
                 <input class="form-control" type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
+            
+                <div style="column-gap: 5px; display: flex; align-items: center;">
+                    <input type="checkbox" id="productBarista" name="productBarista" [(ngModel)]="newProduct.barista" style="margin-bottom: 0;">
+                    <label class="modal-body-label" for="productBarista" style="margin-bottom: 0;">barista</label>
+                </div>
+                
                 <div class="modal-btns">
                     <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
                     <button class="btn modal-btns-add" type="submit">
@@ -72,6 +79,7 @@
                     </button>
                 </div>
             </form>
+            
         </div>
     </div>
 </ng-template>

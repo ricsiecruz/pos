@@ -14,7 +14,11 @@ export class ProductsComponent {
   product: string = '';
   price: string = '';
   products: any[] = [];
-  newProduct: any = { product: '', price: '' };
+  newProduct: any = {
+    product: '',
+    price: 0,
+    barista: true // Default to true; change to false if needed
+  };
   editingProduct: any = null;
 
   constructor(
@@ -39,9 +43,10 @@ export class ProductsComponent {
 
   addProduct() {
     if (this.newProduct.product.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
+      console.log('drink', this.newProduct)
       this.productService.addProduct(this.newProduct)
       this.modalService.closeModal();
-      this.newProduct = { product: '', price: '' };
+      this.newProduct = { product: '', price: '', barista: true };
     }
   }
 
@@ -69,7 +74,7 @@ export class ProductsComponent {
   }  
 
   clearForm() {
-    this.newProduct = { product: '', price: '' };
+    this.newProduct = { product: '', price: '', barista: true };
   }
 
 }
