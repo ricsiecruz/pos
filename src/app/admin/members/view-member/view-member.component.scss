@@ -1,0 +1,139 @@
+@import 'bootstrap/scss/_functions';
+@import 'bootstrap/scss/_variables';
+@import 'bootstrap/scss/mixins/_breakpoints';
+
+.view-member {
+    @include media-breakpoint-down(sm) {
+        padding: 20px;
+    }
+    &_cards {
+        display: flex;
+        justify-content: space-between;
+        @include media-breakpoint-down(sm) {
+            display: block;
+        }
+        &_income, &_expenses, &_cups, &_computer, &_food, &_credit, &_ath, &_atl, &_date {
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 18px;
+            color: #ffffff;
+            height: 98px;
+            width: 380px;
+            border-radius: 6px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            align-items: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            -ms-flex-pack: space-between;
+            margin: 0 0 25px;
+            padding: 20px;
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+            }
+            &_header {
+                font-size: 14px;
+                font-weight: normal;
+            }
+            &_icon {
+                background-color: #d2d2d2;
+                width: 48px;
+                height: 48px;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                align-items: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                justify-content: center;
+                -webkit-justify-content: center;
+                -ms-flex-pack: center;
+                border-radius: 50px;
+                svg {
+                    width: 34px;
+                }
+            }
+        }
+        &_income {
+            background: #1B2850;
+            &_icon {
+                svg {
+                    fill: #1b2850;
+                }
+            }
+        }
+        &_expenses {
+            background-color: #FF4D4D;
+            &_icon {
+                svg {
+                    fill: #FF4D4D;
+                }
+            }
+        }
+        &_cups {
+            background-color: #28C76F;
+            &_icon {
+                svg {
+                    fill: #28C76F;
+                }
+            }
+        }
+        &_computer {
+            background-color: #FF9F43;
+            &_icon {
+                svg {
+                    fill: #FF9F43;
+                }
+            }
+        }
+        &_food {
+            background-color: #00CFE8;
+            &_icon {
+                svg {
+                    fill: #00CFE8;
+                }
+            }
+        }
+        &_credit {
+            background-color: #7367F0;
+            &_icon {
+                svg {
+                    fill: #7367F0;
+                }
+            }
+        }
+        &_ath {
+            background-color: #f8f9fa;
+            border: 1px solid #dbe0e6;
+            color: #5B6670;
+            font-size: 14px;
+            &_icon {
+                svg {
+                    fill: #f8f9fa;
+                }
+            }
+        }
+        &_atl {
+            background-color: #17a2b8;
+            font-size: 14px;
+            &_icon {
+                svg {
+                    fill: #17a2b8;
+                }
+            }
+        }
+        &_date {
+            background-color: #29344a;
+            &_icon {
+                svg {
+                    fill: #29344a;
+                }
+            }
+        }
+    }
+    
+}
+
