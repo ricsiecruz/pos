@@ -46,6 +46,12 @@ export class OrdersComponent implements OnInit {
       }
     });
 
+    this.webSocketService.receive().subscribe((message: any) => {
+      if(message.action === 'newSale') {
+        this.fetchSalesData();
+      }
+    })
+
     this.salesService.sales$.subscribe((products: any) => {
       if (products && products.length > 0) {
         this.products = products;
