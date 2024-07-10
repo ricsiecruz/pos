@@ -97,4 +97,8 @@ export class MembersService implements OnDestroy {
   editProduct(productId: string, updatedProduct: any) {
     this.webSocketService.send({ action: 'editProduct', productId, product: updatedProduct });
   }
+
+  getMemberById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}members/${id}`);
+  }
 }

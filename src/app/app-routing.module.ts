@@ -9,6 +9,7 @@ import { AdminComponent } from './admin/admin/admin.component';
 import { OrdersComponent } from './admin/orders/orders.component';
 import { MembersComponent } from './admin/members/members.component';
 import { FoodsComponent } from './admin/foods/foods.component';
+import { ViewMemberComponent } from './admin/members/view-member/view-member.component';
 
 const routes: Routes = [
   {
@@ -56,6 +57,10 @@ const routes: Routes = [
       {
         path: 'members',
         component: MembersComponent
+      },
+      {
+        path: 'members/:id',
+        component: ViewMemberComponent
       }
     ]
   }

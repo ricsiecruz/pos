@@ -22,6 +22,7 @@ import { MembersComponent } from './admin/members/members.component';
 import { FoodsComponent } from './admin/foods/foods.component';
 import { OrdersListComponent } from './admin/orders/orders-list/orders-list.component';
 import { MemberFilterComponent } from './admin/member-filter/member-filter.component';
+import { ViewMemberComponent } from './admin/members/view-member/view-member.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { MemberFilterComponent } from './admin/member-filter/member-filter.compo
     MembersComponent,
     FoodsComponent,
     OrdersListComponent,
-    MemberFilterComponent
+    MemberFilterComponent,
+    ViewMemberComponent
   ],
   imports: [
     BrowserModule,

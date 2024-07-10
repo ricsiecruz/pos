@@ -1,0 +1,11 @@
+<div *ngIf="member">
+    name - {{ member.name }}
+    member since - {{ member.date_joined | date:"EEEE, MMMM d, y" }}
+    last spent - {{ member.last_spent | date:"EEEE, MMMM d, y" }}
+    foods and drinks - PHP {{ member.coffee | number:'1.2-2' }}
+    load - PHP {{ member.total_load | number:'1.2-2' }}
+    total - PHP {{ member.total_spent | number:'1.2-2' }}
+    <div *ngFor="let data of member.transactions">
+        {{ data.datetime | date:"EEEE, MMMM d, y" }}
+    </div>
+</div>

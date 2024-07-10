@@ -3,6 +3,7 @@ import { ModalService } from '../../modal.service';
 import { MembersService } from '../../services/members.service';
 import { WebSocketService } from '../../websocket-service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-members',
@@ -19,6 +20,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   errorSubscription?: Subscription;
 
   constructor(
+    private router: Router,
     private modalService: ModalService,
     private membersService: MembersService,
     private webSocketService: WebSocketService
@@ -101,5 +103,9 @@ export class MembersComponent implements OnInit, OnDestroy {
     } else {
       this.filteredMembers = this.members.filter(member => member.id === this.selectedMemberId);
     }
+  }
+
+  viewMember(id: number) {
+    this.router.navigate([`/admin/members/${id}`]);
   }
 }
