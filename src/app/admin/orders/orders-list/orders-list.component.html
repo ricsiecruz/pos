@@ -65,8 +65,9 @@
         </ng-container>
       </div>
       <div class="table_four" *ngIf="isColumnVisible('date')">
-        {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}
-      </div>
+        {{ data.datetime | date:"EEEE, MMMM d, y, HH:mm:ss" }}
+        <!-- {{ data.datetime }} -->
+      </div>      
       <div class="table_six" *ngIf="isColumnVisible('computer')">
         <ng-container *ngIf="data.computer !== null && data.computer !== '0.00'; else nullTemplate">
           PHP {{ data.computer }}

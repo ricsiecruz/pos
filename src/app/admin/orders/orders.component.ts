@@ -103,16 +103,14 @@ export class OrdersComponent implements OnInit {
 
   fetchSalesData() {
     this.salesService.getSales().subscribe((res: any) => {
-      console.log('API Response:', res);  // Log the entire response
       this.currentSales = res.current_sales;
       this.allSales = res.sales;
-      this.creditCount = res.sales.credit_count;  // Update creditCount
-      console.log('Updated creditCount:', this.creditCount);  // Log the updated creditCount
+      this.creditCount = res.sales.credit_count;
       this.todayProducts = this.currentSales.data;
+      console.log('today', this.todayProducts)
       this.products = this.allSales.data;
       this.filterTodayProducts();
-      this.cdr.detectChanges();  // Force change detection
-      console.log('Change detection triggered');  // Log after triggering change detection
+      this.cdr.detectChanges(); 
     });
   }  
 
@@ -131,7 +129,6 @@ export class OrdersComponent implements OnInit {
     if (selectedMemberName !== 'All') {
       payload.customer = selectedMemberName;
     }
-
     this.salesService.getFilteredSales(payload).subscribe(
       (res: any) => {
         this.allSales = res.salesData;
