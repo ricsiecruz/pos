@@ -59,22 +59,9 @@ export class PosComponent {
   }
 
   applyDiscount() {
-    if (this.applyStudentDiscount) {
-      // Calculate the discount amount
-      this.discountAmount = this.calculateSubtotal() * 0.1; // Assuming 10% discount
-      
-      // Apply the discount to subtotal
-      this.subtotal -= this.discountAmount;
-  
-      console.log('discount', this.discountAmount, this.subtotal)
-
-      // Update overall total after applying discount
-      this.calculateOverallTotal();
-    } else {
-      // If discount is unchecked, revert to original subtotal
-      this.subtotal = this.calculateSubtotal();
-      this.calculateOverallTotal();
-    }
+    this.discountAmount = this.applyStudentDiscount ? this.calculateSubtotal() * 0.1 : 0;
+    this.subtotal = this.calculateSubtotal() - this.discountAmount;
+    this.calculateOverallTotal();
   }  
 
   check() {
@@ -126,8 +113,7 @@ export class PosComponent {
     } else {
         this.selectedProducts[existingProductIndex].counter++;
     }
-    this.subtotal = this.calculateSubtotal();
-    this.calculateOverallTotal();
+    this.applyDiscount();
   }
 
   calculateOverallTotal() {
@@ -158,22 +144,19 @@ export class PosComponent {
 
   incrementCounter(selectedProduct: any) {
     selectedProduct.counter++;
-    this.subtotal = this.calculateSubtotal();
-    this.calculateOverallTotal();
+    this.applyDiscount();
   }
 
   decrementCounter(selectedProduct: any) {
     if (selectedProduct.counter > 0) {
       selectedProduct.counter--;
-      this.subtotal = this.calculateSubtotal();
-      this.calculateOverallTotal();
+      this.applyDiscount();
     }
   }
 
   deleteProduct(index: number) {
     this.selectedProducts.splice(index, 1);
-    this.subtotal = this.calculateSubtotal();
-    this.calculateOverallTotal();
+    this.applyDiscount();
     this.pc = this.selectedProducts.length === 0 ? undefined : this.pc;
   }  
 

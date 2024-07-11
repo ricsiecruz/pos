@@ -72,7 +72,7 @@
                 [disabled]="!selectedProducts.length">
                 <label>Student Discount (10%)</label>
             </div>
-            <span *ngIf="applyStudentDiscount" style="margin-right: 30px; color: red;">- PHP {{ discountAmount }}</span>
+            <span *ngIf="applyStudentDiscount" style="margin-right: 30px; color: red;">- PHP {{ discountAmount | number:'1.2-2' }}</span>
         </div>        
 
         <div class="pos_selected_pc">
