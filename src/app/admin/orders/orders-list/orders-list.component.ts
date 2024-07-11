@@ -24,8 +24,8 @@ export class OrdersListComponent {
   @Input() details: any;
   @Input() pay!: (data: any) => void;
   @Input() columns!: string[];
-  @ViewChild('editProductModal') editProductModal?: TemplateRef<any>;
-  @ViewChild('sales') sales?: TemplateRef<any>;
+  @ViewChild('editProductModal') editProductModal!: TemplateRef<any>;
+  @ViewChild('sales') sales!: TemplateRef<any>;
   editingProduct: any = null;
 
   constructor(
@@ -33,16 +33,16 @@ export class OrdersListComponent {
     private salesService: SalesService,
     private modalService: ModalService,
   ) {
-    console.log('data', this.dataSource)
+    console.log('data', this.dataSource);
   }
 
   isColumnVisible(column: string): boolean {
-    return this.columns?.includes(column);
+    return this.columns?.includes(column) ?? false;
   }
-
+  
   viewMember(id: number) {
-    console.log('member id', id)
-    if(id != null) {
+    console.log('member id', id);
+    if (id != null) {
       this.router.navigate([`/admin/members/${id}`]); 
     }
   }
