@@ -3,6 +3,7 @@ import { SalesService } from '../../../services/sales.service';
 import * as XLSX from 'xlsx';
 import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
 import { ModalService } from '../../../modal.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders-list',
@@ -28,13 +29,22 @@ export class OrdersListComponent {
   editingProduct: any = null;
 
   constructor(
+    private router: Router,
     private salesService: SalesService,
     private modalService: ModalService,
   ) {
+    console.log('data', this.dataSource)
   }
 
   isColumnVisible(column: string): boolean {
     return this.columns?.includes(column);
+  }
+
+  viewMember(id: number) {
+    console.log('member id', id)
+    if(id != null) {
+      this.router.navigate([`/admin/members/${id}`]); 
+    }
   }
 
   payCredit(data: any) {

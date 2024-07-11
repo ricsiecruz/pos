@@ -67,11 +67,16 @@
   </div>
   <div *ngIf="dataSource.length > 0; else noData">
     <div class="orders-list_table_list" *ngFor="let data of dataSource">
-      <div class="table_five" *ngIf="isColumnVisible('customer')">
-        {{ data.customer }}
+      <div class="table_five" *ngIf="isColumnVisible('customer')" (click)="viewMember(data.member_id)">
+        <span>{{ data.customer }}</span>
       </div>
       <div class="table_two" *ngIf="isColumnVisible('qty')">
-        {{ data.qty }}
+        <div *ngIf="data.qty == null || data.qty == '0.00'; else qty">
+          -
+        </div>
+        <ng-template #qty>        
+          {{ data.qty }}
+        </ng-template>
       </div>
       <div class="table_four" *ngIf="isColumnVisible('date')">
         {{ data.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}

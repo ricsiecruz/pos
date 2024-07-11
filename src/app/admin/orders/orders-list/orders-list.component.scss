@@ -122,6 +122,11 @@
     }
     &_five {
         width: 150px;
+        span:hover {
+            color: #FF9F43;
+            cursor: pointer;
+            text-decoration: underline;
+        }
     }
     &_six {
         width: 110px;
