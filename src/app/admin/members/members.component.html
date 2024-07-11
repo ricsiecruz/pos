@@ -21,6 +21,7 @@
         <div class="table_four">Total Load</div>
         <div class="table_five">Total Spent</div>
         <div class="table_six">Last Spent</div>
+        <div class="table_seven"></div>
       </div>
       <div *ngIf="filteredMembers.length > 0; else noData">
         <div class="products_table_list" *ngFor="let data of filteredMembers">
@@ -42,7 +43,7 @@
           <div class="table_six">
             {{ data.last_spent | date: 'EEEE, MMMM d, y, h:mm:ss' }}
           </div>
-          <div (click)="viewMember(data.id)" class="btn btn_primary">view</div>
+          <div (click)="viewMember(data.id)" class="btn btn_primary table_seven">view</div>
         </div>
       </div>
     </div>
