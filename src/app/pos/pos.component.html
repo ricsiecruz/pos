@@ -63,6 +63,18 @@
             </div>
         </div>
 
+        <div class="pos_selected_discount">
+            <div style="column-gap: 5px; display: flex;">
+                <input 
+                type="checkbox" 
+                [(ngModel)]="applyStudentDiscount" 
+                (change)="applyDiscount()" 
+                [disabled]="!selectedProducts.length">
+                <label>Student Discount (10%)</label>
+            </div>
+            <span *ngIf="applyStudentDiscount" style="margin-right: 30px; color: red;">- PHP {{ discountAmount }}</span>
+        </div>        
+
         <div class="pos_selected_pc">
             <div class="">PC</div>
             <input [(ngModel)]="pc" placeholder="Enter load" (input)="updateButtonState()" class="form-control">

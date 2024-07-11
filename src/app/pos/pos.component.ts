@@ -27,6 +27,8 @@ export class PosComponent {
   credit: boolean = false;
   creditAmount: number = 0;
   mode_of_payment: string = 'cash';
+  applyStudentDiscount: boolean = false;
+  discountAmount: number = 0;
 
   constructor(
     public productService: ProductService,
@@ -55,6 +57,25 @@ export class PosComponent {
       }
     });
   }
+
+  applyDiscount() {
+    if (this.applyStudentDiscount) {
+      // Calculate the discount amount
+      this.discountAmount = this.calculateSubtotal() * 0.1; // Assuming 10% discount
+      
+      // Apply the discount to subtotal
+      this.subtotal -= this.discountAmount;
+  
+      console.log('discount', this.discountAmount, this.subtotal)
+
+      // Update overall total after applying discount
+      this.calculateOverallTotal();
+    } else {
+      // If discount is unchecked, revert to original subtotal
+      this.subtotal = this.calculateSubtotal();
+      this.calculateOverallTotal();
+    }
+  }  
 
   check() {
     this.credit = !this.credit;
@@ -112,11 +133,20 @@ export class PosComponent {
   calculateOverallTotal() {
     this.pc = this.ensureNumber(this.pc);
     this.subtotal = this.calculateSubtotal();
-    this.overallTotal = this.subtotal + this.pc;
+    
+    // Apply discount if student discount is applied
+    if (this.applyStudentDiscount) {
+      this.overallTotal = this.subtotal - this.discountAmount + this.pc;
+    } else {
+      this.overallTotal = this.subtotal + this.pc;
+    }
+    
     this.totalQuantity = this.selectedProducts.reduce((total, selectedProduct) => {
       return total + selectedProduct.counter;
     }, 0);
-  }
+    
+    console.log('overallTotal', this.overallTotal);
+  }  
 
   updateOverallTotal() {
     this.calculateOverallTotal();
@@ -157,32 +187,25 @@ export class PosComponent {
         total: product.price * product.counter
       };
     });
-
-    if (this.selectedMemberId == 0) {
-      this.selectedMemberName = 'Walk-in Customer';
-    }
-
-    this.creditAmount = this.calculateCredit();
-
-    if(this.pc == '') {
-      this.pc = 0;
-    }
-
-    this.subtotal = this.calculateSubtotal();
+  
+    // Create the order summary object
     const orderSummary = {
       orders: orders,
-      qty: this.totalQuantity,
-      total: this.overallTotal,
-      subtotal: this.subtotal,
-      transactionId: transactionId,
-      dateTime: new Date().toISOString(),
-      customer: this.selectedMemberName,
-      computer: this.pc,
-      mode_of_payment: this.mode_of_payment,
-      credit: this.creditAmount
+      qty: this.totalQuantity, // Total quantity of products
+      total: this.overallTotal, // Overall total amount
+      subtotal: this.subtotal, // Subtotal amount
+      transactionId: transactionId, // Generated transaction ID
+      dateTime: new Date().toISOString(), // Current date and time
+      customer: this.selectedMemberName, // Selected customer name
+      computer: this.pc === '' ? 0 : this.pc, // PC load or default to 0
+      mode_of_payment: this.mode_of_payment, // Mode of payment
+      credit: this.calculateCredit(), // Credit amount, if applicable
+      student_discount: this.applyStudentDiscount, // Whether student discount applied
+      discount: this.discountAmount // Amount of discount applied
     };
-
-    console.log('Order Summary:', orderSummary, this.creditAmount);
+  
+    console.log('Order Summary:', orderSummary);
+  
     this.addToSales(orderSummary);
     this.selectedMemberId = 0;
     this.selectedProducts = [];
@@ -192,9 +215,9 @@ export class PosComponent {
     this.calculateOverallTotal();
     this.updateButtonState();
     this.credit = false;
-    this.paidAmount = 0;
+    this.paidAmount = null;
     this.overallTotal = 0;
-  }
+  }  
 
   addToSales(transactionSales: any) {
     this.salesService.addSales(transactionSales);
