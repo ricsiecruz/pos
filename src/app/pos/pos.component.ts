@@ -59,7 +59,7 @@ export class PosComponent {
   }
 
   applyDiscount() {
-    this.discountAmount = this.applyStudentDiscount ? this.calculateSubtotal() * 0.1 : 0;
+    this.discountAmount = this.applyStudentDiscount ? this.calculateBaristaSubtotal() * 0.1 : 0;
     this.subtotal = this.calculateSubtotal() - this.discountAmount;
     this.calculateOverallTotal();
   }  
@@ -209,6 +209,12 @@ export class PosComponent {
   calculateSubtotal(): number {
     return this.selectedProducts.reduce((subtotal, selectedProduct) => {
       return subtotal + (selectedProduct.price * selectedProduct.counter);
+    }, 0);
+  }
+
+  calculateBaristaSubtotal(): number {
+    return this.selectedProducts.reduce((subtotal, selectedProduct) => {
+      return selectedProduct.barista ? subtotal + (selectedProduct.price * selectedProduct.counter) : subtotal;
     }, 0);
   }
   
