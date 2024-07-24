@@ -18,6 +18,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   selectedMemberId: number | null = null;
   errorMessage: string = '';
   errorSubscription?: Subscription;
+  file: File | null = null;
 
   constructor(
     private router: Router,
@@ -31,6 +32,7 @@ export class MembersComponent implements OnInit, OnDestroy {
       if (members && members.length > 0) {
         this.members = members;
         this.filteredMembers = members;
+        console.log('members', this.filteredMembers)
       }
     });
 
@@ -38,7 +40,6 @@ export class MembersComponent implements OnInit, OnDestroy {
       (message) => {
         if (message.action === 'addMemberResponse' && message.error) {
           this.errorMessage = message.error;
-          // Optionally, display error message to the user (e.g., using Toastr, MatSnackBar, etc.)
           console.log('Error adding member:', message.error);
         }
       },
@@ -67,27 +68,26 @@ export class MembersComponent implements OnInit, OnDestroy {
     
     this.membersService.addMember(this.newProduct)
       .then(() => {
-        // Reset form and close modal on success
         this.clearForm();
-        this.errorMessage = ''; // Clear any previous error message
+        this.errorMessage = '';
       })
       .catch((error) => {
         console.log('Error adding member:', error);
-        this.errorMessage = 'Error adding member: ' + error; // Set error message
+        this.errorMessage = 'Error adding member: ' + error;
       });
 
-      this.modalService.closeModal();
+    this.modalService.closeModal();
   }
 
   cancelForm() {
     this.clearForm();
     this.modalService.closeModal();
-    this.errorMessage = ''; // Clear error message when canceling form
+    this.errorMessage = '';
   }
 
   clearForm() {
     this.newProduct = { name: '' };
-    this.errorMessage = ''; // Clear error message when clearing form
+    this.errorMessage = '';
   }
 
   onMemberChange(memberId: number) {
@@ -107,5 +107,28 @@ export class MembersComponent implements OnInit, OnDestroy {
 
   viewMember(id: number) {
     this.router.navigate([`/admin/members/${id}`]);
+  }
+
+  onFileChange(event: any) {
+    this.file = event.target.files[0];
+  }
+
+  async onUpload() {
+    if (this.file) {
+      const formData = new FormData();
+      formData.append('file', this.file);
+
+      try {
+        const response: any = await this.membersService.uploadExcel(formData).toPromise();
+        alert(response.message);
+        // Optionally, refresh the members list here
+        this.membersService.refreshMembers();
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        alert('Error uploading file');
+      }
+    } else {
+      alert('Please select a file first');
+    }
   }
 }

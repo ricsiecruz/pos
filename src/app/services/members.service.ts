@@ -9,11 +9,9 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class MembersService implements OnDestroy {
-  
   API_URL = environment.apiUrl;
-
-  private productsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  members$: Observable<any[]> = this.productsSubject.asObservable();
+  private membersSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  members$: Observable<any[]> = this.membersSubject.asObservable();
   private websocketSubscription: Subscription;
   private errorSubscription: Subscription;
 
@@ -33,20 +31,16 @@ export class MembersService implements OnDestroy {
       this.http.get<any[]>(this.API_URL + 'members')
     ).subscribe((data: any | any[]) => {
       if (Array.isArray(data)) {
-        this.updateProducts(data);
+        this.updateMembers(data);
       } else if (data) {
-        this.addOrUpdateProduct(data);
+        this.addOrUpdateMember(data);
       }
     });
 
-    // Subscribe to error messages
     this.errorSubscription = this.webSocketService.error$.subscribe(
       (errorMessage) => {
         if (errorMessage) {
-          // Handle error display to the user (e.g., show an alert or update UI)
           console.log('WebSocket error:', errorMessage);
-          // Example: this.toastr.error(errorMessage, 'Error');
-          // You can use any notification library like Toastr, MatSnackBar, etc.
         }
       }
     );
@@ -61,32 +55,29 @@ export class MembersService implements OnDestroy {
     }
   }
 
-  private addOrUpdateProduct(member: any): void {
-    const existingProductIndex = this.productsSubject.value.findIndex(p => p.id === member.id);
-    if (existingProductIndex === -1) {
-      this.productsSubject.next([...this.productsSubject.value, member]);
+  private addOrUpdateMember(member: any): void {
+    const existingMemberIndex = this.membersSubject.value.findIndex(p => p.id === member.id);
+    if (existingMemberIndex === -1) {
+      this.membersSubject.next([...this.membersSubject.value, member]);
     } else {
-      const updatedProducts = [...this.productsSubject.value];
-      updatedProducts[existingProductIndex] = member;
-      this.productsSubject.next(updatedProducts);
+      const updatedMembers = [...this.membersSubject.value];
+      updatedMembers[existingMemberIndex] = member;
+      this.membersSubject.next(updatedMembers);
     }
   }
 
-  private updateProducts(members: any[]): void {
-    this.productsSubject.next(members);
+  private updateMembers(members: any[]): void {
+    this.membersSubject.next(members);
   }
 
   addMember(member: any): Promise<void> {
     return new Promise((resolve, reject) => {
       this.webSocketService.send({ action: 'addMember', member });
-      
       this.webSocketService.receive().subscribe((message: any) => {
-        if (message.action === 'errorResponse') {
-          if (message.error) {
-            reject(message.error);
-          } else {
-            resolve();
-          }
+        if (message.action === 'errorResponse' && message.error) {
+          reject(message.error);
+        } else {
+          resolve();
         }
       }, error => {
         reject(error);
@@ -94,11 +85,17 @@ export class MembersService implements OnDestroy {
     });
   }
 
-  editProduct(productId: string, updatedProduct: any) {
-    this.webSocketService.send({ action: 'editProduct', productId, product: updatedProduct });
-  }
-
   getMemberById(id: number): Observable<any> {
     return this.http.get<any>(`${this.API_URL}members/${id}`);
+  }
+
+  uploadExcel(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}members/upload`, formData);
+  }
+
+  refreshMembers() {
+    this.http.get<any[]>(this.API_URL + 'members').subscribe(members => {
+      this.updateMembers(members);
+    });
   }
 }
