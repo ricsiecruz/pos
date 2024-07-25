@@ -9,22 +9,4 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'pos-new';
-
-  constructor(
-    private appService: AppService,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    console.log('ey')
-    this.appService.checkIp().subscribe(
-      response => {
-        console.log('===================')
-      },
-      error => {
-        // this.message = `Access denied: ${error.error}`;
-        this.router.navigate(['/access']); // Redirect to access-denied component
-      }
-    );
-  }
 }
