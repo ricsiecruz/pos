@@ -13,6 +13,10 @@ export class AppService {
   constructor(private http: HttpClient) { }
 
   checkIp(): Observable<any> {
+    return this.http.get(`${this.API_URL}whitelist/ip`)
+  }
+
+  allowAccess(): Observable<any> {
     return this.http.get(`${this.API_URL}whitelist`)
       .pipe(
         catchError(this.handleError)
