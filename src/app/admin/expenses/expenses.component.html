@@ -14,7 +14,7 @@
         </div>
         <div class="filter-section">
           <label for="filterPaidBy">Filter by Paid By:</label>
-          <ng-select [(ngModel)]="filterPaidBy" name="filterPaidBy" (change)="filterExpenses()">
+          <ng-select [(ngModel)]="filterPaidBy" name="filterPaidBy" (change)="filterExpenses()" style="width: 200px;">
             <ng-option [value]="0" selected>All</ng-option>
             <ng-option *ngFor="let data of paidBy" [value]="data.name">{{ data.name }}</ng-option>
           </ng-select>
