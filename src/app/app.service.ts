@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { environment } from '../environments/environment';
+import { Observable, catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,18 @@ export class AppService {
   API_URL = (environment.apiUrl);
 
   constructor(private http: HttpClient) { }
+
+  checkIp(): Observable<any> {
+    return this.http.get(`${this.API_URL}whitelist`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  private handleError(error: any) {
+    console.error('An error occurred', error);
+    return throwError(error.message || error);
+  }
 
   getInventory() {
     return this.http.get(this.API_URL + 'inventory');

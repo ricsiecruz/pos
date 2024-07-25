@@ -23,6 +23,7 @@ import { FoodsComponent } from './admin/foods/foods.component';
 import { OrdersListComponent } from './admin/orders/orders-list/orders-list.component';
 import { MemberFilterComponent } from './admin/member-filter/member-filter.component';
 import { ViewMemberComponent } from './admin/members/view-member/view-member.component';
+import { AccessComponent } from './access/access.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ViewMemberComponent } from './admin/members/view-member/view-member.com
     FoodsComponent,
     OrdersListComponent,
     MemberFilterComponent,
-    ViewMemberComponent
+    ViewMemberComponent,
+    AccessComponent
   ],
   imports: [
     BrowserModule,

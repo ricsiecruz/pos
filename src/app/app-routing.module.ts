@@ -10,6 +10,7 @@ import { OrdersComponent } from './admin/orders/orders.component';
 import { MembersComponent } from './admin/members/members.component';
 import { FoodsComponent } from './admin/foods/foods.component';
 import { ViewMemberComponent } from './admin/members/view-member/view-member.component';
+import { AccessComponent } from './access/access.component';
 
 const routes: Routes = [
   {
@@ -63,6 +64,10 @@ const routes: Routes = [
         component: ViewMemberComponent
       }
     ]
+  },
+  {
+    path: 'access',
+    component: AccessComponent
   }
 ]
 
