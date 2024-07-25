@@ -55,6 +55,13 @@ export class OrdersComponent implements OnInit {
       }
     });
 
+    this.webSocketService.receive().subscribe((message: any) => {
+      if (message.action === 'updateSale') {
+        const updatedSale = message.data;
+        this.fetchSalesData()
+      }
+    });
+
     this.salesService.sales$.subscribe((products: any) => {
       if (products && products.length > 0) {
         this.products = products;
@@ -107,7 +114,6 @@ export class OrdersComponent implements OnInit {
       this.allSales = res.sales;
       this.creditCount = res.sales.credit_count;
       this.todayProducts = this.currentSales.data;
-      console.log('today', this.todayProducts)
       this.products = this.allSales.data;
       this.filterTodayProducts();
       this.cdr.detectChanges(); 

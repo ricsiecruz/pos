@@ -48,9 +48,19 @@ export class OrdersListComponent {
   }
 
   payCredit(data: any) {
-    data.credit = 0.00;
-    this.salesService.editTransaction(data.id, data);
-  }
+    // Create a new object excluding the member_id property
+    const { ...updatedData } = {
+      ...data,
+      id: data.sale_id,
+      credit: '0.00'
+    };
+  
+    // Log the updated data for debugging
+    console.log('pay', updatedData);
+  
+    // Call the service with the updated data
+    this.salesService.editTransaction(updatedData.id, updatedData);
+  }   
 
   editProduct(product: any) {
     this.editingProduct = { ...product };
