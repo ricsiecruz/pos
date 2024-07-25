@@ -1,5 +1,6 @@
 {
   "routes": [
+    "/access",
     "/admin",
     "/admin/dashboard",
     "/admin/expenses",
