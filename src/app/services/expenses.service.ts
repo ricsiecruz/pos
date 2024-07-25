@@ -82,4 +82,10 @@ export class ExpensesService implements OnDestroy {
       map(res => res.mode_of_payment)
     )
   }
+
+  filterByPaidBy(payload: any): Observable<any> {
+    return this.http.post<any>(this.API_URL + 'expenses/filter-by-paid-by', payload).pipe(
+      map(res => res)
+    );
+  }
 }

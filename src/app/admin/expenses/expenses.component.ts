@@ -27,6 +27,8 @@ export class ExpensesComponent {
   mode_of_payment: any[] = [];
   selected_mode_of_payment: any;
 
+  filterPaidBy: any;
+
   constructor(
     private http: HttpClient,
     private appService: AppService,
@@ -82,6 +84,23 @@ export class ExpensesComponent {
         this.imagePreviewUrl = e.target.result;
       };
       reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  // Method to filter expenses by paid_by
+  filterExpenses() {
+    if (this.filterPaidBy == 0) {
+        this.getExpenses();
+    } else {
+        const payload = {
+            paid_by: this.filterPaidBy
+        };
+        console.log('filter by paid by', payload);
+        this.expensesService.filterByPaidBy(payload).subscribe((res: any) => {
+            console.log('filtered', res);
+            this.expenses = res.data; // Set the expenses to the array from the response
+            this.credit = res.total_credit_amount.totalCreditAmount; // Optional, if you need to show the credit amount
+        });
     }
   }
 
