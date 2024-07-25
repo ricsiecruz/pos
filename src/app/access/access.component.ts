@@ -9,4 +9,10 @@ import { Router } from '@angular/router';
 })
 export class AccessComponent {
 
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    this.router.navigate(['/admin/sales']); 
+  }
+
 }
