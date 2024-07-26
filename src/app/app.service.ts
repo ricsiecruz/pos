@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { environment } from '../environments/environment';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { environment } from '../environments/environment.prod';
+// import { environment } from '../environments/environment';
 import { Observable, catchError, throwError } from 'rxjs';
 
 @Injectable({
@@ -11,6 +12,16 @@ export class AppService {
   API_URL = (environment.apiUrl);
 
   constructor(private http: HttpClient) { }
+
+  checkAccess(imei: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'x-imei': imei
+    });
+    return this.http.get(`${this.API_URL}whitelist`, { headers })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   checkIp(): Observable<any> {
     return this.http.get(`${this.API_URL}whitelist/ip`)
