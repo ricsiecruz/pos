@@ -12,8 +12,10 @@ export class AuthGuard implements CanActivate {
   constructor(private appService: AppService, private router: Router) {}
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
+    console.log('canActivate')
     return this.appService.allowAccess().pipe(
       map(response => {
+        console.log('whitelist', response)
         if (response.message === 'success') {
           return true; // IP is whitelisted
         } else {

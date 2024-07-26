@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { environment } from '../environments/environment.prod';
 // import { environment } from '../environments/environment';
 import { Observable, catchError, throwError } from 'rxjs';
@@ -13,21 +13,12 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
-  checkAccess(imei: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'x-imei': imei
-    });
-    return this.http.get(`${this.API_URL}whitelist`, { headers })
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
   checkIp(): Observable<any> {
     return this.http.get(`${this.API_URL}whitelist/ip`)
   }
 
   allowAccess(): Observable<any> {
+    console.log('api', this.API_URL)
     return this.http.get(`${this.API_URL}whitelist`)
       .pipe(
         catchError(this.handleError)

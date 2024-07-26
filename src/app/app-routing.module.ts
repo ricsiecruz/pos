@@ -22,12 +22,12 @@ const routes: Routes = [
   {
     path: 'pos',
     component: PosComponent,
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'admin',
     component: AdminComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -37,42 +37,42 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'inventory',
         component: InventoryComponent,
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'products',
         component: ProductsComponent,
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'foods',
         component: FoodsComponent,
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'sales',
         component: OrdersComponent,
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'expenses',
         component: ExpensesComponent,
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'members',
         component: MembersComponent,
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'members/:id',
         component: ViewMemberComponent,
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       }
     ]
   },
