@@ -1,25 +1,51 @@
-<div class="inventory">
-    <div class="inventory_title">
+<div class="expensesy">
+    <div class="expenses_title">
         Expenses
-        <div class="inventory_title_add" (click)="openAddInventoryModal(addInventoryModal)">
+        <div class="expenses_title_add" (click)="openAddInventoryModal(addInventoryModal)">
             Add expense
         </div>
     </div>
-    <div class="inventory_table">
-        <div class="inventory_table_credit">
+    <div class="expenses_table">
+        <div class="expenses_table_credit">
           Credit
           <div>
             PHP {{ credit | number:'1.2-2' }}
           </div>
         </div>
-        <div class="filter-section">
-          <label for="filterPaidBy">Filter by Paid By:</label>
-          <ng-select [(ngModel)]="filterPaidBy" name="filterPaidBy" (change)="filterExpenses()" style="width: 200px;">
-            <ng-option [value]="0" selected>All</ng-option>
-            <ng-option *ngFor="let data of paidBy" [value]="data.name">{{ data.name }}</ng-option>
-          </ng-select>
-      </div>
-        <div class="inventory_table_header">
+        <div class="expenses_filter">
+          <div class="expenses_filter_left">
+            <div>
+              <label for="filterPaidBy">Paid by:</label>
+              <ng-select [(ngModel)]="filterPaidBy" name="filterPaidBy" (change)="filterExpenses()" style="width: 200px;">
+                <ng-option [value]="0" selected>All</ng-option>
+                <ng-option *ngFor="let data of paidBy" [value]="data.name">{{ data.name }}</ng-option>
+              </ng-select>
+            </div>
+            <div class="expenses_filter_left">
+              <div style="width: 200px;">
+                <label for="startDate">From:</label>
+                <input class="form-control" type="date" id="startDate" [(ngModel)]="startDate">
+              </div>
+              <div style="width: 200px;">
+                <label for="endDate">To:</label>
+                <input class="form-control" type="date" id="endDate" [(ngModel)]="endDate">
+              </div>
+            </div>
+          </div>
+          <div>
+            <span style="visibility: hidden;">filter</span>
+            <div style="column-gap: 10px; display: flex;">
+              <button class="btn btn_primary" (click)="filter(startDate, endDate, filterPaidBy)">Filter</button>
+              <button class="btn btn_warning" (click)="clearFilter()">Clear Filter</button>
+            </div>
+          </div>
+        </div>
+        <div class="expenses_export">
+          <button class="btn btn_success" (click)="exportToExcel()">Export to Excel</button>
+          <button class="btn btn_info" (click)="exportToCsv()">Export to CSV</button>
+        </div>
+
+        <div class="expenses_table_header">
             <div class="table_one">Expense</div>
             <div class="table_four">Amount</div>
             <div class="table_two">Month</div>
@@ -30,7 +56,7 @@
             <div class="table_three">Date settled</div>
             <div class="table_eight"></div>
         </div>
-        <div class="inventory_table_list" *ngFor="let data of expenses">
+        <div class="expenses_table_list" *ngFor="let data of expenses">
             <div class="table_one">
                 {{ data.expense }}
             </div>

@@ -88,4 +88,8 @@ export class ExpensesService implements OnDestroy {
       map(res => res)
     );
   }
+
+  getFilteredExpenses(payload: any): Observable<any[]> {
+    return this.http.post<any[]>(`${this.API_URL}expenses/date-range`, payload);
+  }
 }

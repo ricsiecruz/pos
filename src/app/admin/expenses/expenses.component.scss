@@ -2,7 +2,7 @@
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
 
-.inventory {
+.expenses {
     @include media-breakpoint-down(sm) {
         padding: 20px;
     }
@@ -24,6 +24,31 @@
         }
         &_add:hover {
             background: #ffbb00;
+        }
+    }
+    &_filter {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 400;
+        font-size: 14px;
+        color: #67748E;
+        &_left {
+            display: flex;
+            column-gap: 20px;
+        }
+        button {
+            height: 40px;
+            width: 110px;
+        }
+    }
+    &_export {
+        display: flex;
+        justify-content: end;
+        margin-top: 10px;
+        column-gap: 10px;
+        button {
+            height: 40px;
+            width: 110px;
         }
     }
     &_table {
@@ -244,6 +269,42 @@
         background-color: #db0000 !important;
         border: 1px solid #db0000 !important;
         box-shadow: 0 3px 10px rgba(255, 0, 0, 0.5);
+    }
+    
+    &_success {
+        background-color: #28C76F !important;
+        border: 1px solid #28C76F !important;
+        box-shadow: 0 4px 20px rgba(40, 199, 111, 0.15);
+    }
+    
+    &_success:hover {
+        background-color: #22a95e !important;
+        border: 1px solid #22a95e !important;
+        box-shadow: 0 3px 10px rgba(40, 199, 111, 0.5);
+    }
+    
+    &_warning {
+        background-color: #FF9900 !important;
+        border: 1px solid #FF9900 !important;
+        box-shadow: 0 4px 20px rgba(255, 153, 0, 0.15);
+    }
+    
+    &_warning:hover {
+        background-color: #db8400 !important;
+        border: 1px solid #db8400 !important;
+        box-shadow: 0 3px 10px rgba(255, 153, 0, 0.5);
+    }
+    
+    &_info {
+        background-color: #17a2b8 !important;
+        border: 1px solid #17a2b8 !important;
+        box-shadow: 0 4px 20px rgba(255, 153, 0, 0.15);
+    }
+    
+    &_info:hover {
+        background-color: #138698 !important;
+        border: 1px solid #138698 !important;
+        box-shadow: 0 3px 10px rgba(255, 153, 0, 0.5);
     }
 }
 

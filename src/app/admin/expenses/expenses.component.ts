@@ -5,6 +5,8 @@ import { ExpensesService } from '../../services/expenses.service';
 import { WebSocketService } from '../../websocket-service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.prod';
+import { AngularCsv } from 'angular7-csv/dist/Angular-csv';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-expenses',
@@ -20,14 +22,15 @@ export class ExpensesComponent {
   amount?: number | null;
   newExpenses: any = { expense: '', month: '', date: '', amount: '', mode_of_payment: '', paid_by: '', settled_by: '', credit: false };
   selectedFile: File | null = null;
-  imagePreviewUrl: string | null = null;  // Variable for image preview
+  imagePreviewUrl: string | null = null;
   details: any;
   credit: any;
   paidBy: any[] = [];
   mode_of_payment: any[] = [];
   selected_mode_of_payment: any;
-
   filterPaidBy: any;
+  startDate: any;
+  endDate: any;
 
   constructor(
     private http: HttpClient,
@@ -85,7 +88,6 @@ export class ExpensesComponent {
     }
   }
 
-  // Method to filter expenses by paid_by
   filterExpenses() {
     if (this.filterPaidBy == 0) {
         this.getExpenses();
@@ -93,11 +95,9 @@ export class ExpensesComponent {
         const payload = {
             paid_by: this.filterPaidBy
         };
-        console.log('filter by paid by', payload);
         this.expensesService.filterByPaidBy(payload).subscribe((res: any) => {
-            console.log('filtered', res);
-            this.expenses = res.data; // Set the expenses to the array from the response
-            this.credit = res.total_credit_amount.totalCreditAmount; // Optional, if you need to show the credit amount
+            this.expenses = res.data;
+            this.credit = res.total_credit_amount.totalCreditAmount;
         });
     }
   }
@@ -134,14 +134,12 @@ export class ExpensesComponent {
   }
 
   sendExpenseData() {
-    // Adjust mode_of_payment to use an object containing both id and name
     const selectedModeOfPayment = this.mode_of_payment.find(mp => mp.id === this.newExpenses.mode_of_payment);
     this.newExpenses.mode_of_payment = selectedModeOfPayment?.mode_of_payment;
-  
     this.expensesService.addExpenses(this.newExpenses);
     this.modalService.closeModal();
     this.resetNewExpenses();
-    this.imagePreviewUrl = null; // Clear the preview after submitting
+    this.imagePreviewUrl = null;
   }
 
   loadInventory() {
@@ -186,8 +184,8 @@ export class ExpensesComponent {
     this.expensesService.payExpense(expense.id).subscribe(
       (res: any) => {
         this.credit -= expense.amount;
-        expense.credit = false; // Update the local state to reflect the change
-        this.getExpenses(); // Refresh the expenses list
+        expense.credit = false;
+        this.getExpenses();
         this.modalService.closeModal();
       },
       (error) => {
@@ -213,5 +211,81 @@ export class ExpensesComponent {
     this.newExpenses = { expense: '', month: '', date: '', amount: '', mode_of_payment: '', paid_by: '', credit: false };
     this.setDefaultPaidBy();
     this.setDefaultModeOfPayment();
+  }
+
+  filter(startDate: any, endDate: any, selectedMemberName: any) {
+    const payload: any = { startDate, endDate };
+    if (selectedMemberName !== 'All') {
+      payload.customer = selectedMemberName;
+    }
+    this.expensesService.getFilteredExpenses(payload).subscribe(
+      (res: any) => {
+        console.log('expenses', res)
+        this.expenses = res.expensesData.data;
+        this.credit = res.expensesData.total_credit;
+      },
+      (error: any) => {
+        console.error('Error fetching filtered sales data:', error);
+      }
+    );
+  }
+
+  clearFilter() {
+    this.startDate = null;
+    this.endDate = null;
+    this.filterPaidBy = 0;
+    this.getExpenses();
+  }
+
+  exportToCsv() {
+    const today = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).replace(/\//g, '-');
+    const filename: string = `expenses_${today}.csv`;
+
+    const dataToExport = this.expenses.map(item => ({
+      Expense: item.expense,
+      Amount: item.amount,
+      Credit: item.credit,
+      Month: item.month,
+      Date: item.date,
+      ModeOfPayment: item.mode_of_payment,
+      PaidBy: item.paid_by,
+      DateSettled: item.date_settled
+    }));
+
+    new AngularCsv(dataToExport, filename, {
+      showLabels: true, 
+      headers: ['Expense', 'Amount', 'Credit', 'Month', 'Date', 'Mode of payment', 'Paid by', 'Date settled']
+    });
+  }
+
+  exportToExcel(): void {
+    const today = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).replace(/\//g, '-');
+    
+    const dataToExport = this.expenses.map(item => ({
+      Expense: item.expense,
+      Amount: item.amount,
+      Credit: item.credit,
+      Month: item.month,
+      Date: item.date,
+      ModeOfPayment: item.mode_of_payment,
+      PaidBy: item.paid_by,
+      DateSettled: item.date_settled
+    }));
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sales_Data');
+
+    const filename: string = `expenses_data_${today}.xlsx`;
+    XLSX.writeFile(wb, filename);
   }
 }
