@@ -19,6 +19,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   errorSubscription?: Subscription;
   file: File | null = null;
+  sortOrder: 'asc' | 'desc' = 'asc';
 
   constructor(
     private router: Router,
@@ -57,6 +58,23 @@ export class MembersComponent implements OnInit, OnDestroy {
 
   addModal() {
     this.modalService.openModal(this.addProductModal);
+  }
+  
+  sortByName() {
+    console.log('aaa')
+    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc'; // Toggle sort order
+    this.filteredMembers.sort((a, b) => {
+      const nameA = a.name.toUpperCase(); // Convert to uppercase to ensure case-insensitive comparison
+      const nameB = b.name.toUpperCase();
+      if (nameA > nameB) {
+        return this.sortOrder === 'asc' ? -1 : 1;
+      }
+      if (nameA < nameB) {
+        return this.sortOrder === 'asc' ? 1 : -1;
+      }
+      console.log('sort')
+      return 0;
+    });
   }
 
   addProduct() {

@@ -95,6 +95,9 @@
 .table {
     &_one {
         min-width: 200px;
+        svg {
+            width: 15px;
+        }
     }
     &_two {
         min-width: 280px;

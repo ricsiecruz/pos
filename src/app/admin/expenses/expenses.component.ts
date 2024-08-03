@@ -58,13 +58,11 @@ export class ExpensesComponent {
 
     this.expensesService.getPaidBy().subscribe((res: any) => {
       this.paidBy = res;
-      // Set default value for paidBy
       this.setDefaultPaidBy();
     });
     
     this.expensesService.getModeOfPayment().subscribe((res: any) => {
       this.mode_of_payment = res;
-      // Set default value for mode_of_payment
       this.setDefaultModeOfPayment();
     });
   }
