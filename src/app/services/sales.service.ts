@@ -95,8 +95,12 @@ export class SalesService implements OnDestroy {
     this.salesSubject.next(sales);
   }
 
-  getSales(): Observable<any[]> {
-    return this.http.get<any[]>(this.API_URL + 'sales');
+  // getSales(): Observable<any[]> {
+  //   return this.http.get<any[]>(this.API_URL + 'sales');
+  // }
+
+  getSales(payload: any): Observable<any[]> {
+    return this.http.post<any[]>(`${this.API_URL}sales`, payload);
   }
 
   getTotalSalesSum(): Observable<number> {
@@ -129,5 +133,18 @@ export class SalesService implements OnDestroy {
 
   getFilteredMember(member: string): Observable<any[]> {
     return this.http.post<any[]>(`${this.API_URL}sales/member-sales-today`, { member });
+  }
+
+  getKaha(): Observable<any[]> {
+    return this.http.get<any[]>(this.API_URL + 'kaha');
+  }
+
+  postKaha(amount: any): Observable<any[]> {
+    console.log('amount', amount)
+    return this.http.post<any[]>(`${this.API_URL}/kaha`, { amount });
+  }
+
+  putKaha() {
+
   }
 }
