@@ -33,7 +33,11 @@ export class DashboardComponent {
   ) {}
 
   ngOnInit() {
-    this.salesService.getSales().subscribe((res: any) => {
+    const payload = {
+      "page": 1, 
+      "limit": 10
+    }
+    this.salesService.getSales(payload).subscribe((res: any) => {
       this.salesData = res.sales;
     });
 

@@ -28,11 +28,19 @@
           [foodDrinks]="currentSales.food_and_drinks"
           [cash]="currentSales.cash"
           [gcash]="currentSales.gcash"
+          [kaha]="kaha"
           [dataSource]="todayProducts"
           [details]="details"
           [pay]="pay.bind(this)"
           [columns]="['customer', 'qty', 'date', 'computer', 'edit', 'credit', 'pay', 'total', 'payment', 'view']"
         ></app-orders-list>
+        <app-pagination
+          [totalItems]="totalItemsToday"
+          [pageSize]="pageSizeToday"
+          [currentPage]="currentPageToday"
+          (pageChange)="onPageChange($event)"
+        >
+        </app-pagination>
       </tab>
 
       <!-- <tab [heading]="'All ' + creditCount"> -->
@@ -68,6 +76,13 @@
           [pay]="pay.bind(this)"
           [columns]="['customer', 'qty', 'date', 'computer', 'edit', 'credit', 'pay', 'total', 'payment', 'view']"
         ></app-orders-list>
+        <app-pagination
+          [totalItems]="totalItems"
+          [pageSize]="pageSize"
+          [currentPage]="currentPage"
+          (pageChange)="onPageChange($event)"
+        >
+        </app-pagination>
       </tab>
     </tabset>
   </div>

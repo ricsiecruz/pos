@@ -24,6 +24,7 @@ import { OrdersListComponent } from './admin/orders/orders-list/orders-list.comp
 import { MemberFilterComponent } from './admin/member-filter/member-filter.component';
 import { ViewMemberComponent } from './admin/members/view-member/view-member.component';
 import { AccessComponent } from './access/access.component';
+import { PaginationComponent } from './admin/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { AccessComponent } from './access/access.component';
     OrdersListComponent,
     MemberFilterComponent,
     ViewMemberComponent,
-    AccessComponent
+    AccessComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

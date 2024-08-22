@@ -29,8 +29,17 @@ export class OrdersComponent implements OnInit {
   searchTerm: string = '';
   cash: any;
   gcash: any;
+  kaha: any;
   currentSales: any = {};
   allSales: any = {};
+
+  pageSize = 10;
+  currentPage = 1;
+  totalItems: number = 0;
+
+  pageSizeToday = 10;
+  currentPageToday = 1;
+  totalItemsToday: number = 0;
 
   private _creditCount: number = 0;
 
@@ -65,6 +74,7 @@ export class OrdersComponent implements OnInit {
     this.salesService.sales$.subscribe((products: any) => {
       if (products && products.length > 0) {
         this.products = products;
+        console.log('aaa')
         this.fetchSalesData();
       }
     });
@@ -75,6 +85,18 @@ export class OrdersComponent implements OnInit {
       }
     });
 
+    this.fetchSalesData();
+
+    this.salesService.getKaha().subscribe((res: any) => {
+      console.log('get kaha', res)
+      if(res.length == 0) {
+        this.kaha = 0
+      }
+    })
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
     this.fetchSalesData();
   }
 
@@ -109,12 +131,24 @@ export class OrdersComponent implements OnInit {
   }
 
   fetchSalesData() {
-    this.salesService.getSales().subscribe((res: any) => {
+    const payload = {
+      "page": this.currentPage, 
+      "limit": 10
+    }
+    this.salesService.getSales(payload).subscribe((res: any) => {
+
+      this.totalItems = +res.sales.totalRecords;
+
       this.currentSales = res.current_sales;
       this.allSales = res.sales;
       this.creditCount = res.sales.credit_count;
       this.todayProducts = this.currentSales.data;
       this.products = this.allSales.data;
+      console.log('res', res)
+      console.log('this.allSales', this.allSales)
+      console.log('this.todayProducts', this.todayProducts)
+      console.log('this.products', this.products)
+      console.log('this.totalItems', this.totalItems)
       this.filterTodayProducts();
       this.cdr.detectChanges(); 
     });
