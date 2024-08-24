@@ -52,7 +52,8 @@ export class SalesService implements OnDestroy {
   }
 
   private updateDashboardData(): void {
-    this.http.get<any>(this.API_URL + 'sales').subscribe((data: any) => {
+    const payload = { page: 1, limit: 10 };
+    this.getSales(payload).subscribe((data: any) => {
       this.salesSubject.next(data.sales.data);
     });
   }
