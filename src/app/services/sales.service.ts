@@ -17,6 +17,7 @@ export class SalesService implements OnDestroy {
   private websocketSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
+    const defaultPayload = { page: 1, limit: 10 };
     this.websocketSubscription = merge(
       this.webSocketService.receive().pipe(
         map((message: any) => {
@@ -29,7 +30,7 @@ export class SalesService implements OnDestroy {
           }
         })
       ),
-      this.http.get<any[]>(this.API_URL + 'sales')
+      this.http.post<any[]>(`${this.API_URL}sales`, defaultPayload)
     ).subscribe((data: any | any[]) => {
       if (Array.isArray(data)) {
         this.updateSales(data);
@@ -57,6 +58,7 @@ export class SalesService implements OnDestroy {
   }
 
   addSales(sale: any) {
+    console.log('aaa', sale)
     this.webSocketService.send({ action: 'addSales', sale });
   }
 
@@ -95,11 +97,8 @@ export class SalesService implements OnDestroy {
     this.salesSubject.next(sales);
   }
 
-  // getSales(): Observable<any[]> {
-  //   return this.http.get<any[]>(this.API_URL + 'sales');
-  // }
-
   getSales(payload: any): Observable<any[]> {
+    console.log('sales service payload', payload)
     return this.http.post<any[]>(`${this.API_URL}sales`, payload);
   }
 

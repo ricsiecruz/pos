@@ -31,6 +31,9 @@ export class ExpensesComponent {
   filterPaidBy: any;
   startDate: any;
   endDate: any;
+  pageSize = 10;
+  currentPage = 1;
+  totalItems: number = 0;
 
   constructor(
     private http: HttpClient,
@@ -70,8 +73,20 @@ export class ExpensesComponent {
     });
   }
 
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.getExpenses();
+  }
+
   getExpenses() {
-    this.expensesService.getExpenses().subscribe((res: any) => {
+    const payload = {
+      "page": this.currentPage, 
+      "limit": 10
+    }
+    this.expensesService.getExpenses(payload).subscribe((res: any) => {
+      console.log('res', res)
+      this.totalItems = +res.totalRecords;
+      console.log('this.totalItems', this.totalItems)
       this.credit = res.total_credit_amount.totalCreditAmount;
       this.expenses = res.data;
     });

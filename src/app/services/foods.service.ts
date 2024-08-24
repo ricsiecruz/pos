@@ -21,7 +21,7 @@ export class FoodsService implements OnDestroy {
         map((message: any) => {
           if (message.action === 'addFood') {
             return message.foods;
-          } else if (message.action === 'initialize') {
+          } else if (message.action === 'getFoods') {
             return message.foods;
           } else {
             return null;

@@ -41,7 +41,7 @@ export class DashboardComponent {
       this.salesData = res.sales;
     });
 
-    this.expensesService.getExpenses().subscribe((res: any) => {
+    this.expensesService.getExpenses(payload).subscribe((res: any) => {
       this.credit = res.total_credit_amount.totalCreditAmount;
     });
 

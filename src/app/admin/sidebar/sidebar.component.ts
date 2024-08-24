@@ -32,8 +32,11 @@ export class SidebarComponent {
         this.inventory = inventory[0].low;
       }
     });
-
-    this.expensesService.getExpenses().subscribe((res: any) => {
+    const payload = {
+      "page": 1, 
+      "limit": 10
+    }
+    this.expensesService.getExpenses(payload).subscribe((res: any) => {
       this.credit_count = res.total_credit_amount.creditCount;
     });
   }

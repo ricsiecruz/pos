@@ -15,19 +15,20 @@ export class ExpensesService implements OnDestroy {
   private websocketSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
+    const defaultPayload = { page: 1, limit: 10 };
     this.websocketSubscription = merge(
       this.webSocketService.receive().pipe(
         map((message: any) => {
           if (message.action === 'addExpenses') {
             return message.expense;
-          } else if (message.action === 'initialize') {
+          } else if (message.action === 'getExpenses') {
             return message.expenses;
           } else {
             return null;
           }
         })
       ),
-      this.http.get<any[]>(this.API_URL + 'expenses')
+      this.http.post<any[]>(`${this.API_URL}expenses`, defaultPayload)
     ).subscribe((data: any | any[]) => {
       if (Array.isArray(data)) {
         this.updateExpenses(data);
@@ -63,8 +64,8 @@ export class ExpensesService implements OnDestroy {
     this.webSocketService.send({ action: 'addExpenses', expense });
   }
 
-  getExpenses(): Observable<any[]> {
-    return this.http.get<any[]>(this.API_URL + 'expenses');
+  getExpenses(payload: any): Observable<any[]> {
+    return this.http.post<any[]>(`${this.API_URL}expenses`, payload);
   }
 
   payExpense(id: number): Observable<any> {
