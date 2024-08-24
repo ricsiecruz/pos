@@ -10,6 +10,11 @@ import { MembersService } from '../../../services/members.service';
 export class ViewMemberComponent {
   member: any;
   transactions: any[] = [];
+  pageSize = 10;
+  currentPage = 1;
+  totalItems: number = 0;
+  totalPages: number = 0;
+  memberId: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -17,16 +22,27 @@ export class ViewMemberComponent {
   ) {}
 
   ngOnInit() {
-    const memberId = this.route.snapshot.params['id'];
-    this.fetchMemberDetails(memberId);
+    this.memberId = this.route.snapshot.params['id'];
+    this.fetchMemberDetails(this.memberId);
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.fetchMemberDetails(this.memberId);
   }
 
   fetchMemberDetails(id: number) {
-    this.membersService.getMemberById(id).subscribe(
+    const payload = {
+      page: this.currentPage,
+      limit: this.pageSize
+    };
+    this.membersService.getMemberById(id, payload).subscribe(
       (data: any) => {
+        console.log('data', data)
         this.member = data;
+        this.totalItems = +data.totalRecords;
         this.transactions = this.member.transactions
-        console.log('member', this.member, this.transactions)
+        console.log('member', this.member)
       },
       (error: any) => {
         console.error('Error fetching member details:', error);

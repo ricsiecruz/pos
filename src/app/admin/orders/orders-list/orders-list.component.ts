@@ -20,20 +20,40 @@ export class OrdersListComponent {
   @Input() foodDrinks: number = 0;
   @Input() cash: number = 0;
   @Input() gcash: number = 0;
+  @Input() kaha: number = 0;
   @Input() dataSource: any[] = [];
   @Input() details: any;
   @Input() pay!: (data: any) => void;
   @Input() columns!: string[];
+  @Input() totalItems: number = 0;
+  @Input() pageSize: number = 10;
+  @Input() currentPage: number = 1;
+  @Output() pageChange = new EventEmitter<number>();
   @ViewChild('editProductModal') editProductModal!: TemplateRef<any>;
   @ViewChild('sales') sales!: TemplateRef<any>;
+  @ViewChild('openKahaModal') openKahaModal!: TemplateRef<any>;
   editingProduct: any = null;
+  editKaha: any = null;
 
   constructor(
     private router: Router,
     private salesService: SalesService,
     private modalService: ModalService,
-  ) {
-    console.log('data', this.dataSource);
+  ) { 
+    console.log('aaa', this.dataSource, this.totalItems, this.pageSize, this.currentPage)
+  }
+
+  ngOnInit() {
+    console.log('dataSource', this.dataSource, this.totalItems, this.pageSize, this.currentPage)
+  }
+
+  get pages(): number[] {
+    const totalPages = Math.ceil(this.totalItems / this.pageSize);
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  onPageChange(page: number): void {
+    this.pageChange.emit(page);
   }
 
   isColumnVisible(column: string): boolean {
@@ -48,6 +68,7 @@ export class OrdersListComponent {
   }
 
   payCredit(data: any) {
+    console.log('data', data)
     // Create a new object excluding the member_id property
     const { ...updatedData } = {
       ...data,
@@ -64,7 +85,14 @@ export class OrdersListComponent {
 
   editProduct(product: any) {
     this.editingProduct = { ...product };
+    console.log('editingProduct', this.editingProduct)
     this.modalService.openModal(this.editProductModal);
+  }
+
+  openKaha(data: any) {
+    console.log('data', data)
+    this.editKaha = { ...data };
+    this.modalService.openModal(this.openKahaModal)
   }
 
   viewModal(product: any) {
@@ -78,6 +106,13 @@ export class OrdersListComponent {
       this.modalService.closeModal();
       this.editingProduct = null;
     }
+  }
+
+  saveKaha() {
+    console.log('new kaha', this.editKaha.kaha)
+    this.salesService.postKaha(this.editKaha.kaha);
+    // this.modalService.closeModal();
+    this.kaha = 0;
   }
 
   cancelForm() {

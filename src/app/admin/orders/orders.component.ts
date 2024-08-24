@@ -74,7 +74,6 @@ export class OrdersComponent implements OnInit {
     this.salesService.sales$.subscribe((products: any) => {
       if (products && products.length > 0) {
         this.products = products;
-        console.log('aaa')
         this.fetchSalesData();
       }
     });
@@ -88,7 +87,6 @@ export class OrdersComponent implements OnInit {
     this.fetchSalesData();
 
     this.salesService.getKaha().subscribe((res: any) => {
-      console.log('get kaha', res)
       if(res.length == 0) {
         this.kaha = 0
       }
@@ -145,10 +143,6 @@ export class OrdersComponent implements OnInit {
       this.todayProducts = this.currentSales.data;
       this.products = this.allSales.data;
       console.log('res', res)
-      console.log('this.allSales', this.allSales)
-      console.log('this.todayProducts', this.todayProducts)
-      console.log('this.products', this.products)
-      console.log('this.totalItems', this.totalItems)
       this.filterTodayProducts();
       this.cdr.detectChanges(); 
     });

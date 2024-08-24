@@ -59,7 +59,6 @@ export class SalesService implements OnDestroy {
   }
 
   addSales(sale: any) {
-    console.log('aaa', sale)
     this.webSocketService.send({ action: 'addSales', sale });
   }
 
@@ -99,7 +98,6 @@ export class SalesService implements OnDestroy {
   }
 
   getSales(payload: any): Observable<any[]> {
-    console.log('sales service payload', payload)
     return this.http.post<any[]>(`${this.API_URL}sales`, payload);
   }
 
@@ -140,7 +138,6 @@ export class SalesService implements OnDestroy {
   }
 
   postKaha(amount: any): Observable<any[]> {
-    console.log('amount', amount)
     return this.http.post<any[]>(`${this.API_URL}/kaha`, { amount });
   }
 

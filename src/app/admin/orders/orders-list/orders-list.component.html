@@ -37,6 +37,20 @@
         <div>PHP {{ gcash | number:'1.2-2' }}</div>
       </div>
     </div>
+    <div class="orders-list_stat" style="justify-content: flex-start; column-gap: 20px;">
+      <div class="orders-list_stat_card" style="margin: 0;">
+        Kaha
+        <div>
+          {{ kaha }}
+          <div class="orders-list_stat_card_edit" (click)="openKaha(kaha)">
+            Edit
+          </div>
+        </div>
+      </div>
+      <div class="orders-list_stat_card" style="margin: 0;">
+        Kaha + cash
+      </div>
+    </div>
   </div>
 
   <!-- Table Headers -->
@@ -102,6 +116,13 @@
         </div>
       </div>
     </div>
+    <app-pagination
+      [totalItems]="totalItems"
+      [pageSize]="pageSize"
+      [currentPage]="currentPage"
+      (pageChange)="onPageChange($event)"
+    >
+    </app-pagination>
   </div>
 
   <ng-template #nullTemplate>
@@ -119,7 +140,7 @@
   <ng-template #editProductModal let-d="dismiss">
     <div *ngIf="editingProduct">
       <div class="modal-header">
-        Edit <span>{{ editingProduct?.product }}</span>
+        Edit <span>{{ editingProduct?.customer }}</span>
       </div>
       <div class="modal-body">
         <form (submit)="saveEditedProduct()">
@@ -133,6 +154,24 @@
           </div>
         </form>
       </div>
+    </div>
+  </ng-template>
+
+  <ng-template #openKahaModal let-d="dismiss">
+    <div class="modal-header">
+      Kaha
+    </div>
+    <div class="modal-body">
+      <form (submit)="saveKaha()">
+        <div class="modal-body-label">
+          <label for="editKahaAmount">Kaha:</label>
+        </div>
+        <input class="form-control" type="number" id="editKahaAmount" name="editKahaAmount" [(ngModel)]="editKaha.kaha" required>
+        <div class="modal-btns">
+          <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
+          <button class="btn modal-btns-add" type="submit">Save</button>
+        </div>
+      </form>
     </div>
   </ng-template>
 

@@ -20,6 +20,10 @@ export class MembersComponent implements OnInit, OnDestroy {
   errorSubscription?: Subscription;
   file: File | null = null;
   sortOrder: 'asc' | 'desc' = 'asc';
+  pageSize = 10;
+  currentPage = 1;
+  totalItems: number = 0;
+  totalPages: number = 0;
 
   constructor(
     private router: Router,
@@ -29,13 +33,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.membersService.members$.subscribe((members: any[]) => {
-      if (members && members.length > 0) {
-        this.members = members;
-        this.filteredMembers = members;
-        console.log('members', this.filteredMembers)
-      }
-    });
+    this.loadMembers();
 
     this.errorSubscription = this.webSocketService.receive().subscribe(
       (message) => {
@@ -56,12 +54,30 @@ export class MembersComponent implements OnInit, OnDestroy {
     }
   }
 
+  loadMembers() {
+    const payload = {
+      page: this.currentPage,
+      limit: this.pageSize
+    };
+
+    this.membersService.refreshMembers(payload).subscribe(response => {
+      this.members = response.data;
+      this.filteredMembers = this.members;
+      this.totalItems = response.totalRecords;
+      this.totalPages = response.totalPages;
+    });
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.loadMembers();
+  }
+
   addModal() {
     this.modalService.openModal(this.addProductModal);
   }
   
   sortByName() {
-    console.log('aaa')
     this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc'; // Toggle sort order
     this.filteredMembers.sort((a, b) => {
       const nameA = a.name.toUpperCase(); // Convert to uppercase to ensure case-insensitive comparison
@@ -72,7 +88,6 @@ export class MembersComponent implements OnInit, OnDestroy {
       if (nameA < nameB) {
         return this.sortOrder === 'asc' ? 1 : -1;
       }
-      console.log('sort')
       return 0;
     });
   }
@@ -88,6 +103,7 @@ export class MembersComponent implements OnInit, OnDestroy {
       .then(() => {
         this.clearForm();
         this.errorMessage = '';
+        this.loadMembers(); // Refresh the list after adding a new member
       })
       .catch((error) => {
         console.log('Error adding member:', error);
@@ -139,8 +155,7 @@ export class MembersComponent implements OnInit, OnDestroy {
       try {
         const response: any = await this.membersService.uploadExcel(formData).toPromise();
         alert(response.message);
-        // Optionally, refresh the members list here
-        this.membersService.refreshMembers();
+        this.loadMembers(); // Refresh the list after uploading
       } catch (error) {
         console.error('Error uploading file:', error);
         alert('Error uploading file');

@@ -12,11 +12,9 @@ export class AuthGuard implements CanActivate {
   constructor(private appService: AppService, private router: Router) {}
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-    console.log('canActivate');
     return this.appService.getImei().pipe(
       switchMap(imei => this.appService.allowAccess(imei)),
       map(response => {
-        console.log('whitelist', response);
         if (response.message === 'success') {
           return true; // IMEI or IP is whitelisted
         } else {

@@ -16,6 +16,7 @@ export class MembersService implements OnDestroy {
   private errorSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
+    const defaultPayload = { page: 1, limit: 10 };
     this.websocketSubscription = merge(
       this.webSocketService.receive().pipe(
         map((message: any) => {
@@ -28,7 +29,7 @@ export class MembersService implements OnDestroy {
           }
         })
       ),
-      this.http.get<any[]>(this.API_URL + 'members')
+      this.http.post<any[]>(`${this.API_URL}members`, defaultPayload)
     ).subscribe((data: any | any[]) => {
       if (Array.isArray(data)) {
         this.updateMembers(data);
@@ -85,17 +86,16 @@ export class MembersService implements OnDestroy {
     });
   }
 
-  getMemberById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.API_URL}members/${id}`);
+  getMemberById(id: number, defaultPayload: any): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}members/${id}`, defaultPayload);
   }
 
   uploadExcel(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.API_URL}members/upload`, formData);
   }
 
-  refreshMembers() {
-    this.http.get<any[]>(this.API_URL + 'members').subscribe(members => {
-      this.updateMembers(members);
-    });
+  refreshMembers(defaultPayload: any): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}members`, defaultPayload);
   }
+  
 }

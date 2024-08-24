@@ -75,6 +75,10 @@
         [dataSource]="transactions"
         [columns]="['qty', 'date', 'computer', 'total', 'view']"
         [showStats]="false"
+        [totalItems]="totalItems"
+        [pageSize]="pageSize"
+        [currentPage]="currentPage"
+        (pageChange)="onPageChange($event)"
     ></app-orders-list>
 
 </div>

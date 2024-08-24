@@ -21,21 +21,12 @@ export class AppService {
     return this.http.get<string>(`${this.API_URL}whitelist/imei`);
   }
 
-  // allowAccess(): Observable<any> {
-  //   console.log('api', this.API_URL)
-  //   return this.http.get(`${this.API_URL}whitelist`)
-  //     .pipe(
-  //       catchError(this.handleError)
-  //     );
-  // }
-
   allowAccess(imei: string | null): Observable<any> {
     let headers = new HttpHeaders();
     if (imei) {
       headers = headers.set('x-imei', imei);
     }
 
-    console.log('API URL:', this.API_URL);
     return this.http.get(`${this.API_URL}whitelist`, { headers })
       .pipe(
         catchError(this.handleError)

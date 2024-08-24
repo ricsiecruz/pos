@@ -33,17 +33,13 @@
           [details]="details"
           [pay]="pay.bind(this)"
           [columns]="['customer', 'qty', 'date', 'computer', 'edit', 'credit', 'pay', 'total', 'payment', 'view']"
-        ></app-orders-list>
-        <app-pagination
           [totalItems]="totalItemsToday"
           [pageSize]="pageSizeToday"
           [currentPage]="currentPageToday"
           (pageChange)="onPageChange($event)"
-        >
-        </app-pagination>
+        ></app-orders-list>
       </tab>
-
-      <!-- <tab [heading]="'All ' + creditCount"> -->
+      
       <tab [heading]="'All (Credit: ' + creditCount + ')'">
         <div class="orders_table_filter">
           <div class="orders_table_filter_date">
@@ -75,15 +71,13 @@
           [details]="details"
           [pay]="pay.bind(this)"
           [columns]="['customer', 'qty', 'date', 'computer', 'edit', 'credit', 'pay', 'total', 'payment', 'view']"
-        ></app-orders-list>
-        <app-pagination
           [totalItems]="totalItems"
           [pageSize]="pageSize"
           [currentPage]="currentPage"
           (pageChange)="onPageChange($event)"
-        >
-        </app-pagination>
+        ></app-orders-list>
       </tab>
+      
     </tabset>
   </div>
 </div>
