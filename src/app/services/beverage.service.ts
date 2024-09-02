@@ -26,8 +26,7 @@ export class BeverageService implements OnDestroy {
           } else if (message.action === 'addBeverageStock') {
             console.log('b', message)
             return message.beverage;
-          }
-          else {
+          } else {
             return null;
           }
         })

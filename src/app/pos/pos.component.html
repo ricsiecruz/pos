@@ -19,7 +19,7 @@
                 <div *ngIf="beverage && beverage.length" class="pos_card">
                     <div *ngFor="let product of beverage" class="pos_card_drink">
                         <div>
-                            {{ product.beverage }}
+                            {{ product.product }}
                             <div class="pos_card_price">PHP {{ product.price }}</div>
                         </div>
                         <button (click)="addToRightDiv(product)">Add</button>

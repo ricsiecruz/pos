@@ -19,7 +19,7 @@
         <div *ngIf="products.length > 0; else noData">
             <div class="products_table_list" *ngFor="let data of products">
                 <div class="table_one">
-                    {{ data.beverage }}
+                    {{ data.product }}
                 </div>
                 <div class="table_two">
                     {{ data.stocks }}
@@ -45,7 +45,7 @@
 <ng-template #editProductModal let-d="dismiss">
     <div *ngIf="editingProduct">
       <div class="modal-header">
-        Edit <span>{{ editingProduct?.beverage }}</span>
+        Edit <span>{{ editingProduct?.product }}</span>
       </div>
       <div class="modal-body">
         <form (submit)="saveEditedProduct()">
@@ -72,7 +72,7 @@
         <div class="modal-body">
             <form (submit)="addProduct()">
                 <label class="modal-body-label" for="productName">beverage:</label>
-                <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newProduct.beverage" required>
+                <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newProduct.product" required>
                 <label class="modal-body-label" for="productPrice">Price:</label>
                 <input class="form-control" type="number" id="productPrice" name="productPrice" [(ngModel)]="newProduct.price" required>
                 <label class="modal-body-label" for="productStocks">Stocks:</label>
@@ -91,7 +91,7 @@
 
 <ng-template #addStockModal let-d="dismiss">
     <div class="modal-header">
-        Add stocks to<span>{{ editingProduct?.beverage }}</span>
+        Add stocks to<span>{{ editingProduct?.product }}</span>
     </div>
     <div class="modal-body">
         <form (submit)="saveAddedStocks()">
