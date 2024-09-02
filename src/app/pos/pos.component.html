@@ -15,6 +15,21 @@
                     No products available.
                 </div>
             </tab>
+            <tab heading="Beverage">
+                <div *ngIf="beverage && beverage.length" class="pos_card">
+                    <div *ngFor="let product of beverage" class="pos_card_drink">
+                        <div>
+                            {{ product.beverage }}
+                            <div class="pos_card_price">PHP {{ product.price }}</div>
+                        </div>
+                        <button (click)="addToRightDiv(product)">Add</button>
+                        <div>{{ product.stocks }}</div>
+                    </div>
+                </div>
+                <div *ngIf="!beverage || beverage.length === 0">
+                    No products available.
+                </div>
+            </tab>
             <tab heading="Food">
                 <div *ngIf="foods && foods.length" class="pos_card">
                     <div *ngFor="let product of foods" class="pos_card_drink">

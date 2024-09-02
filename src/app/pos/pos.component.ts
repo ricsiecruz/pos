@@ -3,6 +3,7 @@ import { ProductService } from '../services/product.service';
 import { SalesService } from '../services/sales.service';
 import { MembersService } from '../services/members.service';
 import { FoodsService } from '../services/foods.service';
+import { BeverageService } from '../services/beverage.service';
 
 @Component({
   selector: 'app-pos',
@@ -13,6 +14,7 @@ export class PosComponent {
 
   products: any[] = [];
   foods: any[] = [];
+  beverage: any[] = [];
   selectedProducts: any[] = [];
   members: any[] = [];
   overallTotal: number = 0;
@@ -33,6 +35,7 @@ export class PosComponent {
   constructor(
     public productService: ProductService,
     private foodsService: FoodsService,
+    private beverageService: BeverageService,
     public salesService: SalesService,
     private membersService: MembersService
   ) { }
@@ -47,6 +50,18 @@ export class PosComponent {
     this.foodsService.foods$.subscribe((foods: any[]) => {
       if(foods && foods.length > 0) {
         this.foods = foods.map(food => ({ ...food, counter: 0 }))
+      }
+    })
+
+    this.foodsService.foods$.subscribe((foods: any[]) => {
+      if(foods && foods.length > 0) {
+        this.foods = foods.map(food => ({ ...food, counter: 0 }))
+      }
+    })
+
+    this.beverageService.foods$.subscribe((beverage: any[]) => {
+      if(beverage && beverage.length > 0) {
+        this.beverage = beverage.map(food => ({ ...food, counter: 0 }))
       }
     })
 

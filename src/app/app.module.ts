@@ -25,6 +25,7 @@ import { MemberFilterComponent } from './admin/member-filter/member-filter.compo
 import { ViewMemberComponent } from './admin/members/view-member/view-member.component';
 import { AccessComponent } from './access/access.component';
 import { PaginationComponent } from './admin/pagination/pagination.component';
+import { BeverageComponent } from './admin/beverage/beverage.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { PaginationComponent } from './admin/pagination/pagination.component';
     MemberFilterComponent,
     ViewMemberComponent,
     AccessComponent,
-    PaginationComponent
+    PaginationComponent,
+    BeverageComponent
   ],
   imports: [
     BrowserModule,
