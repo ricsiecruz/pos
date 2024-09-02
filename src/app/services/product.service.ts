@@ -64,7 +64,11 @@ export class ProductService implements OnDestroy {
   }
 
   editProduct(productId: string, updatedProduct: any) {
-    console.log('edit drinks', productId, updatedProduct)
     this.webSocketService.send({ action: 'editProduct', productId, product: updatedProduct });
   }
+  
+  deleteProduct(productId: string) {
+    this.webSocketService.send({ action: 'deleteProduct', productId });
+  }
+
 }

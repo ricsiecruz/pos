@@ -23,7 +23,7 @@
                             <div class="pos_card_price">PHP {{ product.price }}</div>
                         </div>
                         <button (click)="addToRightDiv(product)">Add</button>
-                        <div>{{ product.stocks }}</div>
+                        <div class="pos_card_stocks">{{ product.stocks }} left</div>
                     </div>
                 </div>
                 <div *ngIf="!beverage || beverage.length === 0">

@@ -77,4 +77,10 @@ export class ProductsComponent {
     this.newProduct = { product: '', price: '', barista: true };
   }
 
+  deleteProduct(productId: string) {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.productService.deleteProduct(productId);
+    }
+  }
+
 }
