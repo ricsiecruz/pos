@@ -65,12 +65,18 @@ export class PosComponent {
       }
     })
 
-    this.membersService.members$.subscribe((members: any[]) => {
-      if (members && members.length > 0) {
-        this.members = members;
-        this.filteredMembers = [...members];
-      }
-    });
+    // this.membersService.members$.subscribe((members: any[]) => {
+    //   if (members && members.length > 0) {
+    //     console.log('members', members)
+    //     this.members = members;
+    //     this.filteredMembers = [...members];
+    //   }
+    // });
+
+    this.membersService.getMembers().subscribe((res: any) => {
+      console.log('members', res)
+      this.members = res;
+    })
   }
 
   applyDiscount() {

@@ -97,5 +97,9 @@ export class MembersService implements OnDestroy {
   refreshMembers(defaultPayload: any): Observable<any> {
     return this.http.post<any>(`${this.API_URL}members`, defaultPayload);
   }
+
+  getMembers() {
+    return this.http.get(`${this.API_URL}members`)
+  }
   
 }
