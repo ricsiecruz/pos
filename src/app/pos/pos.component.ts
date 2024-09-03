@@ -190,7 +190,7 @@ export class PosComponent {
       total: this.overallTotal, // Overall total amount
       subtotal: this.subtotal, // Subtotal amount
       transactionid: transactionId, // Generated transaction ID
-      dateTime: new Date().toISOString(), // Current date and time
+      datetime: new Date().toISOString(), // Current date and time
       customer: this.selectedMemberName, // Selected customer name
       computer: this.pc === '' ? 0 : this.pc, // PC load or default to 0
       mode_of_payment: this.mode_of_payment, // Mode of payment
