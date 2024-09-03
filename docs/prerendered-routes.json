@@ -2,7 +2,6 @@
   "routes": [
     "/access",
     "/admin",
-    "/admin/beverage",
     "/admin/dashboard",
     "/admin/expenses",
     "/admin/foods",
