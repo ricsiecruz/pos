@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class MembersComponent implements OnInit, OnDestroy {
   @ViewChild('addProductModal') addProductModal?: TemplateRef<any>;
   members: any[] = [];
+  allMembers: any[] = [];
   filteredMembers: any[] = [];
   newProduct: any = { name: '' };
   selectedMemberId: number | null = null;
@@ -57,16 +58,22 @@ export class MembersComponent implements OnInit, OnDestroy {
   loadMembers() {
     const payload = {
       page: this.currentPage,
-      limit: this.pageSize
+      limit: this.pageSize,
+      memberId: this.selectedMemberId // This will be undefined if no member is selected
     };
-
+  
     this.membersService.refreshMembers(payload).subscribe(response => {
       this.members = response.data;
       this.filteredMembers = this.members;
       this.totalItems = response.totalRecords;
       this.totalPages = response.totalPages;
     });
-  }
+  
+    this.membersService.getMembers().subscribe((res: any) => {
+      console.log('all members', res);
+      this.allMembers = res;
+    });
+  }  
 
   onPageChange(page: number): void {
     this.currentPage = page;
@@ -125,6 +132,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   }
 
   onMemberChange(memberId: number) {
+    console.log('member id', memberId)
     this.selectedMemberId = memberId;
     this.filterMembers();
   }
@@ -133,10 +141,11 @@ export class MembersComponent implements OnInit, OnDestroy {
     if (this.selectedMemberId === null) {
       this.filteredMembers = this.members;
     } else if (this.selectedMemberId === 0) {
-      this.filteredMembers = this.members.filter(member => member.name === 'Walk-in Customer');
+      this.filteredMembers = this.allMembers.filter(member => member.name === 'Walk-in Customer');
     } else {
-      this.filteredMembers = this.members.filter(member => member.id === this.selectedMemberId);
+      this.filteredMembers = this.allMembers.filter(member => member.id === this.selectedMemberId);
     }
+    console.log('filter', this.selectedMemberId, this.filteredMembers)
   }
 
   viewMember(id: number) {
