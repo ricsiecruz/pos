@@ -86,11 +86,11 @@ export class OrdersComponent implements OnInit {
 
     this.fetchSalesData();
 
-    this.salesService.getKaha().subscribe((res: any) => {
-      if(res.length == 0) {
-        this.kaha = 0
-      }
-    })
+    // this.salesService.getKaha().subscribe((res: any) => {
+    //   if(res.length == 0) {
+    //     this.kaha = 0
+    //   }
+    // })
   }
 
   onPageChange(page: number): void {

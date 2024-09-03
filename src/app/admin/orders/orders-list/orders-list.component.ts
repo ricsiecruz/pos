@@ -108,12 +108,12 @@ export class OrdersListComponent {
     }
   }
 
-  saveKaha() {
-    console.log('new kaha', this.editKaha.kaha)
-    this.salesService.postKaha(this.editKaha.kaha);
-    // this.modalService.closeModal();
-    this.kaha = 0;
-  }
+  // saveKaha() {
+  //   console.log('new kaha', this.editKaha.kaha)
+  //   this.salesService.postKaha(this.editKaha.kaha);
+  //   // this.modalService.closeModal();
+  //   this.kaha = 0;
+  // }
 
   cancelForm() {
     this.modalService.closeModal();

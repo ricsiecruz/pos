@@ -137,15 +137,15 @@ export class SalesService implements OnDestroy {
     return this.http.post<any[]>(`${this.API_URL}sales/add-sale`, { payload })
   }
 
-  getKaha(): Observable<any[]> {
-    return this.http.get<any[]>(this.API_URL + 'kaha');
-  }
+  // getKaha(): Observable<any[]> {
+  //   return this.http.get<any[]>(this.API_URL + 'kaha');
+  // }
 
-  postKaha(amount: any): Observable<any[]> {
-    return this.http.post<any[]>(`${this.API_URL}/kaha`, { amount });
-  }
+  // postKaha(amount: any): Observable<any[]> {
+  //   return this.http.post<any[]>(`${this.API_URL}/kaha`, { amount });
+  // }
 
-  putKaha() {
+  // putKaha() {
 
-  }
+  // }
 }
