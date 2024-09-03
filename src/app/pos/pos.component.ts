@@ -189,7 +189,7 @@ export class PosComponent {
       qty: this.totalQuantity, // Total quantity of products
       total: this.overallTotal, // Overall total amount
       subtotal: this.subtotal, // Subtotal amount
-      transactionId: transactionId, // Generated transaction ID
+      transactionid: transactionId, // Generated transaction ID
       dateTime: new Date().toISOString(), // Current date and time
       customer: this.selectedMemberName, // Selected customer name
       computer: this.pc === '' ? 0 : this.pc, // PC load or default to 0
@@ -201,9 +201,9 @@ export class PosComponent {
   
     console.log('Order Summary:', orderSummary);
   
-    this.salesService.newSale(orderSummary).subscribe((res: any) => {
-      console.log('sale api', res)
-    })
+    // this.salesService.newSale(orderSummary).subscribe((res: any) => {
+    //   console.log('sale api', res)
+    // })
     this.addToSales(orderSummary);
     this.selectedMemberId = 0;
     this.selectedProducts = [];
