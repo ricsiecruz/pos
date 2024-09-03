@@ -12,6 +12,7 @@ import { FoodsComponent } from './admin/foods/foods.component';
 import { ViewMemberComponent } from './admin/members/view-member/view-member.component';
 import { AccessComponent } from './access/access.component';
 import { AuthGuard } from './auth.guard';
+import { BeverageComponent } from './admin/beverage/beverage.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,11 @@ const routes: Routes = [
       {
         path: 'products',
         component: ProductsComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'beverage',
+        component: BeverageComponent,
         canActivate: [AuthGuard]
       },
       {
