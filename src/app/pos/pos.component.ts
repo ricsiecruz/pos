@@ -201,6 +201,9 @@ export class PosComponent {
   
     console.log('Order Summary:', orderSummary);
   
+    this.salesService.newSale(orderSummary).subscribe((res: any) => {
+      console.log('sale api', res)
+    })
     this.addToSales(orderSummary);
     this.selectedMemberId = 0;
     this.selectedProducts = [];
