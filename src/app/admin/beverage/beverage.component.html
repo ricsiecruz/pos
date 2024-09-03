@@ -45,7 +45,7 @@
 <ng-template #editProductModal let-d="dismiss">
     <div *ngIf="editingProduct">
       <div class="modal-header">
-        Edit <span>{{ editingProduct?.product }}</span>
+        Edit <span>{{ editingProduct?.beverage }}</span>
       </div>
       <div class="modal-body">
         <form (submit)="saveEditedProduct()">
@@ -91,7 +91,7 @@
 
 <ng-template #addStockModal let-d="dismiss">
     <div class="modal-header">
-        Add stocks to<span>{{ editingProduct?.product }}</span>
+        Add stocks to<span>{{ editingProduct?.beverage }}</span>
     </div>
     <div class="modal-body">
         <form (submit)="saveAddedStocks()">
