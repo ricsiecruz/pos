@@ -68,12 +68,13 @@ export class MembersComponent implements OnInit, OnDestroy {
       this.totalItems = response.totalRecords;
       this.totalPages = response.totalPages;
     });
-  
+
     this.membersService.getMembers().subscribe((res: any) => {
       console.log('all members', res);
       this.allMembers = res;
     });
-  }  
+
+  }
 
   onPageChange(page: number): void {
     this.currentPage = page;
