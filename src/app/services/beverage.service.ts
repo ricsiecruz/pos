@@ -69,7 +69,7 @@ export class BeverageService implements OnDestroy {
 
   editProduct(beverageId: string, updatedBeverage: any) {
     console.log('edit food', beverageId, updatedBeverage)
-    this.webSocketService.send({ action: 'editFood', beverageId, beverage: updatedBeverage });
+    this.webSocketService.send({ action: 'editBeverage', beverageId, beverage: updatedBeverage });
   }
 
   addStocks(id: string, updatedBeverage: any) {
