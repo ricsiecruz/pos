@@ -60,6 +60,7 @@
     <div class="table_four" *ngIf="isColumnVisible('date')">Date</div>
     <div class="table_six" *ngIf="isColumnVisible('computer')">Computer</div>
     <div class="table_one" *ngIf="isColumnVisible('edit')"></div>
+    <div class="table_six" *ngIf="isColumnVisible('ps4')">PS4</div>
     <div class="table_eight" *ngIf="isColumnVisible('credit')">Credit</div>
     <div class="table_nine" *ngIf="isColumnVisible('pay')"></div>
     <div class="table_three" *ngIf="isColumnVisible('total')">Total</div>
@@ -80,17 +81,21 @@
       </div>
       <div class="table_four" *ngIf="isColumnVisible('date')">
         {{ data.datetime | date:"EEE, MMM d, y, HH:mm:ss" }}
-      </div>      
+      </div>
       <div class="table_six" *ngIf="isColumnVisible('computer')">
         <ng-container *ngIf="data.computer !== null && data.computer !== '0.00'; else nullTemplate">
           PHP {{ data.computer }}
         </ng-container>
-        
       </div>
       <div class="table_one" *ngIf="isColumnVisible('edit')">
         <span class="products_table_list_add" (click)="editProduct(data)">
           Edit
         </span>
+      </div>
+      <div class="table_six" *ngIf="isColumnVisible('ps4')">
+        <ng-container *ngIf="data.ps4 !== null && data.ps4 !== '0.00'; else nullTemplate">
+          PHP {{ data.ps4 }}
+        </ng-container>
       </div>
       <div class="table_eight" *ngIf="isColumnVisible('credit')">
         <ng-container *ngIf="data.credit !== null && data.credit !== '0.00'; else nullTemplate">
@@ -230,6 +235,10 @@
           <div class="invoice_body_header">
             <div>Computer:</div>
             <div>PHP {{ details?.computer }}</div>
+          </div>
+          <div class="invoice_body_header">
+            <div>PS4:</div>
+            <div>PHP {{ details?.ps4 }}</div>
           </div>
           <div class="invoice_body_total">
             <div>Total Payable:</div>

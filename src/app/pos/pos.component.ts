@@ -24,6 +24,7 @@ export class PosComponent {
   filteredMembers: any[] = [];
   searchTerm: string = '';
   pc: any;
+  ps4: any;
   subtotal: number = 0;
   paidAmount: number | null = null;
   credit: boolean = false;
@@ -89,7 +90,8 @@ export class PosComponent {
 
   updateButtonState(): void {
     this.pc = Number(this.pc);
-    if (this.pc > 0) {
+    this.ps4 = Number(this.ps4);
+    if (this.pc > 0 || this.ps4 > 0) {
       const nextOrderButton = document.querySelector('.pos_selected_next');
       if (nextOrderButton) {
         nextOrderButton.classList.remove('disable');
@@ -134,13 +136,14 @@ export class PosComponent {
 
   calculateOverallTotal() {
     this.pc = this.ensureNumber(this.pc);
+    this.ps4 = this.ensureNumber(this.ps4);
     this.subtotal = this.calculateSubtotal();
     
     // Apply discount if student discount is applied
     if (this.applyStudentDiscount) {
-      this.overallTotal = this.subtotal - this.discountAmount + this.pc;
+      this.overallTotal = this.subtotal - this.discountAmount + this.pc + this.ps4;
     } else {
-      this.overallTotal = this.subtotal + this.pc;
+      this.overallTotal = this.subtotal + this.pc + this.ps4;
     }
     
     this.totalQuantity = this.selectedProducts.reduce((total, selectedProduct) => {
@@ -187,31 +190,29 @@ export class PosComponent {
       };
     });
   
-    // Create the order summary object
     const orderSummary = {
       orders: orders,
-      qty: this.totalQuantity, // Total quantity of products
-      total: this.overallTotal, // Overall total amount
-      subtotal: this.subtotal, // Subtotal amount
-      transactionid: transactionId, // Generated transaction ID
-      datetime: new Date().toISOString(), // Current date and time
-      customer: this.selectedMemberName, // Selected customer name
-      computer: this.pc === '' ? 0 : this.pc, // PC load or default to 0
-      mode_of_payment: this.mode_of_payment, // Mode of payment
-      credit: this.calculateCredit(), // Credit amount, if applicable
-      student_discount: this.applyStudentDiscount, // Whether student discount applied
-      discount: this.discountAmount // Amount of discount applied
+      qty: this.totalQuantity,
+      total: this.overallTotal,
+      subtotal: this.subtotal,
+      transactionid: transactionId,
+      datetime: new Date().toISOString(),
+      customer: this.selectedMemberName,
+      computer: this.pc === '' ? 0 : this.pc,
+      ps4: this.ps4 === '' ? 0 : this.ps4,
+      mode_of_payment: this.mode_of_payment,
+      credit: this.calculateCredit(),
+      student_discount: this.applyStudentDiscount,
+      discount: this.discountAmount
     };
   
     console.log('Order Summary:', orderSummary);
   
-    // this.salesService.newSale(orderSummary).subscribe((res: any) => {
-    //   console.log('sale api', res)
-    // })
     this.addToSales(orderSummary);
     this.selectedMemberId = 0;
     this.selectedProducts = [];
     this.pc = '';
+    this.ps4 = '';
     this.creditAmount = 0;
     this.mode_of_payment = 'cash';
     this.calculateOverallTotal();

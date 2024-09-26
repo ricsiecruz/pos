@@ -17,6 +17,7 @@ export class OrdersListComponent {
   @Input() expenses: number = 0;
   @Input() net: number = 0;
   @Input() computer: number = 0;
+  @Input() ps4: number = 0;
   @Input() foodDrinks: number = 0;
   @Input() cash: number = 0;
   @Input() gcash: number = 0;
@@ -40,11 +41,10 @@ export class OrdersListComponent {
     private salesService: SalesService,
     private modalService: ModalService,
   ) { 
-    console.log('aaa', this.dataSource, this.totalItems, this.pageSize, this.currentPage)
   }
 
   ngOnInit() {
-    console.log('dataSource', this.dataSource, this.totalItems, this.pageSize, this.currentPage)
+    console.log('dataSource', this.dataSource)
   }
 
   get pages(): number[] {
@@ -141,6 +141,7 @@ export class OrdersListComponent {
         second: 'numeric'
       }),
       Computer: `PHP ${item.computer}`,
+      PS4: `PHP ${item.ps4}`,
       Total: `PHP ${item.total}`,
       Credit: item.credit ? `PHP ${item.credit}` : '-',
       CreditTotal: `PHP ${this.credit}`,
@@ -154,7 +155,7 @@ export class OrdersListComponent {
     // Export to CSV
     new AngularCsv(dataToExport, filename, {
       showLabels: true, 
-      headers: ['Customer', 'Qty', 'Date', 'Computer', 'Total', 'Credit', 'CreditTotal', 'ComputerTotal', 'FoodDrinksTotal', 'Sales', 'Expenses', 'Net']
+      headers: ['Customer', 'Qty', 'Date', 'Computer', 'PS4', 'Total', 'Credit', 'CreditTotal', 'ComputerTotal', 'FoodDrinksTotal', 'Sales', 'Expenses', 'Net']
     });
   }
 
@@ -179,6 +180,7 @@ export class OrdersListComponent {
         second: 'numeric'
       }),
       Computer: `PHP ${item.computer}`,
+      PS4: `PHP ${item.ps4}`,
       Total: `PHP ${item.total}`,
       Credit: item.credit ? `PHP ${item.credit}` : '-',
       CreditTotal: `PHP ${this.credit}`,
