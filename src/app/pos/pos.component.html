@@ -88,11 +88,16 @@
                 <label>Student Discount (10%)</label>
             </div>
             <span *ngIf="applyStudentDiscount" style="margin-right: 30px; color: red;">- PHP {{ discountAmount | number:'1.2-2' }}</span>
-        </div>        
+        </div>
 
         <div class="pos_selected_pc">
             <div class="">PC</div>
             <input [(ngModel)]="pc" placeholder="Enter load" (input)="updateButtonState()" class="form-control">
+        </div>   
+
+        <div class="pos_selected_pc">
+            <div class="">PS4</div>
+            <input [(ngModel)]="ps4" placeholder="Enter amount" (input)="updateButtonState()" class="form-control">
         </div>
 
         <div class="pos_selected_pc">
