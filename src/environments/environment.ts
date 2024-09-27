@@ -7,5 +7,5 @@ export const environment = {
 
   // local
   // apiUrl: 'http://localhost:3000/',
-  // wsUrl: 'ws://localhost:8080/'
+  // wsUrl: 'ws://localhost:3000/'
 };

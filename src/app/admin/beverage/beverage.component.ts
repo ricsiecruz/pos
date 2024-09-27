@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ModalService } from '../../modal.service';
-import { FoodsService } from '../../services/foods.service';
 import { WebSocketService } from '../../websocket-service';
 import { BeverageService } from '../../services/beverage.service';
 

@@ -59,25 +59,16 @@ export class DashboardComponent {
 
     this.dashboardService.products$.subscribe(
       (data: any) => {
-        if (data) {
-          if (data.mostOrderedToday) {
-            this.mostOrderedToday = data.mostOrderedToday;
-          }
-          if (data.mostOrdered) {
-            this.mostOrdered = data.mostOrdered;
-          }
-          if (data.topSpenders) {
-            this.topSpenders = data.topSpenders;
-          }
-          if( data.startDate) {
-            this.start_date = data.startDate;
-          }
-        }
+        if (!data) return;
+        this.mostOrderedToday = data.mostOrderedToday ?? this.mostOrderedToday;
+        this.mostOrdered = data.mostOrdered ?? this.mostOrdered;
+        this.topSpenders = data.topSpenders ?? this.topSpenders;
+        this.start_date = data.startDate ?? this.start_date;
       },
       (error) => {
-        console.error('Error fetching most ordered products:', error);
+        console.error('Error fetching dashboard data:', error?.message || error);
       }
-    );
+    );    
 
     this.dashboardService.getStat().subscribe(
       (stats: any) => {
