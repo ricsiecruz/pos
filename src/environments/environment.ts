@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   // prod
   apiUrl: 'https://pos-backend-kt9t.vercel.app/',
   // apiUrl: 'https://benevolent-brioche-d29205.netlify.app',
