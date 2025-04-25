@@ -106,20 +106,23 @@ export class MembersComponent implements OnInit, OnDestroy {
     this.newProduct.total_load = 0;
     this.newProduct.total_spent = 0;
     this.newProduct.last_spent = new Date().toISOString();
-    
-    this.membersService.addMember(this.newProduct)
-      .then(() => {
+    this.newProduct.email = null;
+  
+    this.membersService.addMember(this.newProduct).subscribe({
+      next: (createdProduct: any) => {
+        console.log('Member added', createdProduct);
+        this.loadMembers(); // ✅ Refresh the list
         this.clearForm();
         this.errorMessage = '';
-        this.loadMembers(); // Refresh the list after adding a new member
-      })
-      .catch((error) => {
-        console.log('Error adding member:', error);
-        this.errorMessage = 'Error adding member: ' + error;
-      });
-
-    this.modalService.closeModal();
+        this.modalService.closeModal();
+      },
+      error: err => {
+        console.error('Failed to add product:', err);
+        this.errorMessage = 'Error adding member: ' + err.message;
+      }
+    });
   }
+  
 
   cancelForm() {
     this.clearForm();

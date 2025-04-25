@@ -59,8 +59,15 @@ export class ProductService implements OnDestroy {
     this.productsSubject.next(products);
   }
 
+  getProducts() {
+    this.http.get<any[]>(`${this.API_URL}products`).subscribe(products => {
+      this.productsSubject.next(products);
+    });
+  }
+  
+
   addProduct(product: any) {
-    this.webSocketService.send({ action: 'addProduct', product });
+    return this.http.post(`${this.API_URL}products`, product);
   }
 
   editProduct(productId: string, updatedProduct: any) {

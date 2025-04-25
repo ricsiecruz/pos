@@ -71,19 +71,8 @@ export class MembersService implements OnDestroy {
     this.membersSubject.next(members);
   }
 
-  addMember(member: any): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.webSocketService.send({ action: 'addMember', member });
-      this.webSocketService.receive().subscribe((message: any) => {
-        if (message.action === 'errorResponse' && message.error) {
-          reject(message.error);
-        } else {
-          resolve();
-        }
-      }, error => {
-        reject(error);
-      });
-    });
+  addMember(member: any) {
+    return this.http.post(`${this.API_URL}members/add`, member);
   }
 
   getMemberById(id: number, defaultPayload: any): Observable<any> {
