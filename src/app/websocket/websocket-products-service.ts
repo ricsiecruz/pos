@@ -8,7 +8,9 @@ export class WebSocketProductsService {
   private socket$: WebSocketSubject<any>;
 
   constructor() {
-    this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
+    // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
+    
+    this.socket$ = webSocket('localhost:8080');
 
     this.socket$.subscribe(
       () => console.log('WebSocket connection established'),

@@ -26,34 +26,39 @@ export class ProductsComponent {
   ) {}
 
   ngOnInit() {
+    this.productService.getProducts();
     this.productService.products$.subscribe((products: any[]) => {
-      if (products) {
-        this.products = products;
-        console.log('products', this.products);
-      }
-    });
-
-    this.webSocketProductsService.receive().subscribe((message: any) => {
-      console.log('WebSocket message in component:', message);
-      if (message.action === 'addProduct') {
-        this.products.push(message.product);
-      } else if (message.action === 'editProduct') {
-        const index = this.products.findIndex(p => p.id === message.product.id);
-        if (index !== -1) {
-          this.products[index] = message.product;
-          console.log('Updated product:', this.products[index]);
-        }
-      }
+      this.products = products;
     });
   }
+  
 
   addProduct() {
     if (this.newProduct.product.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
-      this.productService.addProduct(this.newProduct);
+      // Optimistic optional:
+      const tempId = Date.now(); // temporary ID
+      const tempProduct = { ...this.newProduct, id: tempId };
+      this.products.unshift(tempProduct);
+  
+      this.productService.addProduct(this.newProduct).subscribe({
+        next: (createdProduct: any) => {
+          console.log('add product', this.newProduct, createdProduct)
+          // Replace temp with real product from response
+          const index = this.products.findIndex(p => p.id === tempId);
+          if (index !== -1) this.products[index] = createdProduct;
+        },
+        error: err => {
+          console.error('Failed to add product:', err);
+          // Rollback optimistic UI
+          this.products = this.products.filter(p => p.id !== tempId);
+        }
+      });
+  
       this.modalService.closeModal();
       this.newProduct = { product: '', price: '' };
     }
   }
+  
 
   editProduct(product: any) {
     this.editingProduct = { ...product };

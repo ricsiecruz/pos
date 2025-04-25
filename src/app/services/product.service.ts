@@ -9,8 +9,9 @@ import { WebSocketProductsService } from '../websocket/websocket-products-servic
   providedIn: 'root'
 })
 export class ProductService implements OnDestroy {
-  // API_URL = environment.apiUrl;
-  API_URL = ('https://pos-backend-kt9t.vercel.app/');
+  API_URL = environment.apiUrl;
+  // API_URL = ('https://pos-backend-kt9t.vercel.app/');
+  // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
   // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
 
   private productsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
@@ -69,9 +70,17 @@ export class ProductService implements OnDestroy {
     this.productsSubject.next(products);
   }
 
-  addProduct(product: any) {
-    this.webSocketService.send({ action: 'addProduct', product });
+  getProducts() {
+    this.http.get<any[]>(`${this.API_URL}products`).subscribe(products => {
+      this.productsSubject.next(products);
+    });
   }
+  
+
+  addProduct(product: any) {
+    return this.http.post(`${this.API_URL}products`, product);
+  }
+  
 
   editProduct(productId: string, updatedProduct: any) {
     console.log('edit product', productId, updatedProduct);
