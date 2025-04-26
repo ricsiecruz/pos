@@ -1,144 +1,199 @@
 <div class="pos">
-    <div style="width: 920px;">
-        <tabset>
-            <tab heading="Drinks">
-                <div *ngIf="products && products.length" class="pos_card">
-                    <div *ngFor="let product of products" class="pos_card_drink">
-                        <div>
-                            {{ product.product }}
-                            <div class="pos_card_price">PHP {{ product.price }}</div>
-                        </div>
-                        <button (click)="addToRightDiv(product)">Add</button>
-                    </div>
-                </div>
-                <div *ngIf="!products || products.length === 0">
-                    No products available.
-                </div>
-            </tab>
-            <tab heading="Beverage">
-                <div *ngIf="beverage && beverage.length" class="pos_card">
-                    <div *ngFor="let product of beverage" class="pos_card_drink">
-                        <div>
-                            {{ product.product }}
-                            <div class="pos_card_price">PHP {{ product.price }}</div>
-                        </div>
-                        <button (click)="addToRightDiv(product)">Add</button>
-                        <div class="pos_card_stocks">{{ product.stocks }} left</div>
-                    </div>
-                </div>
-                <div *ngIf="!beverage || beverage.length === 0">
-                    No products available.
-                </div>
-            </tab>
-            <tab heading="Food">
-                <div *ngIf="foods && foods.length" class="pos_card">
-                    <div *ngFor="let product of foods" class="pos_card_drink">
-                        <div>
-                            {{ product.product }}
-                            <div class="pos_card_price">PHP {{ product.price }}</div>
-                        </div>
-                        <button (click)="addToRightDiv(product)">Add</button>
-                    </div>
-                </div>
-                <div *ngIf="!foods || foods.length === 0">
-                    No products available.
-                </div>
-            </tab>
-        </tabset>
-    </div>
-    <div class="pos_selected">
-        <div class="pos_selected_orders">Orders</div>
-        <ng-select [(ngModel)]="selectedMemberId" (change)="onMemberChange()">
-            <ng-option [value]="0" selected>Walk-in Customer</ng-option>
-            @for (car of members; track car.id) {
-                <ng-option [value]="car.id">{{car.name}}</ng-option>
-            }
-        </ng-select>
-          
-        <div *ngFor="let selectedProduct of selectedProducts; let i = index" class="pos_selected_product">
-            <div class="pos_selected_product_info">
-                <span class="pos_selected_product_info_product">{{ selectedProduct.product }}</span>
-                <div class="pos_selected_product_info_price">PHP {{ selectedProduct.price }}</div>
-                <div class="pos_selected_product_info_qty">
-                    <svg (click)="decrementCounter(selectedProduct)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 11H5V13H19V11Z"></path></svg>
-                    <input class="form-control" type="number" [(ngModel)]="selectedProduct.counter" (ngModelChange)="updateOverallTotal()" min="0">
-                    <svg (click)="incrementCounter(selectedProduct)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path></svg>
-                </div>
-                <div class="pos_selected_product_info_total">PHP {{ selectedProduct.price * selectedProduct.counter }}</div>
-                <svg (click)="deleteProduct(i)" class="pos_selected_product_info_delete" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path></svg>
-            </div>
-        </div>
-
-        <div *ngIf="selectedProducts.length > 0" class="pos_selected_subtotal">
+  <div style="width: 920px">
+    <tabset>
+      <tab heading="Drinks">
+        <div *ngIf="products.length; else noProducts" class="pos_card">
+          <div *ngFor="let product of products" class="pos_card_drink">
             <div>
-                Subtotal: 
+              {{ product.product }}
+              <div class="pos_card_price">PHP {{ product.price }}</div>
             </div>
-            <div style="margin-right: 30px;">
-                PHP {{ subtotal }}
-            </div>
+            <button (click)="addToRightDiv(product)">Add</button>
+          </div>
         </div>
-
-        <div class="pos_selected_discount">
-            <div style="column-gap: 5px; display: flex;">
-                <input 
-                type="checkbox" 
-                [(ngModel)]="applyStudentDiscount" 
-                (change)="applyDiscount()" 
-                [disabled]="!selectedProducts.length">
-                <label>Student Discount (10%)</label>
-            </div>
-            <span *ngIf="applyStudentDiscount" style="margin-right: 30px; color: red;">- PHP {{ discountAmount | number:'1.2-2' }}</span>
-        </div>
-
-        <div class="pos_selected_pc">
-            <div class="">PC</div>
-            <input [(ngModel)]="pc" placeholder="Enter load" (input)="updateButtonState()" class="form-control">
-        </div>   
-
-        <div class="pos_selected_pc">
-            <div class="">PS4</div>
-            <input [(ngModel)]="ps4" placeholder="Enter amount" (input)="updateButtonState()" class="form-control">
-        </div>
-
-        <div class="pos_selected_pc">
-            <label for="mode_of_payment">Mode of payment</label>
-            <select [(ngModel)]="mode_of_payment" name="mode_of_payment" class="form-control" style="text-align: left;">
-                <option [value]="'cash'">Cash</option>
-                <option [value]="'gcash'">Gcash</option>
-            </select>
-        </div>
-
-        <div class="pos_selected_total">
-            <div class="pos_selected_total_qty">
-                <div class="pos_selected_total_qty_text">Quantity</div>
-                <div class="pos_selected_total_qty_qty">{{ totalQuantity }}</div>
-            </div>
-            <div class="pos_selected_total_amount">
-                <div class="pos_selected_total_amount_text">Total</div>
-                <div class="pos_selected_total_amount_amount">PHP {{ overallTotal }}</div>
-            </div>
-        </div>
-
-        <div class="pos_selected_credit">
-            <input 
-              type="checkbox" 
-              [(ngModel)]="credit" 
-              (click)="check()" 
-              [disabled]="selectedProducts.length === 0 && (pc <= 0 || pc == '' || pc == undefined)">
-            <label>Credit</label>
-        </div>
-          
-        <div *ngIf="credit">
+        <ng-template #noProducts>No products available</ng-template>
+      </tab>
+      <tab heading="Beverage">
+        <div *ngIf="beverage && beverage.length" class="pos_card">
+          <div *ngFor="let product of beverage" class="pos_card_drink">
             <div>
-              <div>Paid:</div>
-              <input class="form-control" type="number" [(ngModel)]="paidAmount" (input)="updatePaidAmount()">
+              {{ product.product }}
+              <div class="pos_card_price">PHP {{ product.price }}</div>
             </div>
-          
-            <div *ngIf="isCreditDue()">
-              <div>Credit: PHP {{ calculateCredit() }}</div>
-            </div>
+            <button (click)="addToRightDiv(product)">Add</button>
+            <div class="pos_card_stocks">{{ product.stocks }} left</div>
+          </div>
         </div>
-        
-        <div class="pos_selected_next" [class.disable]="selectedProducts.length === 0 && (pc <= 0 || pc == '' || pc == undefined)" (click)="clearSelectedProducts()">Next Order</div>
+        <div *ngIf="!beverage || beverage.length === 0">No products available.</div>
+      </tab>
+      <tab heading="Food">
+        <div *ngIf="foods && foods.length" class="pos_card">
+          <div *ngFor="let product of foods" class="pos_card_drink">
+            <div>
+              {{ product.product }}
+              <div class="pos_card_price">PHP {{ product.price }}</div>
+            </div>
+            <button (click)="addToRightDiv(product)">Add</button>
+          </div>
+        </div>
+        <div *ngIf="!foods || foods.length === 0">No products available.</div>
+      </tab>
+    </tabset>
+  </div>
+  <div class="pos_selected">
+    <div class="pos_selected_orders">Orders</div>
+    <ng-select [(ngModel)]="selectedMemberId" (change)="onMemberChange()">
+      <ng-option [value]="0" selected>Walk-in Customer</ng-option>
+      @for (car of members; track car.id) {
+      <ng-option [value]="car.id">{{ car.name }}</ng-option>
+      }
+    </ng-select>
+
+    <div
+      *ngFor="let selectedProduct of selectedProducts; let i = index"
+      class="pos_selected_product"
+    >
+      <div class="pos_selected_product_info">
+        <span class="pos_selected_product_info_product">{{ selectedProduct.product }}</span>
+        <div class="pos_selected_product_info_price">PHP {{ selectedProduct.price }}</div>
+        <div class="pos_selected_product_info_qty">
+          <svg
+            (click)="decrementCounter(selectedProduct)"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M19 11H5V13H19V11Z"></path>
+          </svg>
+          <input
+            class="form-control"
+            type="number"
+            [(ngModel)]="selectedProduct.counter"
+            (ngModelChange)="updateOverallTotal()"
+            min="0"
+          />
+          <svg
+            (click)="incrementCounter(selectedProduct)"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path>
+          </svg>
+        </div>
+        <div class="pos_selected_product_info_total">
+          PHP {{ selectedProduct.price * selectedProduct.counter }}
+        </div>
+        <svg
+          (click)="deleteProduct(i)"
+          class="pos_selected_product_info_delete"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"
+          ></path>
+        </svg>
+      </div>
     </div>
+
+    <div *ngIf="selectedProducts.length > 0" class="pos_selected_subtotal">
+      <div>Subtotal:</div>
+      <div style="margin-right: 30px">PHP {{ subtotal }}</div>
+    </div>
+
+    <div class="pos_selected_discount">
+      <div style="column-gap: 5px; display: flex">
+        <input
+          type="checkbox"
+          [(ngModel)]="applyStudentDiscount"
+          (change)="applyDiscount()"
+          [disabled]="!selectedProducts.length"
+        />
+        <label>Student Discount (10%)</label>
+      </div>
+      <span *ngIf="applyStudentDiscount" style="margin-right: 30px; color: red"
+        >- PHP {{ discountAmount | number : "1.2-2" }}</span
+      >
+    </div>
+
+    <div class="pos_selected_pc">
+      <div class="">PC</div>
+      <input
+        [(ngModel)]="pc"
+        placeholder="Enter load"
+        (input)="updateButtonState()"
+        class="form-control"
+      />
+    </div>
+
+    <div class="pos_selected_pc">
+      <div class="">PS4</div>
+      <input
+        [(ngModel)]="ps4"
+        placeholder="Enter amount"
+        (input)="updateButtonState()"
+        class="form-control"
+      />
+    </div>
+
+    <div class="pos_selected_pc">
+      <label for="mode_of_payment">Mode of payment</label>
+      <select
+        [(ngModel)]="mode_of_payment"
+        name="mode_of_payment"
+        class="form-control"
+        style="text-align: left"
+      >
+        <option [value]="'cash'">Cash</option>
+        <option [value]="'gcash'">Gcash</option>
+      </select>
+    </div>
+
+    <div class="pos_selected_total">
+      <div class="pos_selected_total_qty">
+        <div class="pos_selected_total_qty_text">Quantity</div>
+        <div class="pos_selected_total_qty_qty">{{ totalQuantity }}</div>
+      </div>
+      <div class="pos_selected_total_amount">
+        <div class="pos_selected_total_amount_text">Total</div>
+        <div class="pos_selected_total_amount_amount">PHP {{ overallTotal }}</div>
+      </div>
+    </div>
+
+    <div class="pos_selected_credit">
+      <input
+        type="checkbox"
+        [(ngModel)]="credit"
+        (click)="check()"
+        [disabled]="selectedProducts.length === 0 && (pc <= 0 || pc == '' || pc == undefined)"
+      />
+      <label>Credit</label>
+    </div>
+
+    <div *ngIf="credit">
+      <div>
+        <div>Paid:</div>
+        <input
+          class="form-control"
+          type="number"
+          [(ngModel)]="paidAmount"
+          (input)="updatePaidAmount()"
+        />
+      </div>
+
+      <div *ngIf="isCreditDue()">
+        <div>Credit: PHP {{ calculateCredit() }}</div>
+      </div>
+    </div>
+
+    <div
+      class="pos_selected_next"
+      [class.disable]="selectedProducts.length === 0 && (pc <= 0 || pc == '' || pc == undefined)"
+      (click)="clearSelectedProducts()"
+    >
+      Next Order
+    </div>
+  </div>
 </div>
