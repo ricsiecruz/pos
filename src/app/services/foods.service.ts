@@ -1,12 +1,12 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { WebSocketService } from '../websocket-service';
-import { Observable, BehaviorSubject, merge, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
+import { Injectable, OnDestroy } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { WebSocketService } from "../websocket-service";
+import { Observable, BehaviorSubject, merge, Subscription } from "rxjs";
+import { map } from "rxjs/operators";
+import { environment } from "../../environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class FoodsService implements OnDestroy {
   API_URL = environment.apiUrl;
@@ -16,19 +16,20 @@ export class FoodsService implements OnDestroy {
   private websocketSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
+    this.loadProducts();
     this.websocketSubscription = merge(
       this.webSocketService.receive().pipe(
         map((message: any) => {
-          if (message.action === 'addFood') {
+          if (message.action === "addFood") {
             return message.foods;
-          } else if (message.action === 'getFoods') {
+          } else if (message.action === "getFoods") {
             return message.foods;
           } else {
             return null;
           }
         })
       ),
-      this.http.get<any[]>(this.API_URL + 'foods')
+      this.http.get<any[]>(this.API_URL + "foods")
     ).subscribe((data: any | any[]) => {
       if (Array.isArray(data)) {
         this.updateProducts(data);
@@ -44,8 +45,15 @@ export class FoodsService implements OnDestroy {
     }
   }
 
+  loadProducts() {
+    this.http.get<any[]>(this.API_URL + "foods").subscribe({
+      next: (products) => this.updateProducts(products),
+      error: (err) => console.error("Error loading foodss:", err),
+    });
+  }
+
   addProduct(food: any) {
-    this.webSocketService.send({ action: 'addFood', food });
+    return this.http.post(`${this.API_URL}foods`, food);
   }
 
   private updateProducts(foods: any[]): void {
@@ -53,8 +61,8 @@ export class FoodsService implements OnDestroy {
   }
 
   private addOrUpdateProduct(food: any): void {
-    console.log('f', food)
-    const existingProductIndex = this.foodsSubject.value.findIndex(p => p.id === food.id);
+    console.log("f", food);
+    const existingProductIndex = this.foodsSubject.value.findIndex((p) => p.id === food.id);
     if (existingProductIndex === -1) {
       this.foodsSubject.next([...this.foodsSubject.value, food]);
     } else {
@@ -65,12 +73,12 @@ export class FoodsService implements OnDestroy {
   }
 
   editProduct(productId: string, updatedFood: any) {
-    console.log('edit food', productId, updatedFood)
-    this.webSocketService.send({ action: 'editFood', productId, product: updatedFood });
+    console.log("edit food", productId, updatedFood);
+    this.webSocketService.send({ action: "editFood", productId, product: updatedFood });
   }
 
   addStocks(id: string, updatedProduct: any) {
-    console.log('j', id, updatedProduct)
-    this.webSocketService.send({ action: 'addFoodStock', id, food: updatedProduct });
+    console.log("j", id, updatedProduct);
+    this.webSocketService.send({ action: "addFoodStock", id, food: updatedProduct });
   }
 }
