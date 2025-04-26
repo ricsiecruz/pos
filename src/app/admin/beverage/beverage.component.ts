@@ -51,19 +51,17 @@ export class BeverageComponent {
       const tempId = Date.now();
       const tempProduct = { ...this.newProduct, id: tempId };
 
-      // Optimistic update
       this.foodsService.addLocalProduct(tempProduct);
-      this.foodsService.saveProductsToStorage(); // << NEW: save to localStorage
+      this.foodsService.saveProductsToStorage();
 
       this.foodsService.addProduct(this.newProduct).subscribe({
         next: (createdProduct: any) => {
           console.log("Products page added:", createdProduct);
-          // Optionally, replace tempProduct with real createdProduct here
         },
         error: (err) => {
           console.error("Failed to add product:", err);
           this.foodsService.removeLocalProduct(tempId);
-          this.foodsService.saveProductsToStorage(); // << NEW: update localStorage after removal
+          this.foodsService.saveProductsToStorage();
         },
       });
 

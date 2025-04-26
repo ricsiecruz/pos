@@ -47,23 +47,27 @@ export class FoodsComponent {
   }
 
   addProduct() {
-    // this.foodsService.addProduct(this.newProduct);
+    if (this.newProduct.product.trim() !== "" && !isNaN(Number(this.newProduct.price))) {
+      const tempId = Date.now();
+      const tempProduct = { ...this.newProduct, id: tempId };
 
-    this.foodsService.addProduct(this.newProduct).subscribe({
-      next: (createdProduct: any) => {
-        console.log("Product added", createdProduct);
-        this.products.push(createdProduct); // ✅ Add new item to the list
-        this.modalService.closeModal();
-        this.clearForm();
-      },
+      this.foodsService.addLocalProduct(tempProduct);
+      this.foodsService.saveProductsToStorage();
 
-      error: (err) => {
-        console.error("Failed to add product:", err);
-        // this.errorMessage = 'Error adding member: ' + err.message;
-      },
-    });
+      this.foodsService.addProduct(this.newProduct).subscribe({
+        next: (createdProduct: any) => {
+          console.log("Products page added:", createdProduct);
+        },
+        error: (err) => {
+          console.error("Failed to add product:", err);
+          this.foodsService.removeLocalProduct(tempId);
+          this.foodsService.saveProductsToStorage();
+        },
+      });
 
-    this.newProduct = { product: "", price: "", stocks: "", utensils: false };
+      this.modalService.closeModal();
+      this.newProduct = { product: "", price: "", stocks: "", utensils: false };
+    }
   }
 
   addStocks(product: any) {

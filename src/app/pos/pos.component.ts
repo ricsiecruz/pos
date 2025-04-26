@@ -46,6 +46,7 @@ export class PosComponent {
   ngOnInit() {
     this.productService.loadProductsFromStorage();
     this.beverageService.loadBeveragesFromStorage();
+    this.foodsService.loadFoodsFromStorage();
 
     this.productService.products$.subscribe((products: any[]) => {
       this.products = products;
@@ -76,6 +77,9 @@ export class PosComponent {
       }
       if (event.key === "beverage") {
         this.beverageService.loadBeveragesFromStorage();
+      }
+      if (event.key === "foods") {
+        this.foodsService.loadFoodsFromStorage();
       }
     });
   }

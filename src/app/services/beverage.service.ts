@@ -86,21 +86,6 @@ export class BeverageService implements OnDestroy {
     }
   }
 
-  private editLocalProduct(product: any) {
-    const products = [...this.foodsSubject.value];
-    const index = products.findIndex((p) => p.id === product.id);
-    if (index !== -1) {
-      products[index] = product;
-      this.foodsSubject.next(products);
-      this.saveProductsToStorage(); // << NEW
-    }
-  }
-
-  replaceTempProduct(tempId: number, realProduct: any) {
-    const products = this.foodsSubject.value.map((p) => (p.id === tempId ? realProduct : p));
-    this.foodsSubject.next(products);
-  }
-
   saveProductsToStorage() {
     const products = this.foodsSubject.value;
     localStorage.setItem("beverage", JSON.stringify(products));

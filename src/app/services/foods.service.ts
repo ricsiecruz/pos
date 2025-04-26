@@ -45,19 +45,47 @@ export class FoodsService implements OnDestroy {
     }
   }
 
-  loadProducts() {
-    this.http.get<any[]>(this.API_URL + "foods").subscribe({
-      next: (products) => this.updateProducts(products),
-      error: (err) => console.error("Error loading foodss:", err),
+  private loadProducts() {
+    this.getProducts().subscribe((products) => {
+      this.updateProducts(products);
     });
   }
 
-  addProduct(food: any) {
-    return this.http.post(`${this.API_URL}foods`, food);
+  getProducts() {
+    return this.http.get<any[]>(`${this.API_URL}foods`);
+  }
+
+  addProduct(foods: any) {
+    return this.http.post(`${this.API_URL}foods`, foods);
   }
 
   private updateProducts(foods: any[]): void {
     this.foodsSubject.next(foods);
+  }
+
+  addLocalProduct(product: any) {
+    const products = [product, ...this.foodsSubject.value]; // NEW: add to beginning
+    this.foodsSubject.next(products);
+    localStorage.setItem("foods", JSON.stringify(products)); // keep localStorage synced
+  }
+
+  removeLocalProduct(tempId: number) {
+    const products = this.foodsSubject.value.filter((p) => p.id !== tempId);
+    this.foodsSubject.next(products);
+    this.saveProductsToStorage(); // << NEW
+  }
+
+  loadFoodsFromStorage() {
+    const stored = localStorage.getItem("foods");
+    if (stored) {
+      const products = JSON.parse(stored);
+      this.foodsSubject.next(products);
+    }
+  }
+
+  saveProductsToStorage() {
+    const products = this.foodsSubject.value;
+    localStorage.setItem("foods", JSON.stringify(products));
   }
 
   private addOrUpdateProduct(food: any): void {
