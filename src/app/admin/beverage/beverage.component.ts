@@ -49,7 +49,22 @@ export class BeverageComponent {
   addProduct() {
     console.log('a', this.newProduct)
     this.foodsService.addProduct(this.newProduct);
-    this.modalService.closeModal();
+
+    this.foodsService.addProduct(this.newProduct).subscribe({
+      next: (createdProduct: any) => {
+        console.log('Product added', createdProduct);
+        this.products.push(createdProduct); // ✅ Add new item to the list
+        this.modalService.closeModal();
+        this.clearForm();
+      },
+      
+      error: err => {
+        console.error('Failed to add product:', err);
+        // this.errorMessage = 'Error adding member: ' + err.message;
+      }
+    });
+
+    // this.modalService.closeModal();
     this.newProduct = { product: '', price: '', stocks: ''};
   }
 

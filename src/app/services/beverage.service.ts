@@ -16,6 +16,8 @@ export class BeverageService implements OnDestroy {
   private websocketSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
+    
+  this.loadProducts();
     this.websocketSubscription = merge(
       this.webSocketService.receive().pipe(
         map((message: any) => {
@@ -48,8 +50,16 @@ export class BeverageService implements OnDestroy {
     }
   }
 
+  loadProducts() {
+    this.http.get<any[]>(this.API_URL + 'beverage').subscribe({
+      next: (products) => this.updateProducts(products),
+      error: (err) => console.error('Error loading beverages:', err)
+    });
+  }
+  
+
   addProduct(beverage: any) {
-    this.webSocketService.send({ action: 'addBeverage', beverage });
+    return this.http.post(`${this.API_URL}beverage`, beverage);
   }
 
   private updateProducts(beverage: any[]): void {
