@@ -1,21 +1,21 @@
-import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
-import { ModalService } from '../../modal.service';
-import { WebSocketService } from '../../websocket-service';
-import { BeverageService } from '../../services/beverage.service';
+import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from "@angular/core";
+import { ModalService } from "../../modal.service";
+import { WebSocketService } from "../../websocket-service";
+import { BeverageService } from "../../services/beverage.service";
 
 @Component({
-  selector: 'app-beverage',
-  templateUrl: './beverage.component.html',
-  styleUrl: './beverage.component.scss'
+  selector: "app-beverage",
+  templateUrl: "./beverage.component.html",
+  styleUrl: "./beverage.component.scss",
 })
 export class BeverageComponent {
-  @ViewChild('addProductModal') addProductModal?: TemplateRef<any>;
-  @ViewChild('addStockModal') addStockModal?: TemplateRef<any>;
-  @ViewChild('editProductModal') editProductModal?: TemplateRef<any>;
+  @ViewChild("addProductModal") addProductModal?: TemplateRef<any>;
+  @ViewChild("addStockModal") addStockModal?: TemplateRef<any>;
+  @ViewChild("editProductModal") editProductModal?: TemplateRef<any>;
   products: any[] = [];
-  newProduct: any = { product: '', price: '', stocks: '' };
+  newProduct: any = { product: "", price: "", stocks: "" };
   editingProduct: any = null;
-  qty: string = '';
+  qty: string = "";
 
   constructor(
     private modalService: ModalService,
@@ -30,7 +30,7 @@ export class BeverageComponent {
     });
 
     this.webSocketService.receive().subscribe((message: any) => {
-      if (message.action === 'addBeverage') {
+      if (message.action === "addBeverage") {
         this.products.push(message.beverage);
         this.cdr.detectChanges();
       }
@@ -47,25 +47,29 @@ export class BeverageComponent {
   }
 
   addProduct() {
-    console.log('a', this.newProduct)
-    this.foodsService.addProduct(this.newProduct);
+    if (this.newProduct.product.trim() !== "" && !isNaN(Number(this.newProduct.price))) {
+      const tempId = Date.now();
+      const tempProduct = { ...this.newProduct, id: tempId };
 
-    this.foodsService.addProduct(this.newProduct).subscribe({
-      next: (createdProduct: any) => {
-        console.log('Product added', createdProduct);
-        this.products.push(createdProduct); // ✅ Add new item to the list
-        this.modalService.closeModal();
-        this.clearForm();
-      },
-      
-      error: err => {
-        console.error('Failed to add product:', err);
-        // this.errorMessage = 'Error adding member: ' + err.message;
-      }
-    });
+      // Optimistic update
+      this.foodsService.addLocalProduct(tempProduct);
+      this.foodsService.saveProductsToStorage(); // << NEW: save to localStorage
 
-    // this.modalService.closeModal();
-    this.newProduct = { product: '', price: '', stocks: ''};
+      this.foodsService.addProduct(this.newProduct).subscribe({
+        next: (createdProduct: any) => {
+          console.log("Products page added:", createdProduct);
+          // Optionally, replace tempProduct with real createdProduct here
+        },
+        error: (err) => {
+          console.error("Failed to add product:", err);
+          this.foodsService.removeLocalProduct(tempId);
+          this.foodsService.saveProductsToStorage(); // << NEW: update localStorage after removal
+        },
+      });
+
+      this.modalService.closeModal();
+      this.newProduct = { product: "", price: 0, stocks: "" };
+    }
   }
 
   addStocks(product: any) {
@@ -75,8 +79,8 @@ export class BeverageComponent {
 
   saveEditedProduct() {
     if (this.editingProduct) {
-      console.log('drinks', this.editingProduct.id, this.editingProduct)
-      this.foodsService.editProduct(this.editingProduct.id, this.editingProduct)
+      console.log("drinks", this.editingProduct.id, this.editingProduct);
+      this.foodsService.editProduct(this.editingProduct.id, this.editingProduct);
       this.modalService.closeModal();
       this.editingProduct = null;
     }
@@ -89,7 +93,7 @@ export class BeverageComponent {
       const totalStocks = currentStocks + newStocks;
       this.editingProduct.stocks = totalStocks.toString();
 
-      const updatedProducts = this.products.map(p => {
+      const updatedProducts = this.products.map((p) => {
         if (p.id === this.editingProduct.id) {
           return { ...p, stocks: this.editingProduct.stocks };
         }
@@ -101,7 +105,7 @@ export class BeverageComponent {
       this.modalService.closeModal();
       this.editingProduct = null;
     } else {
-      console.error('Invalid stock quantity');
+      console.error("Invalid stock quantity");
     }
     this.clearForm();
   }
@@ -112,6 +116,6 @@ export class BeverageComponent {
   }
 
   clearForm() {
-    this.newProduct = { product: '', price: '', stocks: '' };
+    this.newProduct = { product: "", price: "", stocks: "" };
   }
 }

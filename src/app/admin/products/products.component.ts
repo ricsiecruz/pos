@@ -21,11 +21,7 @@ export class ProductsComponent {
   };
   editingProduct: any = null;
 
-  constructor(
-    private modalService: ModalService,
-    private productService: ProductService,
-    private webSocketService: WebSocketService
-  ) {}
+  constructor(private modalService: ModalService, private productService: ProductService) {}
 
   ngOnInit() {
     this.productService.getProducts();

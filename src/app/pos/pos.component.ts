@@ -44,32 +44,22 @@ export class PosComponent {
   ) {}
 
   ngOnInit() {
-    this.productService.loadProductsFromStorage(); // Load from localStorage first
+    this.productService.loadProductsFromStorage();
+    this.beverageService.loadBeveragesFromStorage();
 
     this.productService.products$.subscribe((products: any[]) => {
       this.products = products;
     });
 
-    window.addEventListener("storage", (event) => {
-      if (event.key === "products") {
-        this.productService.loadProductsFromStorage();
-      }
-    });
-    this.foodsService.foods$.subscribe((foods: any[]) => {
-      if (foods && foods.length > 0) {
-        this.foods = foods.map((food) => ({ ...food, counter: 0 }));
+    this.beverageService.foods$.subscribe((beverages: any[]) => {
+      if (beverages && beverages.length > 0) {
+        this.beverage = beverages.map((bev) => ({ ...bev, counter: 0 }));
       }
     });
 
     this.foodsService.foods$.subscribe((foods: any[]) => {
       if (foods && foods.length > 0) {
         this.foods = foods.map((food) => ({ ...food, counter: 0 }));
-      }
-    });
-
-    this.beverageService.foods$.subscribe((beverage: any[]) => {
-      if (beverage && beverage.length > 0) {
-        this.beverage = beverage.map((food) => ({ ...food, counter: 0 }));
       }
     });
 
@@ -79,23 +69,15 @@ export class PosComponent {
         this.filteredMembers = [...members];
       }
     });
-  }
 
-  fetchProductsFromServer() {
-    this.productService.getProducts().subscribe((products) => {
-      console.log("Fetched from server:", products);
-
-      // Save into LocalStorage
-      localStorage.setItem("products", JSON.stringify(products));
-
-      // Load from LocalStorage
-      this.loadProductsFromStorage();
+    window.addEventListener("storage", (event) => {
+      if (event.key === "products") {
+        this.productService.loadProductsFromStorage();
+      }
+      if (event.key === "beverage") {
+        this.beverageService.loadBeveragesFromStorage();
+      }
     });
-  }
-
-  loadProductsFromStorage() {
-    const storedProducts = JSON.parse(localStorage.getItem("products") || "[]");
-    this.productService.updateProducts(storedProducts);
   }
 
   applyDiscount() {

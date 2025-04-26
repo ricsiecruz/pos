@@ -16,13 +16,7 @@ export class ProductService implements OnDestroy {
   private websocketSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
-    this.getProducts();
-    // First load initial products
-    this.http.get<any[]>(this.API_URL + "products").subscribe((products) => {
-      this.updateProducts(products);
-    });
-
-    // Then listen for WebSocket updates
+    this.loadProducts();
     this.websocketSubscription = this.webSocketService
       .receive()
       .pipe(
@@ -78,6 +72,12 @@ export class ProductService implements OnDestroy {
 
   updateProducts(products: any[]) {
     this.productsSubject.next(products);
+  }
+
+  private loadProducts() {
+    this.getProducts().subscribe((products) => {
+      this.updateProducts(products);
+    });
   }
 
   getProducts() {
