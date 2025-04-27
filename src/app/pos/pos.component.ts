@@ -240,8 +240,47 @@ export class PosComponent {
     this.overallTotal = 0;
   }
 
+  // addToSales(transactionSales: any) {
+  //   console.log("pos", transactionSales);
+  //   this.salesService.addSales(transactionSales);
+  // }
+
+  // addToSales(transactionSales: any) {
+  //   this.salesService.addSales(transactionSales).subscribe({
+  //     next: (createdProduct: any) => {
+  //       console.log("Product saved to server:", createdProduct);
+  //       // Update the tempId product with real server data (optional)
+  //       this.salesService.replaceLocalProduct(tempId, createdProduct);
+  //       this.salesService.saveProductsToStorage();
+  //     },
+  //     error: (err) => {
+  //       console.error("Failed to add product:", err);
+  //       this.salesService.removeLocalProduct(tempId);
+  //       this.salesService.saveProductsToStorage();
+  //     }
+  //   });
+
+  // }
+
   addToSales(transactionSales: any) {
-    this.salesService.addSales(transactionSales);
+    const tempId = Date.now();
+    const tempProduct = { ...transactionSales, id: tempId };
+
+    this.salesService.addLocalProduct(tempProduct);
+    this.salesService.saveProductsToStorage();
+
+    console.log("aaa", transactionSales);
+
+    this.salesService.addSales(transactionSales).subscribe({
+      next: (createdProduct: any) => {
+        console.log("Products page added:", createdProduct);
+      },
+      error: (err) => {
+        console.error("Failed to add product:", err);
+        this.salesService.removeLocalProduct(tempId);
+        this.salesService.saveProductsToStorage();
+      },
+    });
   }
 
   calculateSubtotal(): number {
