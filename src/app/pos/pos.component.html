@@ -42,11 +42,16 @@
   </div>
   <div class="pos_selected">
     <div class="pos_selected_orders">Orders</div>
-    <ng-select [(ngModel)]="selectedMemberId" (change)="onMemberChange()">
-      <ng-option [value]="0" selected>Walk-in Customer</ng-option>
-      @for (car of members; track car.id) {
-      <ng-option [value]="car.id">{{ car.name }}</ng-option>
-      }
+    <ng-select
+      [(ngModel)]="selectedMemberId"
+      (change)="onMemberChange()"
+      [searchable]="true"
+      placeholder="Select Member"
+    >
+      <ng-option [value]="0">Walk-in Customer</ng-option>
+      <ng-option *ngFor="let member of filteredMembers" [value]="member.id">
+        {{ member.name }}
+      </ng-option>
     </ng-select>
 
     <div

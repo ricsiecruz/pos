@@ -35,7 +35,6 @@ export class PosComponent {
   products$ = this.productService.products$;
 
   constructor(
-    private cdr: ChangeDetectorRef,
     public productService: ProductService,
     private foodsService: FoodsService,
     private beverageService: BeverageService,
@@ -47,6 +46,7 @@ export class PosComponent {
     this.productService.loadProductsFromStorage();
     this.beverageService.loadBeveragesFromStorage();
     this.foodsService.loadFoodsFromStorage();
+    this.membersService.loadMembersFromStorage();
 
     this.productService.products$.subscribe((products: any[]) => {
       this.products = products;
@@ -66,9 +66,15 @@ export class PosComponent {
 
     this.membersService.members$.subscribe((members: any[]) => {
       if (members && members.length > 0) {
-        this.members = members;
-        this.filteredMembers = [...members];
+        this.filteredMembers = members.map((member) => ({ ...member, counter: 0 }));
       }
+    });
+
+    // --- 👇🏻 THIS IS THE NEW PART (like in MembersComponent)
+    const payload = { page: 1, limit: 10000 }; // or however many you want to load
+    this.membersService.refreshMembers(payload).subscribe((response) => {
+      this.members = response.data || [];
+      this.filteredMembers = [...this.members];
     });
 
     window.addEventListener("storage", (event) => {
@@ -80,6 +86,9 @@ export class PosComponent {
       }
       if (event.key === "foods") {
         this.foodsService.loadFoodsFromStorage();
+      }
+      if (event.key === "members") {
+        this.membersService.loadMembersFromStorage();
       }
     });
   }
@@ -120,15 +129,13 @@ export class PosComponent {
     return item.name.toLocaleLowerCase().indexOf(term) > -1;
   }
 
-  filterMembers(): void {
-    this.filteredMembers = this.members.filter((member) =>
-      member.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-  }
-
   onMemberChange(): void {
-    const selectedMember = this.members.find((member) => member.id === this.selectedMemberId);
-    this.selectedMemberName = selectedMember ? selectedMember.name : "Walk-in Customer";
+    if (this.selectedMemberId === 0) {
+      this.selectedMemberName = "Walk-in Customer";
+    } else {
+      const selectedMember = this.members.find((member) => member.id === this.selectedMemberId);
+      this.selectedMemberName = selectedMember ? selectedMember.name : "Walk-in Customer";
+    }
   }
 
   addToRightDiv(product: any) {
