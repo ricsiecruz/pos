@@ -1,12 +1,12 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { WebSocketService } from '../websocket-service';
-import { Observable, BehaviorSubject, merge, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
+import { Injectable, OnDestroy } from "@angular/core";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { WebSocketService } from "../websocket-service";
+import { Observable, BehaviorSubject, merge, Subscription } from "rxjs";
+import { map } from "rxjs/operators";
+import { environment } from "../../environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class DashboardService implements OnDestroy {
   API_URL = environment.apiUrl;
@@ -19,16 +19,16 @@ export class DashboardService implements OnDestroy {
     this.websocketSubscription = merge(
       this.webSocketService.receive().pipe(
         map((message: any) => {
-          if (message.action === 'initialize') {
+          if (message.action === "initialize") {
             return message.dashboard;
-          } else if (message.action === 'newSale') {
+          } else if (message.action === "newSale") {
             return message.data;
           } else {
             return null;
           }
         })
       ),
-      this.http.get<any>(this.API_URL + 'dashboard')
+      this.http.get<any>(this.API_URL + "dashboard")
     ).subscribe((data: any) => {
       if (data && Array.isArray(data.products)) {
         this.updateProducts(data.products);
@@ -47,7 +47,7 @@ export class DashboardService implements OnDestroy {
 
   private handleNewSale(sale: any): void {
     // Logic to handle the new sale and update the dashboard data
-    console.log('New sale received:', sale);
+    console.log("New sale received:", sale);
     this.updateDashboardData();
   }
 
@@ -56,21 +56,23 @@ export class DashboardService implements OnDestroy {
   }
 
   private updateDashboardData(): void {
-    this.http.get<any>(this.API_URL + 'dashboard').subscribe((data: any) => {
+    this.http.get<any>(this.API_URL + "dashboard").subscribe((data: any) => {
       this.productsSubject.next(data);
     });
   }
 
-  getStat(): Observable<any> {
-    return this.http.get<any>(this.API_URL + 'dashboard/sales-expenses-summary').pipe(
-      map(res => res.sales_expenses_summary)
-    );
+  getStat(startDate: string, endDate: string): Observable<any> {
+    const params = new HttpParams().set("start_date", startDate).set("end_date", endDate);
+
+    return this.http
+      .get<any>(this.API_URL + "dashboard/sales-expenses-summary", { params })
+      .pipe(map((res) => res.sales_expenses_summary));
   }
 
   getTopSpendersToday(): Observable<any> {
-    return this.http.get<any>(this.API_URL + 'dashboard/top-spenders-today').pipe(
-      map(res => res.top_spenders_today)
-    );
+    return this.http
+      .get<any>(this.API_URL + "dashboard/top-spenders-today")
+      .pipe(map((res) => res.top_spenders_today));
   }
 
   private addOrUpdateProduct(product: any): void {
@@ -80,17 +82,17 @@ export class DashboardService implements OnDestroy {
     if (existingProductIndex === -1) {
       this.productsSubject.next({
         ...this.productsSubject.value,
-        products: [...currentProducts, product]
+        products: [...currentProducts, product],
       });
     } else {
       const updatedProducts = [...currentProducts];
       updatedProducts[existingProductIndex] = product;
       this.productsSubject.next({
         ...this.productsSubject.value,
-        products: updatedProducts
+        products: updatedProducts,
       });
     }
 
-    console.log('Updated products:', this.productsSubject.value);
+    console.log("Updated products:", this.productsSubject.value);
   }
 }
