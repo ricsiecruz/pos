@@ -1,73 +1,69 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { environment } from '../environments/environment.prod';
+import { environment } from "../environments/environment.prod";
 // import { environment } from '../environments/environment';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, throwError } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AppService {
+  API_URL = environment.apiUrl;
 
-  API_URL = (environment.apiUrl);
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   checkIp(): Observable<any> {
-    return this.http.get(`${this.API_URL}whitelist/ip`)
+    return this.http.get(`${this.API_URL}whitelist/ip`);
   }
 
-  getImei(): Observable<string> {
-    return this.http.get<string>(`${this.API_URL}whitelist/imei`);
+  getImei(): Observable<{ imei: string }> {
+    return this.http.get<{ imei: string }>(`${this.API_URL}whitelist/imei`);
   }
 
   allowAccess(imei: string | null): Observable<any> {
-    let headers = new HttpHeaders();
-    if (imei) {
-      headers = headers.set('x-imei', imei);
-    }
+    const headers = new HttpHeaders({
+      "x-imei": imei ? String(imei) : "",
+    });
 
-    return this.http.get(`${this.API_URL}whitelist`, { headers })
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http
+      .get(`${this.API_URL}whitelist`, { headers })
+      .pipe(catchError(this.handleError));
   }
 
   private handleError(error: any) {
-    console.error('An error occurred', error);
+    console.error("An error occurred", error);
     return throwError(error.message || error);
   }
 
   getInventory() {
-    return this.http.get(this.API_URL + 'inventory');
+    return this.http.get(this.API_URL + "inventory");
   }
 
   putStocks(id: any, payload: any) {
-    return this.http.put(this.API_URL + `inventory/add-stocks/${id}`, payload)
+    return this.http.put(this.API_URL + `inventory/add-stocks/${id}`, payload);
   }
 
   postInventory(payload: any) {
-    return this.http.post<any>(this.API_URL + 'inventory', payload)
+    return this.http.post<any>(this.API_URL + "inventory", payload);
   }
 
   getProducts() {
-    return this.http.get(this.API_URL + 'products')
+    return this.http.get(this.API_URL + "products");
   }
 
   postProduct(payload: any) {
-    return this.http.post<any>(this.API_URL + `products`, payload)
+    return this.http.post<any>(this.API_URL + `products`, payload);
   }
 
   putProduct(id: any, payload: any) {
-    return this.http.put(this.API_URL + `products/${id}`, payload)
+    return this.http.put(this.API_URL + `products/${id}`, payload);
   }
 
   getExpenses() {
-    return this.http.get(this.API_URL + 'expenses')
+    return this.http.get(this.API_URL + "expenses");
   }
 
   postExpense(payload: any) {
-    return this.http.post<any>(this.API_URL + 'expenses', payload)
+    return this.http.post<any>(this.API_URL + "expenses", payload);
   }
-
 }
