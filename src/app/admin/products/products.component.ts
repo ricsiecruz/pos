@@ -1,29 +1,27 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ModalService } from '../../modal.service';
-import { ProductService } from '../../services/product.service';
-import { WebSocketService } from '../../websocket-service';
-import { WebSocketProductsService } from '../../websocket/websocket-products-service';
+import { Component, TemplateRef, ViewChild } from "@angular/core";
+import { ModalService } from "../../modal.service";
+import { ProductService } from "../../services/product.service";
+import { WebSocketService } from "../../websocket-service";
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  selector: "app-products",
+  templateUrl: "./products.component.html",
+  styleUrl: "./products.component.scss",
 })
 export class ProductsComponent {
-  @ViewChild('editProductModal') editProductModal?: TemplateRef<any>;
-  @ViewChild('addProductModal') addProductModal?: TemplateRef<any>;
-  product: string = '';
-  price: string = '';
+  @ViewChild("editProductModal") editProductModal?: TemplateRef<any>;
+  @ViewChild("addProductModal") addProductModal?: TemplateRef<any>;
+  product: string = "";
+  price: string = "";
   products: any[] = [];
-  newProduct: any = { product: '', price: '' };
+  newProduct: any = {
+    product: "",
+    price: 0,
+    barista: true, // Default to true; change to false if needed
+  };
   editingProduct: any = null;
 
-  constructor(
-    private modalService: ModalService,
-    private productService: ProductService,
-    private webSocketService: WebSocketService,
-    private webSocketProductsService: WebSocketProductsService
-  ) {}
+  constructor(private modalService: ModalService, private productService: ProductService) {}
 
   ngOnInit() {
     this.productService.getProducts();
@@ -31,34 +29,32 @@ export class ProductsComponent {
       this.products = products;
     });
   }
-  
 
   addProduct() {
-    if (this.newProduct.product.trim() !== '' && !isNaN(Number(this.newProduct.price))) {
-      // Optimistic optional:
-      const tempId = Date.now(); // temporary ID
+    if (this.newProduct.product.trim() !== "" && !isNaN(Number(this.newProduct.price))) {
+      const tempId = Date.now();
       const tempProduct = { ...this.newProduct, id: tempId };
-      this.products.unshift(tempProduct);
-  
+
+      // Optimistic update
+      this.productService.addLocalProduct(tempProduct);
+      this.productService.saveProductsToStorage(); // << NEW: save to localStorage
+
       this.productService.addProduct(this.newProduct).subscribe({
         next: (createdProduct: any) => {
-          console.log('add product', this.newProduct, createdProduct)
-          // Replace temp with real product from response
-          const index = this.products.findIndex(p => p.id === tempId);
-          if (index !== -1) this.products[index] = createdProduct;
+          console.log("Products page added:", createdProduct);
+          // Optionally, replace tempProduct with real createdProduct here
         },
-        error: err => {
-          console.error('Failed to add product:', err);
-          // Rollback optimistic UI
-          this.products = this.products.filter(p => p.id !== tempId);
-        }
+        error: (err) => {
+          console.error("Failed to add product:", err);
+          this.productService.removeLocalProduct(tempId);
+          this.productService.saveProductsToStorage(); // << NEW: update localStorage after removal
+        },
       });
-  
+
       this.modalService.closeModal();
-      this.newProduct = { product: '', price: '' };
+      this.newProduct = { product: "", price: 0, barista: true };
     }
   }
-  
 
   editProduct(product: any) {
     this.editingProduct = { ...product };
@@ -71,7 +67,7 @@ export class ProductsComponent {
 
   saveEditedProduct() {
     if (this.editingProduct) {
-      console.log('Saving edited product:', this.editingProduct.id, this.editingProduct);
+      console.log("drinks", this.editingProduct.id, this.editingProduct);
       this.productService.editProduct(this.editingProduct.id, this.editingProduct);
       this.modalService.closeModal();
       this.editingProduct = null;
@@ -84,6 +80,12 @@ export class ProductsComponent {
   }
 
   clearForm() {
-    this.newProduct = { product: '', price: '' };
+    this.newProduct = { product: "", price: "", barista: true };
+  }
+
+  deleteProduct(productId: string) {
+    if (confirm("Are you sure you want to delete this product?")) {
+      this.productService.deleteProduct(productId);
+    }
   }
 }

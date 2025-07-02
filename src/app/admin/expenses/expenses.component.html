@@ -1,60 +1,190 @@
-<div class="inventory">
-    <div class="inventory_title">
+<div class="expensesy">
+    <div class="expenses_title">
         Expenses
-        <div class="inventory_title_add" (click)="openAddInventoryModal(addInventoryModal)">
+        <div class="expenses_title_add" (click)="openAddInventoryModal(addInventoryModal)">
             Add expense
         </div>
     </div>
-    <div class="inventory_table">
-        <div class="inventory_table_filter">
-            
+    <div class="expenses_table">
+        <div class="expenses_table_credit">
+          Credit
+          <div>
+            PHP {{ credit | number:'1.2-2' }}
+          </div>
         </div>
-        <div class="inventory_table_header">
+        <div class="expenses_filter">
+          <div class="expenses_filter_left">
+            <div>
+              <label for="filterPaidBy">Paid by:</label>
+              <ng-select [(ngModel)]="filterPaidBy" name="filterPaidBy" (change)="filterExpenses()" style="width: 200px;">
+                <ng-option [value]="0" selected>All</ng-option>
+                <ng-option *ngFor="let data of paidBy" [value]="data.name">{{ data.name }}</ng-option>
+              </ng-select>
+            </div>
+            <div class="expenses_filter_left">
+              <div style="width: 200px;">
+                <label for="startDate">From:</label>
+                <input class="form-control" type="date" id="startDate" [(ngModel)]="startDate">
+              </div>
+              <div style="width: 200px;">
+                <label for="endDate">To:</label>
+                <input class="form-control" type="date" id="endDate" [(ngModel)]="endDate">
+              </div>
+            </div>
+          </div>
+          <div>
+            <span style="visibility: hidden;">filter</span>
+            <div style="column-gap: 10px; display: flex;">
+              <button class="btn btn_primary" (click)="filter(startDate, endDate, filterPaidBy)">Filter</button>
+              <button class="btn btn_warning" (click)="clearFilter()">Clear Filter</button>
+            </div>
+          </div>
+        </div>
+        <div class="expenses_export">
+          <button class="btn btn_success" (click)="exportToExcel()">Export to Excel</button>
+          <button class="btn btn_info" (click)="exportToCsv()">Export to CSV</button>
+        </div>
+
+        <div class="expenses_table_header">
             <div class="table_one">Expense</div>
+            <div class="table_four">Amount</div>
             <div class="table_two">Month</div>
             <div class="table_three">Date</div>
-            <div class="table_four">Amount</div>
-            <div class="table_five">Channel</div>
+            <div class="table_five">Mode of payment</div>
+            <div class="table_seven">Paid by</div>
+            <div class="table_six"></div>
+            <div class="table_three">Date settled</div>
+            <div class="table_eight"></div>
         </div>
-        <div class="inventory_table_list" *ngFor="let data of expenses">
+        <div class="expenses_table_list" *ngFor="let data of expenses">
             <div class="table_one">
                 {{ data.expense }}
+            </div>
+            <div class="table_four">
+                PHP {{ data.amount | number:'1.2-2' }}
             </div>
             <div class="table_two">
                 {{ data.month }}
             </div>
             <div class="table_three">
-                {{ data.date | date:"EEEE, MMMM d, y, h:mm:ss a zzzz" }}
-            </div>
-            <div class="table_four">
-                PHP {{ data.amount }}
+                {{ data.date | date:"EEEE, MMMM d, y, h:mm:ss" }}
             </div>
             <div class="table_five">
-                {{ data.channel }}
+                {{ data.mode_of_payment }}
+                <div *ngIf="data.mode_of_payment == null">
+                  -
+                </div>
+            </div>
+            <div class="table_seven">
+              {{ data.paid_by }}
+              <div *ngIf="data.paid_by == null">
+                -
+              </div>
+            </div>
+            <div class="table_six">
+              <span *ngIf="data.credit == true; else none" (click)="payModal(data)" class="btn btn_secondary">pay</span>
+            </div>
+            <div class="table_three">
+              <div *ngIf="data.date_settled != null; else none">
+                {{ data.date_settled | date:"EEEE, MMMM d, y, h:mm:ss" }}
+              </div>
+            </div>
+            <div class="table_eight">
+              <span (click)="view(data)" class="btn btn_primary">
+                view
+              </span>
             </div>
         </div>
+        <app-pagination
+          [totalItems]="totalItems"
+          [pageSize]="pageSize"
+          [currentPage]="currentPage"
+          (pageChange)="onPageChange($event)"
+        >
+        </app-pagination>
     </div>
 </div>
 
+<ng-template #none>
+  -
+</ng-template>
+
+<ng-template #pay let-d="dismiss">
+  <div class="modal-header">
+    Pay <span>{{ details.expense }}</span>
+  </div>
+  <div class="modal-body">
+    <div style="width: 150px; margin: 0 auto;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z"></path></svg>
+    </div>
+    <p>You are about to pay PHP {{ details.amount }} to {{ details.paid_by }} for {{ details.expense }}. Are you sure?</p>
+    <label class="modal-body-label" for="mode_of_payment">Mode of payment:</label>
+    <ng-select [(ngModel)]="selected_mode_of_payment" name="mode_of_payment">
+      <ng-option *ngFor="let data of mode_of_payment" [value]="data.id">{{ data.mode_of_payment }}</ng-option>
+    </ng-select>
+    <div class="modal-body_btn">
+      <div class="btn btn_primary" (click)="payExpense(details)">yes</div>
+      <div class="btn btn_secondary" (click)="d()">no</div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #sales let-d="dismiss">
+    <div class="modal-header">
+        View {{ details.expense }}
+      </div>
+      <div class="modal-body">
+        <label>Month</label>
+        <input class="form-control" [value]="details.month" disabled >
+        <label>Amount</label>
+        <input class="form-control" [value]="details.amount | currency:'PHP':'symbol':'1.2-2'" disabled >
+        <label>Mode of payment</label>
+        <input class="form-control" [value]="details.mode_of_payment" disabled >
+        <label>Date</label>
+        <div class="modal-date">{{ details.date | date:"EEEE, MMMM d, y, h:mm:ss" }}</div>
+        <!-- <img src="http://localhost:3000{{details.image_path}}" style="width: 200px;" *ngIf="details.image_path != null" > -->
+        <img src="{{details.image_path}}" style="width: 200px;" *ngIf="details.image_path != null" >
+      </div>
+</ng-template>
+
 <ng-template #addInventoryModal let-d="dismiss">
     <div class="modal-header">
-        Add expense
+      Add expense
     </div>
     <div class="modal-body">
-        <form (submit)="addProduct()">
-            <label class="modal-body-label" for="productName">expense:</label>
-            <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newExpenses.expense" required>
-            <label class="modal-body-label" for="categoryName">amount:</label>
-            <input class="form-control" type="number" id="categoryName" name="categoryName" [(ngModel)]="newExpenses.amount" required>
-            <label class="modal-body-label" for="brandName">channel:</label>
-            <input class="form-control" type="text" id="brandName" name="brandName" [(ngModel)]="newExpenses.channel" required>
-            <label class="modal-body-label" for="productStocks">Stocks:</label>
-            <div class="modal-btns">
-                <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
-                <button class="btn modal-btns-add" type="submit">
-                    Add
-                </button>
-            </div>
-        </form>
+      <form (submit)="addProduct()">
+        <label class="modal-body-label" for="productName">expense:</label>
+        <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newExpenses.expense" required>
+        <label class="modal-body-label" for="categoryName">amount:</label>
+        <input class="form-control" type="number" id="categoryName" name="categoryName" [(ngModel)]="newExpenses.amount" required>
+  
+        <label class="modal-body-label" for="image">Image:</label>
+        <input class="form-control" type="file" id="image" name="image" (change)="onFileSelected($event)">
+  
+        <div *ngIf="imagePreviewUrl">
+          <img [src]="imagePreviewUrl" alt="Image Preview" style="max-width: 100%; height: auto;"/>
+        </div>
+
+        <label class="modal-body-label" for="paidBy">Paid By:</label>
+        <ng-select [(ngModel)]="newExpenses.paid_by" name="paidBy">
+          <ng-option *ngFor="let data of paidBy" [value]="data.name">{{ data.name }}</ng-option>
+        </ng-select>
+
+
+        <div *ngIf="newExpenses.paid_by == 'Tech Hybe'"> <!-- Compare with id instead of name -->
+          <label class="modal-body-label" for="mode_of_payment">Mode of payment:</label>
+          <ng-select [(ngModel)]="newExpenses.mode_of_payment" name="mode_of_payment">
+            <ng-option *ngFor="let data of mode_of_payment" [value]="data.id">{{ data.mode_of_payment }}</ng-option>
+          </ng-select>
+        </div>
+  
+        <div class="modal-btns">
+          <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
+          <button class="btn modal-btns-add" type="submit">
+            Add
+          </button>
+        </div>
+      </form>
     </div>
-</ng-template>
+  </ng-template>
+  

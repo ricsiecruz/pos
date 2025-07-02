@@ -4,6 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +18,14 @@ import { PosComponent } from './pos/pos.component';
 import { AdminComponent } from './admin/admin/admin.component';
 import { NoDataComponent } from './admin/no-data/no-data.component';
 import { OrdersComponent } from './admin/orders/orders.component';
+import { MembersComponent } from './admin/members/members.component';
+import { FoodsComponent } from './admin/foods/foods.component';
+import { OrdersListComponent } from './admin/orders/orders-list/orders-list.component';
+import { MemberFilterComponent } from './admin/member-filter/member-filter.component';
+import { ViewMemberComponent } from './admin/members/view-member/view-member.component';
+import { AccessComponent } from './access/access.component';
+import { PaginationComponent } from './admin/pagination/pagination.component';
+import { BeverageComponent } from './admin/beverage/beverage.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +38,15 @@ import { OrdersComponent } from './admin/orders/orders.component';
     PosComponent,
     AdminComponent,
     NoDataComponent,
-    OrdersComponent
+    OrdersComponent,
+    MembersComponent,
+    FoodsComponent,
+    OrdersListComponent,
+    MemberFilterComponent,
+    ViewMemberComponent,
+    AccessComponent,
+    PaginationComponent,
+    BeverageComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +54,8 @@ import { OrdersComponent } from './admin/orders/orders.component';
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
+    NgSelectModule,
+    TabsModule.forRoot(),
     HttpClientModule,
     AppRoutingModule
   ],

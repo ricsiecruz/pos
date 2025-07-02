@@ -1,117 +1,327 @@
-import { Component } from '@angular/core';
-import { ProductService } from '../services/product.service';
-import { SalesService } from '../services/sales.service';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
+import { ProductService } from "../services/product.service";
+import { SalesService } from "../services/sales.service";
+import { MembersService } from "../services/members.service";
+import { FoodsService } from "../services/foods.service";
+import { BeverageService } from "../services/beverage.service";
 
 @Component({
-  selector: 'app-pos',
-  templateUrl: './pos.component.html',
-  styleUrls: ['./pos.component.scss']
+  selector: "app-pos",
+  templateUrl: "./pos.component.html",
+  styleUrls: ["./pos.component.scss"],
 })
 export class PosComponent {
-
   products: any[] = [];
+  foods: any[] = [];
+  beverage: any[] = [];
   selectedProducts: any[] = [];
+  members: any[] = [];
   overallTotal: number = 0;
   totalQuantity: number = 0;
+  selectedMemberId: number = 0;
+  selectedMemberName: string = "Walk-in Customer";
+  filteredMembers: any[] = [];
+  searchTerm: string = "";
+  pc: any;
+  ps4: any;
+  subtotal: number = 0;
+  paidAmount: number | null = null;
+  credit: boolean = false;
+  creditAmount: number = 0;
+  mode_of_payment: string = "cash";
+  applyStudentDiscount: boolean = false;
+  discountAmount: number = 0;
+
+  products$ = this.productService.products$;
 
   constructor(
     public productService: ProductService,
-    public salesService: SalesService
-  ) { }
+    private foodsService: FoodsService,
+    private beverageService: BeverageService,
+    public salesService: SalesService,
+    private membersService: MembersService
+  ) {}
 
   ngOnInit() {
-    // Subscribe to the products$ observable to get the list of products
+    this.productService.loadProductsFromStorage();
+    this.beverageService.loadBeveragesFromStorage();
+    this.foodsService.loadFoodsFromStorage();
+    this.membersService.loadMembersFromStorage();
+
     this.productService.products$.subscribe((products: any[]) => {
-      if (products && products.length > 0) {
-        this.products = products.map(product => ({ ...product, counter: 0 }));
+      this.products = products;
+    });
+
+    this.beverageService.foods$.subscribe((beverages: any[]) => {
+      if (beverages && beverages.length > 0) {
+        this.beverage = beverages.map((bev) => ({ ...bev, counter: 0 }));
+      }
+    });
+
+    this.foodsService.foods$.subscribe((foods: any[]) => {
+      if (foods && foods.length > 0) {
+        this.foods = foods.map((food) => ({ ...food, counter: 0 }));
+      }
+    });
+
+    this.membersService.members$.subscribe((members: any[]) => {
+      if (members && members.length > 0) {
+        this.filteredMembers = members.map((member) => ({ ...member, counter: 0 }));
+      }
+    });
+
+    // --- 👇🏻 THIS IS THE NEW PART (like in MembersComponent)
+    const payload = { page: 1, limit: 10000 }; // or however many you want to load
+    this.membersService.refreshMembers(payload).subscribe((response) => {
+      this.members = response.data || [];
+      this.filteredMembers = [...this.members];
+    });
+
+    window.addEventListener("storage", (event) => {
+      if (event.key === "products") {
+        this.productService.loadProductsFromStorage();
+      }
+      if (event.key === "beverage") {
+        this.beverageService.loadBeveragesFromStorage();
+      }
+      if (event.key === "foods") {
+        this.foodsService.loadFoodsFromStorage();
+      }
+      if (event.key === "members") {
+        this.membersService.loadMembersFromStorage();
       }
     });
   }
 
-  addToRightDiv(product: any) {
-    // Check if the product already exists in selectedProducts
-    const existingProductIndex = this.selectedProducts.findIndex(selectedProduct => selectedProduct.product === product.product);
+  applyDiscount() {
+    this.discountAmount = this.applyStudentDiscount ? this.calculateBaristaSubtotal() * 0.1 : 0;
+    this.subtotal = this.calculateSubtotal() - this.discountAmount;
+    this.calculateOverallTotal();
+  }
 
-    if (existingProductIndex === -1) {
-        // If the product doesn't exist, add it to selectedProducts
-        product.counter++;
-        this.selectedProducts.push(product);
+  check() {
+    this.credit = !this.credit;
+    if (!this.credit) {
+      this.creditAmount = 0;
+    }
+  }
+
+  updateButtonState(): void {
+    this.pc = Number(this.pc);
+    this.ps4 = Number(this.ps4);
+    if (this.pc > 0 || this.ps4 > 0) {
+      const nextOrderButton = document.querySelector(".pos_selected_next");
+      if (nextOrderButton) {
+        nextOrderButton.classList.remove("disable");
+      }
     } else {
-        // If the product already exists, increment its counter
-        this.selectedProducts[existingProductIndex].counter++;
+      const nextOrderButton = document.querySelector(".pos_selected_next");
+      if (nextOrderButton) {
+        nextOrderButton.classList.add("disable");
+      }
     }
     this.calculateOverallTotal();
   }
 
+  customSearchFn(term: string, item: any) {
+    item.name = item.name.replace(",", "");
+    term = term.toLocaleLowerCase();
+    return item.name.toLocaleLowerCase().indexOf(term) > -1;
+  }
+
+  onMemberChange(): void {
+    if (this.selectedMemberId === 0) {
+      this.selectedMemberName = "Walk-in Customer";
+    } else {
+      const selectedMember = this.members.find((member) => member.id === this.selectedMemberId);
+      this.selectedMemberName = selectedMember ? selectedMember.name : "Walk-in Customer";
+    }
+  }
+
+  addToRightDiv(product: any) {
+    const existingProductIndex = this.selectedProducts.findIndex(
+      (selectedProduct) => selectedProduct.product === product.product
+    );
+
+    if (existingProductIndex === -1) {
+      const newProduct = { ...product, counter: 1 };
+      this.selectedProducts.push(newProduct);
+    } else {
+      this.selectedProducts[existingProductIndex].counter++;
+    }
+    this.applyDiscount();
+  }
+
   calculateOverallTotal() {
-    this.overallTotal = this.selectedProducts.reduce((total, selectedProduct) => {
-      return total + (selectedProduct.price * selectedProduct.counter);
-    }, 0);
+    this.pc = this.ensureNumber(this.pc);
+    this.ps4 = this.ensureNumber(this.ps4);
+    this.subtotal = this.calculateSubtotal();
+
+    // Apply discount if student discount is applied
+    if (this.applyStudentDiscount) {
+      this.overallTotal = this.subtotal - this.discountAmount + this.pc + this.ps4;
+    } else {
+      this.overallTotal = this.subtotal + this.pc + this.ps4;
+    }
+
     this.totalQuantity = this.selectedProducts.reduce((total, selectedProduct) => {
       return total + selectedProduct.counter;
     }, 0);
+
+    console.log("overallTotal", this.overallTotal);
   }
 
   updateOverallTotal() {
     this.calculateOverallTotal();
   }
 
+  ensureNumber(value: any): any {
+    return isNaN(Number(value)) ? "" : Number(value);
+  }
+
   incrementCounter(selectedProduct: any) {
     selectedProduct.counter++;
-    this.calculateOverallTotal();
+    this.applyDiscount();
   }
 
   decrementCounter(selectedProduct: any) {
     if (selectedProduct.counter > 0) {
       selectedProduct.counter--;
-      this.calculateOverallTotal();
+      this.applyDiscount();
     }
   }
 
   deleteProduct(index: number) {
     this.selectedProducts.splice(index, 1);
-    this.calculateOverallTotal();
+    this.applyDiscount();
+    this.pc = this.selectedProducts.length === 0 ? undefined : this.pc;
   }
 
   clearSelectedProducts() {
     const transactionId = this.generateTransactionId();
-    const orders = this.selectedProducts.map(product => {
-        return {
-            product: product.product,
-            price: product.price,
-            quantity: product.counter,
-            total: product.price * product.counter
-        };
+    const orders = this.selectedProducts.map((product) => {
+      return {
+        product: product.product,
+        price: product.price,
+        quantity: product.counter,
+        total: product.price * product.counter,
+      };
     });
 
-    console.log('data', orders, this.totalQuantity, this.overallTotal, transactionId, new Date().toISOString())
-
     const orderSummary = {
-        orders: orders,
-        qty: this.totalQuantity,
-        total: this.overallTotal,
-        transactionId: transactionId,
-        dateTime: new Date().toISOString()
+      orders: orders,
+      qty: this.totalQuantity,
+      total: this.overallTotal,
+      subtotal: this.subtotal,
+      transactionid: transactionId,
+      datetime: new Date().toISOString(),
+      customer: this.selectedMemberName,
+      computer: this.pc === "" ? 0 : this.pc,
+      ps4: this.ps4 === "" ? 0 : this.ps4,
+      mode_of_payment: this.mode_of_payment,
+      credit: this.calculateCredit(),
+      student_discount: this.applyStudentDiscount,
+      discount: this.discountAmount,
     };
 
-    console.log('Order Summary:', orderSummary);
+    console.log("Order Summary:", orderSummary);
+
     this.addToSales(orderSummary);
+    this.selectedMemberId = 0;
     this.selectedProducts = [];
+    this.pc = "";
+    this.ps4 = "";
+    this.creditAmount = 0;
+    this.mode_of_payment = "cash";
     this.calculateOverallTotal();
+    this.updateButtonState();
+    this.credit = false;
+    this.paidAmount = null;
+    this.overallTotal = 0;
   }
 
+  // addToSales(transactionSales: any) {
+  //   console.log("pos", transactionSales);
+  //   this.salesService.addSales(transactionSales);
+  // }
+
+  // addToSales(transactionSales: any) {
+  //   this.salesService.addSales(transactionSales).subscribe({
+  //     next: (createdProduct: any) => {
+  //       console.log("Product saved to server:", createdProduct);
+  //       // Update the tempId product with real server data (optional)
+  //       this.salesService.replaceLocalProduct(tempId, createdProduct);
+  //       this.salesService.saveProductsToStorage();
+  //     },
+  //     error: (err) => {
+  //       console.error("Failed to add product:", err);
+  //       this.salesService.removeLocalProduct(tempId);
+  //       this.salesService.saveProductsToStorage();
+  //     }
+  //   });
+
+  // }
+
   addToSales(transactionSales: any) {
-    console.log('sale', transactionSales)
-    this.salesService.addSales(transactionSales);
-}
+    const tempId = Date.now();
+    const tempProduct = { ...transactionSales, id: tempId };
+
+    this.salesService.addLocalProduct(tempProduct);
+    this.salesService.saveProductsToStorage();
+
+    console.log("aaa", transactionSales);
+
+    this.salesService.addSales(transactionSales).subscribe({
+      next: (createdProduct: any) => {
+        console.log("Products page added:", createdProduct);
+      },
+      error: (err) => {
+        console.error("Failed to add product:", err);
+        this.salesService.removeLocalProduct(tempId);
+        this.salesService.saveProductsToStorage();
+      },
+    });
+  }
+
+  calculateSubtotal(): number {
+    return this.selectedProducts.reduce((subtotal, selectedProduct) => {
+      return subtotal + selectedProduct.price * selectedProduct.counter;
+    }, 0);
+  }
+
+  calculateBaristaSubtotal(): number {
+    return this.selectedProducts.reduce((subtotal, selectedProduct) => {
+      return selectedProduct.barista
+        ? subtotal + selectedProduct.price * selectedProduct.counter
+        : subtotal;
+    }, 0);
+  }
+
+  updatePaidAmount() {
+    this.paidAmount = Number(this.paidAmount);
+  }
+
+  calculateCredit(): number {
+    if (this.credit) {
+      if (this.paidAmount !== null) {
+        return this.overallTotal - this.paidAmount;
+      } else {
+        return this.overallTotal;
+      }
+    } else {
+      return 0;
+    }
+  }
+
+  isCreditDue(): boolean {
+    return this.calculateCredit() > 0;
+  }
 
   generateTransactionId(): string {
     const randomNumber = Math.floor(Math.random() * 90000) + 10000;
     const timestamp = new Date().getTime();
-    // Concatenate the timestamp and random number to create the transaction ID
     const transactionId = `TRX-${timestamp}-${randomNumber}`;
 
     return transactionId;
   }
-
 }

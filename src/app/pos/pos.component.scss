@@ -7,6 +7,7 @@
     &_card {
         display: grid;
         column-gap: 40px;
+        padding-top: 20px;
         grid-template-columns: repeat(4, 1fr);
         &_drink {
             display: flex;
@@ -33,9 +34,16 @@
             font-size: 18px;
             font-weight: normal;
         }
+        &_stocks {
+            color: #5B6670;
+            font-size: 14px;
+            font-weight: normal;
+            margin-top: 5px;
+        }
     }
     &_selected {
-        width: 100%;
+        // width: 100%;
+        width: 504px;
         height: fit-content;
         padding: 24px;
         background-color: #ffffff;
@@ -99,6 +107,27 @@
                 }
             }
         }
+        &_subtotal {
+            padding: 0 10px;
+            justify-content: space-between;
+            display: flex;
+        }
+        &_discount {
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        &_pc {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            input, select {
+                width: 100px;
+                text-align: right;
+                margin-right: 30px;
+            }
+        }
         &_total {
             color: #5B6670;
             background-color: #f3f6f9;
@@ -128,6 +157,11 @@
                     text-align: right;
                 }
             }
+        }
+        &_credit {
+            display: flex;
+            column-gap: 5px;
+            padding: 10px 0;
         }
         &_next {
             background-color: #28C76F;

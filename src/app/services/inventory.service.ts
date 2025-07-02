@@ -2,49 +2,40 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { WebSocketService } from '../websocket-service';
 import { Observable, BehaviorSubject, merge, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { environment } from '../../environment';
-
-interface Inventory {
-  id: number;
-  product: string;
-  category: string;
-  brand: string;
-  stocks: string;
-}
+import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventoryService implements OnDestroy {
   API_URL = environment.apiUrl;
-  private inventorySubject: BehaviorSubject<Inventory[]> = new BehaviorSubject<Inventory[]>([]);
-  inventory$: Observable<Inventory[]> = this.inventorySubject.asObservable();
+  private inventorySubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  inventory$: Observable<any[]> = this.inventorySubject.asObservable();
   private websocketSubscription: Subscription;
 
   constructor(private http: HttpClient, private webSocketService: WebSocketService) {
     this.websocketSubscription = merge(
       this.webSocketService.receive().pipe(
         map((message: any) => {
-          console.log('WebSocket message:', message);
           if (message.action === 'addInventory') {
             return message.inventory;
           } else if (message.action === 'initialize') {
             return message.inventory;
+          } else if (message.action === 'newSale') {
+            return message.data;
           } else {
             return null;
           }
         })
       ),
-      this.http.get<Inventory[]>(this.API_URL + 'inventory').pipe(
-        tap(data => console.log('HTTP GET inventory:', data))
-      )
-    ).subscribe((data: Inventory | Inventory[]) => {
-      console.log('Merged data:', data);
+      this.http.get<any[]>(this.API_URL + 'inventory')
+    ).subscribe((data: any | any[]) => {
       if (Array.isArray(data)) {
         this.updateInventory(data);
       } else if (data) {
         this.addOrUpdateInventory(data);
+        this.handleNewSale(data);
       }
     });
   }
@@ -55,30 +46,43 @@ export class InventoryService implements OnDestroy {
     }
   }
 
-  addInventory(inventory: Inventory) {
+  private handleNewSale(sale: any): void {
+    this.updateDashboardData();
+  }
+
+  private updateDashboardData(): void {
+    this.http.get<any>(this.API_URL + 'inventory').subscribe((data: any) => {
+      this.inventorySubject.next(data);
+    });
+  }
+
+  addInventory(inventory: any) {
     this.webSocketService.send({ action: 'addInventory', inventory });
   }
 
-  private addOrUpdateInventory(inventory: Inventory): void {
-    const existingInventoryIndex = this.inventorySubject.value.findIndex(s => s.id === inventory.id);
+  private addOrUpdateInventory(inventory: any): void {
+    const currentInventory = Array.isArray(this.inventorySubject.value) ? this.inventorySubject.value : [];
+
+    const existingInventoryIndex = currentInventory.findIndex(s => s.id === inventory.id);
+
     if (existingInventoryIndex === -1) {
-      this.inventorySubject.next([...this.inventorySubject.value, inventory]);
+      this.inventorySubject.next([...currentInventory, inventory]);
     } else {
-      const updatedInventory = [...this.inventorySubject.value];
+      const updatedInventory = [...currentInventory];
       updatedInventory[existingInventoryIndex] = inventory;
       this.inventorySubject.next(updatedInventory);
     }
   }
 
-  private updateInventory(inventory: Inventory[]): void {
+  private updateInventory(inventory: any[]): void {
     this.inventorySubject.next(inventory);
   }
 
-  editProduct(id: number, updatedProduct: Inventory) {
-    this.webSocketService.send({ action: 'editProduct', id, inventory: updatedProduct });
+  editProduct(id: string, updatedProduct: any) {
+    this.webSocketService.send({ action: 'addStock', id, inventory: updatedProduct });
   }
 
-  getInventory(): Observable<Inventory[]> {
-    return this.http.get<Inventory[]>(this.API_URL + 'inventory');
+  getInventory(): Observable<any[]> {
+    return this.http.get<any[]>(this.API_URL + 'inventory');
   }
 }

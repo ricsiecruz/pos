@@ -23,6 +23,7 @@ export class InventoryComponent {
   newInventory: any = { product: '', category: '', brand: '', stocks: '' };
   editingProduct: any = null;
   qty: string = '';
+  low: number = 0;
 
   constructor(
     private inventoryService: InventoryService,
@@ -31,23 +32,27 @@ export class InventoryComponent {
   ) {}
 
   ngOnInit() {
-    this.inventoryService.inventory$.subscribe((inventory: any[]) => {
-      if (inventory && inventory.length > 0) {
-        this.inventory = inventory;
+    this.inventoryService.inventory$.subscribe((inventory: any) => {
+      if (inventory.data && inventory.data.length > 0) {
+        this.getInventory()
+      } else {
+        this.inventory = [];
+        this.low = 0;
+        console.log('No inventory data available');
       }
     });
 
     this.webSocketService.receive().subscribe((message: any) => {
-      if (message.action === 'addInventory') {
-        this.inventory.push(message.product);
+      if (message.action === 'updatedInventory') {
+        this.getInventory()
       }
-    });
+    });    
   }
 
-  loadInventory() {
+  getInventory() {
     this.inventoryService.getInventory().subscribe((res: any) => {
-      this.inventory = res;
-    });
+      this.inventory = res.data;
+    })
   }
 
   openAddInventoryModal(modalContent: any) {
@@ -66,7 +71,6 @@ export class InventoryComponent {
     this.modalService.openModal(this.addStockModal);
   }
   
-
   saveEditedProduct() {
     console.log('a', this.editingProduct, this.editingProduct.stocks)
     if (this.editingProduct && this.editingProduct.stocks !== undefined) {
@@ -84,7 +88,6 @@ export class InventoryComponent {
     }
     this.clearForm();
   }
-  
 
   cancelForm() {
     this.clearForm();
@@ -97,9 +100,5 @@ export class InventoryComponent {
     this.category = '';
     this.brand = '';
     this.qty = '';
-  }
-
-  updateInventory() {
-    this.loadInventory();
   }
 }

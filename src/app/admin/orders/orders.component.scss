@@ -2,7 +2,7 @@
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
 
-.inventory {
+.orders {
     @include media-breakpoint-down(sm) {
         padding: 20px;
     }
@@ -40,12 +40,30 @@
             display: grid;
             overflow-x: auto;
         }
-
+        &_export {
+            display: flex;
+            justify-content: end;
+            margin-top: 10px;
+            column-gap: 10px;
+        }
+        &_filter {
+            display: flex;
+            font-weight: 400;
+            font-size: 14px;
+            color: #67748E;
+            column-gap: 10px;
+            margin-top: 10px;
+            justify-content: space-between;
+            &_date {
+                display: flex;
+                column-gap: 10px;
+            }
+        }
         &_header {
             display: flex;
             justify-content: space-between;
-            padding: 0 24px;
-            padding-bottom: 0.75rem;
+            padding: 0.75rem 24px;
+            padding-top: 20px;
             border-bottom: 1px solid #dbe0e6;
             div {
                 font-weight: 600;
@@ -72,35 +90,31 @@
 
 .table {
     &_one {
-        width: 200px;
+        width: 240px;
     }
     &_two {
-        width: 100px;
+        width: 70px;
     }
     &_three {
-        width: 100px;
+        width: 120px;
     }
     &_four {
-        width: 100px;
+        width: 230px;
     }
     &_five {
+        width: 150px;
+    }
+    &_six {
+        width: 110px;
+    }
+    &_seven {
         width: 80px;
-        div {
-            cursor: pointer;
-            border-radius: 3px;
-            text-align: center;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            background-color: #092C4C !important;
-            border: 1px solid #092C4C !important;
-            color: #ffffff;
-            box-shadow: 0 4px 20px rgba(9, 44, 76, 0.15);
-        }
-        div:hover {
-            background-color: #051a2c !important;
-            border: 1px solid #051a2c !important;
-            box-shadow: 0 3px 10px rgba(9, 44, 76, 0.5);
-        }
+    }
+    &_eight {
+        width: 110px;
+    }
+    &_nine {
+        width: 50px;
     }
 }
 
@@ -247,6 +261,10 @@ input {
                 padding: 5px;
             }
         }
+        &_computer {
+            display: flex;
+            justify-content: space-between;
+        }
         &_total {
             font-weight: 500;
             font-size: 15px;
@@ -264,17 +282,91 @@ input {
     }
 }
 
-.table {
+.table1 {
     &_one {
-        width: 200px;
+        width: 128px;
     }
     &_two {
-        width: 90px;
+        width: 108px;
     }
     &_three {
-        width: 100px;
+        width: 58px;
     }
     &_four {
-        width: 190px;
+        width: 58px;
+        text-align: right;
     }
+}
+
+.btn {
+    cursor: pointer;
+    border-radius: 3px;
+    text-align: center;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    color: #ffffff;
+    &_primary {
+        background-color: #092C4C !important;
+        border: 1px solid #092C4C !important;
+        box-shadow: 0 4px 20px rgba(9, 44, 76, 0.15);
+    }
+    
+    &_primary:hover {
+        background-color: #051a2c !important;
+        border: 1px solid #051a2c !important;
+        box-shadow: 0 3px 10px rgba(9, 44, 76, 0.5);
+    }
+    
+    &_secondary {
+        background-color: #FF0000 !important;
+        border: 1px solid #FF0000 !important;
+        box-shadow: 0 4px 20px rgba(9, 44, 76, 0.15);
+    }
+    
+    &_secondary:hover {
+        background-color: #db0000 !important;
+        border: 1px solid #db0000 !important;
+        box-shadow: 0 3px 10px rgba(255, 0, 0, 0.5);
+    }
+    
+    &_success {
+        background-color: #28C76F !important;
+        border: 1px solid #28C76F !important;
+        box-shadow: 0 4px 20px rgba(40, 199, 111, 0.15);
+    }
+    
+    &_success:hover {
+        background-color: #22a95e !important;
+        border: 1px solid #22a95e !important;
+        box-shadow: 0 3px 10px rgba(40, 199, 111, 0.5);
+    }
+    
+    &_warning {
+        background-color: #FF9900 !important;
+        border: 1px solid #FF9900 !important;
+        box-shadow: 0 4px 20px rgba(255, 153, 0, 0.15);
+    }
+    
+    &_warning:hover {
+        background-color: #db8400 !important;
+        border: 1px solid #db8400 !important;
+        box-shadow: 0 3px 10px rgba(255, 153, 0, 0.5);
+    }
+    
+    &_info {
+        background-color: #17a2b8 !important;
+        border: 1px solid #17a2b8 !important;
+        box-shadow: 0 4px 20px rgba(255, 153, 0, 0.15);
+    }
+    
+    &_info:hover {
+        background-color: #138698 !important;
+        border: 1px solid #138698 !important;
+        box-shadow: 0 3px 10px rgba(255, 153, 0, 0.5);
+    }
+}
+
+.orders_table_filter .btn {
+    height: 40px;
+    width: 110px;
 }

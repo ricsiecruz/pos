@@ -1,37 +1,222 @@
 <div class="dashboard">
-    <div class="dashboard_cards">
-        <div class="dashboard_cards_income">
-            <div>
-                <div class="dashboard_cards_income_header">
-                    INCOME
-                </div>
-                PHP {{ totalSum }}
-            </div>
-            <div class="dashboard_cards_income_icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.41085 14.5258L7.81249 11.1241L10.6409 13.9526L13.7978 10.7957L12.0049 9.00281H17.0049V14.0028L15.212 12.2099L10.6409 16.781L7.81249 13.9526L5.33834 16.4267C6.77158 18.5822 9.22233 20.0028 12.0049 20.0028C16.4232 20.0028 20.0049 16.4211 20.0049 12.0028C20.0049 7.58453 16.4232 4.00281 12.0049 4.00281C7.5866 4.00281 4.00488 7.58453 4.00488 12.0028C4.00488 12.8844 4.14747 13.7326 4.41085 14.5258ZM2.87288 16.084L2.86275 16.0739L2.86662 16.07C2.31276 14.8274 2.00488 13.4511 2.00488 12.0028C2.00488 6.47996 6.48204 2.00281 12.0049 2.00281C17.5277 2.00281 22.0049 6.47996 22.0049 12.0028C22.0049 17.5257 17.5277 22.0028 12.0049 22.0028C7.93574 22.0028 4.43426 19.5724 2.87288 16.084Z"></path></svg>
-            </div>
-        </div>
-        <div class="dashboard_cards_expenses">
-            <div>
-                <div class="dashboard_cards_expenses_header">
-                    EXPENSES
-                </div>
-                PHP {{ totalExpenses }}
-            </div>
-            <div class="dashboard_cards_expenses_icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M22.0049 6.99979H23.0049V16.9998H22.0049V19.9998C22.0049 20.5521 21.5572 20.9998 21.0049 20.9998H3.00488C2.4526 20.9998 2.00488 20.5521 2.00488 19.9998V3.99979C2.00488 3.4475 2.4526 2.99979 3.00488 2.99979H21.0049C21.5572 2.99979 22.0049 3.4475 22.0049 3.99979V6.99979ZM20.0049 16.9998H14.0049C11.2435 16.9998 9.00488 14.7612 9.00488 11.9998C9.00488 9.23836 11.2435 6.99979 14.0049 6.99979H20.0049V4.99979H4.00488V18.9998H20.0049V16.9998ZM21.0049 14.9998V8.99979H14.0049C12.348 8.99979 11.0049 10.3429 11.0049 11.9998C11.0049 13.6566 12.348 14.9998 14.0049 14.9998H21.0049ZM14.0049 10.9998H17.0049V12.9998H14.0049V10.9998Z"></path></svg>
-            </div>
-        </div>
-        <div class="dashboard_cards_cups">
-            <div>
-                <div class="dashboard_cards_cups_header">
-                    CUPS SOLD
-                </div>
-                PHP {{ totalCups }}
-            </div>
-            <div class="dashboard_cards_cups_icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6.20495C5.6091 2 5.09608 2.42057 4.97923 3.00485L4.1802 7H2V9H4.10875L5.48105 20.8933C5.55383 21.524 6.08789 22 6.72281 22H17.2772C17.9121 22 18.4462 21.524 18.5189 20.8933L19.8912 9H22V7H19.8198L19.0208 3.00485C18.9039 2.42057 18.3909 2 17.795 2H16V0H14V2ZM17.7802 7H6.2198L6.8198 4H17.1802L17.7802 7ZM6.12202 9H17.878L16.6088 20H7.39125L6.12202 9Z"></path></svg>
-            </div>
-        </div>
+  <div class="dashboard_cards" *ngIf="salesData">
+    <div class="dashboard_cards_income">
+      <div>
+        <div class="dashboard_cards_income_header">INCOME</div>
+        PHP {{ salesData.income | number : "1.2-2" }}
+      </div>
+      <div class="dashboard_cards_income_icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M4.41085 14.5258L7.81249 11.1241L10.6409 13.9526L13.7978 10.7957L12.0049 9.00281H17.0049V14.0028L15.212 12.2099L10.6409 16.781L7.81249 13.9526L5.33834 16.4267C6.77158 18.5822 9.22233 20.0028 12.0049 20.0028C16.4232 20.0028 20.0049 16.4211 20.0049 12.0028C20.0049 7.58453 16.4232 4.00281 12.0049 4.00281C7.5866 4.00281 4.00488 7.58453 4.00488 12.0028C4.00488 12.8844 4.14747 13.7326 4.41085 14.5258ZM2.87288 16.084L2.86275 16.0739L2.86662 16.07C2.31276 14.8274 2.00488 13.4511 2.00488 12.0028C2.00488 6.47996 6.48204 2.00281 12.0049 2.00281C17.5277 2.00281 22.0049 6.47996 22.0049 12.0028C22.0049 17.5257 17.5277 22.0028 12.0049 22.0028C7.93574 22.0028 4.43426 19.5724 2.87288 16.084Z"
+          ></path>
+        </svg>
+      </div>
     </div>
+    <div class="dashboard_cards_expenses">
+      <div>
+        <div class="dashboard_cards_expenses_header">EXPENSES</div>
+        PHP {{ salesData.expenses | number : "1.2-2" }}
+      </div>
+      <div class="dashboard_cards_expenses_icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M22.0049 6.99979H23.0049V16.9998H22.0049V19.9998C22.0049 20.5521 21.5572 20.9998 21.0049 20.9998H3.00488C2.4526 20.9998 2.00488 20.5521 2.00488 19.9998V3.99979C2.00488 3.4475 2.4526 2.99979 3.00488 2.99979H21.0049C21.5572 2.99979 22.0049 3.4475 22.0049 3.99979V6.99979ZM20.0049 16.9998H14.0049C11.2435 16.9998 9.00488 14.7612 9.00488 11.9998C9.00488 9.23836 11.2435 6.99979 14.0049 6.99979H20.0049V4.99979H4.00488V18.9998H20.0049V16.9998ZM21.0049 14.9998V8.99979H14.0049C12.348 8.99979 11.0049 10.3429 11.0049 11.9998C11.0049 13.6566 12.348 14.9998 14.0049 14.9998H21.0049ZM14.0049 10.9998H17.0049V12.9998H14.0049V10.9998Z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    <div class="dashboard_cards_cups">
+      <div>
+        <div class="dashboard_cards_cups_header">NET</div>
+        PHP {{ salesData.net | number : "1.2-2" }}
+      </div>
+      <div class="dashboard_cards_cups_icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M2 20H22V22H2V20ZM4 12H6V19H4V12ZM9 12H11V19H9V12ZM13 12H15V19H13V12ZM18 12H20V19H18V12ZM2 7L12 2L22 7V11H2V7ZM4 8.23607V9H20V8.23607L12 4.23607L4 8.23607ZM12 8C11.4477 8 11 7.55228 11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7C13 7.55228 12.5523 8 12 8Z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard_cards" style="justify-content: flex-start; column-gap: 35px">
+    <div class="dashboard_cards_computer">
+      <div>
+        <div class="dashboard_cards_computer_header">COMPUTER</div>
+        PHP {{ salesData?.computer | number : "1.2-2" }}
+      </div>
+      <div class="dashboard_cards_computer_icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M4 16H20V5H4V16ZM13 18V20H17V22H7V20H11V18H2.9918C2.44405 18 2 17.5511 2 16.9925V4.00748C2 3.45107 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.44892 22 4.00748V16.9925C22 17.5489 21.5447 18 21.0082 18H13Z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    <div class="dashboard_cards_food">
+      <div>
+        <div class="dashboard_cards_food_header">FOOD AND DRINKS</div>
+        PHP {{ salesData?.food_and_drinks | number : "1.2-2" }}
+      </div>
+      <div class="dashboard_cards_food_icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M21 2V22H19V15H15V8C15 4.68629 17.6863 2 21 2ZM19 4.53C18.17 5 17 6.17 17 8V13H19V4.53ZM9 13.9V22H7V13.9C4.71776 13.4367 3 11.419 3 9V3H5V10H7V3H9V10H11V3H13V9C13 11.419 11.2822 13.4367 9 13.9Z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    <div class="dashboard_cards_credit">
+      <div>
+        <div class="dashboard_cards_credit_header">CREDIT</div>
+        PHP {{ credit | number : "1.2-2" }}
+      </div>
+      <div class="dashboard_cards_credit_icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M3.00488 2.99979H21.0049C21.5572 2.99979 22.0049 3.4475 22.0049 3.99979V19.9998C22.0049 20.5521 21.5572 20.9998 21.0049 20.9998H3.00488C2.4526 20.9998 2.00488 20.5521 2.00488 19.9998V3.99979C2.00488 3.4475 2.4526 2.99979 3.00488 2.99979ZM20.0049 10.9998H4.00488V18.9998H20.0049V10.9998ZM20.0049 8.99979V4.99979H4.00488V8.99979H20.0049ZM14.0049 14.9998H18.0049V16.9998H14.0049V14.9998Z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard_cards" style="justify-content: flex-start; column-gap: 35px">
+    <div class="dashboard_cards_ath">
+      <div>
+        <div class="dashboard_cards_ath_header">ALL TIME HIGH</div>
+        <div style="font-size: 18px">PHP {{ all_time_high?.total_sales | number : "1.2-2" }}</div>
+        <div style="font-weight: normal; font-size: 8px">
+          {{ all_time_high?.date | date : "EEEE, MMMM d, y" }}
+        </div>
+      </div>
+      <div class="dashboard_cards_ath_icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M14.5998 8.00033H21C22.1046 8.00033 23 8.89576 23 10.0003V12.1047C23 12.3659 22.9488 12.6246 22.8494 12.8662L19.755 20.3811C19.6007 20.7558 19.2355 21.0003 18.8303 21.0003H2C1.44772 21.0003 1 20.5526 1 20.0003V10.0003C1 9.44804 1.44772 9.00033 2 9.00033H5.48184C5.80677 9.00033 6.11143 8.84246 6.29881 8.57701L11.7522 0.851355C11.8947 0.649486 12.1633 0.581978 12.3843 0.692483L14.1984 1.59951C15.25 2.12534 15.7931 3.31292 15.5031 4.45235L14.5998 8.00033ZM7 10.5878V19.0003H18.1606L21 12.1047V10.0003H14.5998C13.2951 10.0003 12.3398 8.77128 12.6616 7.50691L13.5649 3.95894C13.6229 3.73105 13.5143 3.49353 13.3039 3.38837L12.6428 3.0578L7.93275 9.73038C7.68285 10.0844 7.36341 10.3746 7 10.5878ZM5 11.0003H3V19.0003H5V11.0003Z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    <div class="dashboard_cards_atl">
+      <div>
+        <div class="dashboard_cards_atl_header">ALL TIME LOW</div>
+        <div style="font-size: 18px">PHP {{ all_time_low?.total_sales | number : "1.2-2" }}</div>
+        <div style="font-weight: normal; font-size: 8px">
+          {{ all_time_low?.date | date : "EEEE, MMMM d, y" }}
+        </div>
+      </div>
+      <div class="dashboard_cards_atl_icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M9.40017 16H3C1.89543 16 1 15.1046 1 14V11.8957C1 11.6344 1.05118 11.3757 1.15064 11.1342L4.24501 3.61925C4.3993 3.24455 4.76447 3 5.16969 3H22C22.5523 3 23 3.44772 23 4V14C23 14.5523 22.5523 15 22 15H18.5182C18.1932 15 17.8886 15.1579 17.7012 15.4233L12.2478 23.149C12.1053 23.3508 11.8367 23.4184 11.6157 23.3078L9.80163 22.4008C8.74998 21.875 8.20687 20.6874 8.49694 19.548L9.40017 16ZM17 13.4125V5H5.83939L3 11.8957V14H9.40017C10.7049 14 11.6602 15.229 11.3384 16.4934L10.4351 20.0414C10.3771 20.2693 10.4857 20.5068 10.6961 20.612L11.3572 20.9425L16.0673 14.27C16.3172 13.9159 16.6366 13.6257 17 13.4125ZM19 13H21V5H19V13Z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    <div class="dashboard_cards_date">
+      <div>
+        <div class="dashboard_cards_date_header">date of first recorded sale</div>
+        {{ start_date | date : "EEEE, MMMM d, y" }}
+      </div>
+      <div class="dashboard_cards_date_icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <label>Start Date:</label>
+    <input type="date" [(ngModel)]="startDate" />
+
+    <label>End Date:</label>
+    <input type="date" [(ngModel)]="endDate" />
+
+    <button (click)="applyDateRange()">Apply</button>
+  </div>
+
+  <div [hidden]="!chart" class="dashboard_overview_chart">
+    <canvas id="canvas"></canvas>
+  </div>
+  <div class="dashboard_stats">
+    <div class="dashboard_top">
+      <h2>Most ordered products today</h2>
+      <div class="dashboard_table_header">
+        <div class="table_five"></div>
+        <div class="table_one2">Product</div>
+        <div class="table_two2">Qty</div>
+      </div>
+      <div *ngIf="mostOrderedToday.length > 0; else noData">
+        <div class="dashboard_table_list" *ngFor="let data of mostOrderedToday; let i = index">
+          <div class="table_five">{{ i + 1 }}.</div>
+          <div class="table_one2">{{ data.product }}</div>
+          <div class="table_two2">{{ data.total_quantity }}</div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="mostOrdered.length > 0" class="dashboard_top">
+      <h2>All time most ordered products</h2>
+      <div class="dashboard_table_header">
+        <div class="table_five"></div>
+        <div class="table_one2">Product</div>
+        <div class="table_two2">Qty</div>
+      </div>
+      <div *ngIf="mostOrdered.length > 0; else noData">
+        <div class="dashboard_table_list" *ngFor="let data of mostOrdered; let i = index">
+          <div class="table_five">{{ i + 1 }}.</div>
+          <div class="table_one2">{{ data.product }}</div>
+          <div class="table_two2">{{ data.total_quantity }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard_spender">
+    <div class="dashboard_top">
+      <h2>Top Spender Today</h2>
+      <div class="dashboard_table_header">
+        <div class="table_six"></div>
+        <div class="table_one">Customer</div>
+        <div class="table_two">Computer</div>
+        <div class="table_three">Food and Drinks</div>
+        <div class="table_four">Total Spent</div>
+      </div>
+      <div *ngIf="topSpendersToday.length > 0; else noData" class="dashboard_table_content">
+        <div class="dashboard_table_list" *ngFor="let data of topSpendersToday; let i = index">
+          <div class="table_six">{{ i + 1 }}.</div>
+          <div class="table_one">{{ data.customer }}</div>
+          <div class="table_two">PHP {{ data.total_computer }}</div>
+          <div class="table_three">PHP {{ data.total_subtotal }}</div>
+          <div class="table_four">PHP {{ data.total_spent }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="topSpenders.length > 0" class="dashboard_top">
+      <h2>All time top spender</h2>
+      <div class="dashboard_table_header">
+        <div class="table_one">Customer</div>
+        <div class="table_two">Computer</div>
+        <div class="table_three">Food and drinks</div>
+        <div class="table_four">Total Spent</div>
+      </div>
+      <div class="dashboard_table_content">
+        <div class="dashboard_table_list" *ngFor="let data of topSpenders">
+          <div class="table_one">{{ data.customer }}</div>
+          <div class="table_two">PHP {{ data.total_computer }}</div>
+          <div class="table_three">PHP {{ data.total_subtotal }}</div>
+          <div class="table_four">PHP {{ data.total_spent }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<ng-template #noData>
+  <app-no-data></app-no-data>
+</ng-template>

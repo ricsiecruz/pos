@@ -7,6 +7,12 @@ import { ExpensesComponent } from './admin/expenses/expenses.component';
 import { PosComponent } from './pos/pos.component';
 import { AdminComponent } from './admin/admin/admin.component';
 import { OrdersComponent } from './admin/orders/orders.component';
+import { MembersComponent } from './admin/members/members.component';
+import { FoodsComponent } from './admin/foods/foods.component';
+import { ViewMemberComponent } from './admin/members/view-member/view-member.component';
+import { AccessComponent } from './access/access.component';
+import { AuthGuard } from './auth.guard';
+import { BeverageComponent } from './admin/beverage/beverage.component';
 
 const routes: Routes = [
   {
@@ -16,11 +22,13 @@ const routes: Routes = [
   },
   {
     path: 'pos',
-    component: PosComponent
+    component: PosComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -29,25 +37,54 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        component: DashboardComponent
+        component: DashboardComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'inventory',
-        component: InventoryComponent
+        component: InventoryComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'products',
-        component: ProductsComponent
+        component: ProductsComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'beverage',
+        component: BeverageComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'foods',
+        component: FoodsComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'sales',
-        component: OrdersComponent
+        component: OrdersComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'expenses',
-        component: ExpensesComponent
+        component: ExpensesComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'members',
+        component: MembersComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'members/:id',
+        component: ViewMemberComponent,
+        canActivate: [AuthGuard]
       }
     ]
+  },
+  {
+    path: 'access',
+    component: AccessComponent
   }
 ]
 

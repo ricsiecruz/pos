@@ -1,0 +1,95 @@
+<div class="products">
+  <div class="products_title">
+    Members
+  </div>
+  <div class="products_subtitle">
+    <div>
+      <span class="products_title_add" (click)="addModal()">Add member</span>
+    </div>
+    <div class="file-upload">
+      <input type="file" (change)="onFileChange($event)" accept=".xlsx, .xls, .csv" />
+      <button (click)="onUpload()">Upload</button>
+    </div>
+  </div>
+  <div class="products_table">
+    <div class="products_table_filter">
+      <app-member-filter
+        [selectedMemberId]="selectedMemberId"
+        [members]="allMembers"
+        (memberChange)="onMemberChange($event)"
+      ></app-member-filter>
+    </div>
+    <div class="products_table_header">
+      <div class="table_one"><svg (click)="sortByName()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3L23 8H20V20H18V8H15L19 3ZM14 18V20H3V18H14ZM14 11V13H3V11H14ZM12 4V6H3V4H12Z"></path></svg>Name</div>
+      <div class="table_two">Date Joined</div>
+      <div class="table_three">Coffee</div>
+      <div class="table_four">Total Load</div>
+      <div class="table_five">Total Spent</div>
+      <div class="table_six">Last Spent</div>
+      <div class="table_eight">Current Load</div>
+      <div class="table_seven"></div>
+    </div>
+    <div *ngIf="filteredMembers.length > 0; else noData">
+      <div class="products_table_list" *ngFor="let data of filteredMembers">
+        <div class="table_one">
+          {{ data.name }}
+        </div>
+        <div class="table_two">
+          {{ data.date_joined | date: 'EEEE, MMMM d, y, h:mm:ss' }}
+        </div>
+        <div class="table_three">
+          PHP {{ data.coffee | number:'1.2-2' }}
+        </div>
+        <div class="table_four">
+          PHP {{ data.total_load | number:'1.2-2' }}
+        </div>
+        <div class="table_five">
+          PHP {{ data.total_spent | number:'1.2-2' }}
+        </div>
+        <div class="table_six">
+          {{ data.last_spent | date: 'EEEE, MMMM d, y, h:mm:ss' }}
+        </div>
+        <div class="table_eight">
+          PHP {{ data.current_load | number:'1.2-2' }}
+        </div>
+        <div class="table_seven">
+          <span (click)="viewMember(data.id)" class="btn btn_primary ">view</span>
+        </div>
+      </div>
+    </div>
+    <app-pagination
+      [totalItems]="totalItems"
+      [pageSize]="pageSize"
+      [currentPage]="currentPage"
+      (pageChange)="onPageChange($event)"
+    >
+    </app-pagination>
+  </div>
+</div>
+
+<ng-template #addProductModal let-d="dismiss">
+  <div class="modal-header">
+    Add member
+  </div>
+  <div>
+    <div class="modal-body">
+      <form (submit)="addProduct()">
+        <label class="modal-body-label" for="productName">Name:</label>
+        <input class="form-control" type="text" id="productName" name="productName" [(ngModel)]="newProduct.name" required>
+        <div *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+        <div class="modal-btns">
+          <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
+          <button class="btn modal-btns-add" type="submit">
+            Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #noData>
+  <app-no-data></app-no-data>
+</ng-template>

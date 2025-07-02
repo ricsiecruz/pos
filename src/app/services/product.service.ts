@@ -1,52 +1,48 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, merge, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { environment } from '../../environment';
-import { WebSocketProductsService } from '../websocket/websocket-products-service';
+import { Injectable, OnDestroy } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { WebSocketService } from "../websocket-service";
+import { Observable, BehaviorSubject, merge, Subscription } from "rxjs";
+import { map, tap } from "rxjs/operators";
+import { environment } from "../../environments/environment.prod";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ProductService implements OnDestroy {
   API_URL = environment.apiUrl;
-  // API_URL = ('https://pos-backend-kt9t.vercel.app/');
-  // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
-  // this.socket$ = webSocket('wss://pos-backend-kt9t.vercel.app/products');
 
   private productsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   products$: Observable<any[]> = this.productsSubject.asObservable();
   private websocketSubscription: Subscription;
 
-  constructor(private http: HttpClient, private webSocketService: WebSocketProductsService) {
-    this.websocketSubscription = merge(
-      this.webSocketService.receive().pipe(
+  constructor(private http: HttpClient, private webSocketService: WebSocketService) {
+    this.loadProducts();
+    this.websocketSubscription = this.webSocketService
+      .receive()
+      .pipe(
         map((message: any) => {
-          if (message.action === 'addProduct') {
-            return { action: 'addProduct', product: message.product };
-          } else if (message.action === 'initialize') {
-            return { action: 'initialize', products: message.products };
-          } else if (message.action === 'editProduct') {
-            return { action: 'editProduct', product: message.product };
+          if (message.action === "addProduct") {
+            return message.product;
+          } else if (message.action === "editProduct") {
+            return { edit: true, product: message.product };
+          } else if (message.action === "deleteProduct") {
+            return { delete: true, productId: message.productId };
           } else {
             return null;
           }
         })
-      ),
-      this.http.get<any[]>(this.API_URL + 'products').pipe(
-        map(products => ({ action: 'initialize', products }))
       )
-    ).subscribe((data: any) => {
-      if (data) {
-        if (data.action === 'initialize') {
-          this.updateProducts(data.products);
-        } else if (data.action === 'addProduct') {
-          this.addOrUpdateProduct(data.product);
-        } else if (data.action === 'editProduct') {
-          this.addOrUpdateProduct(data.product);
+      .subscribe((data) => {
+        if (data) {
+          if (data.edit) {
+            this.editLocalProduct(data.product);
+          } else if (data.delete) {
+            this.deleteLocalProduct(data.productId);
+          } else {
+            this.addOrUpdateProduct(data);
+          }
         }
-      }
-    });
+      });
   }
 
   ngOnDestroy() {
@@ -55,47 +51,88 @@ export class ProductService implements OnDestroy {
     }
   }
 
+  private deleteLocalProduct(productId: string) {
+    const products = [...this.productsSubject.value].filter((p) => p.id !== productId);
+    this.productsSubject.next(products);
+  }
+
   private addOrUpdateProduct(product: any): void {
-    const existingProductIndex = this.productsSubject.value.findIndex(p => p.id === product.id);
+    const existingProductIndex = this.productsSubject.value.findIndex((p) => p.id === product.id);
     if (existingProductIndex === -1) {
-      this.productsSubject.next([...this.productsSubject.value, product]);
+      const products = [product, ...this.productsSubject.value];
+      this.productsSubject.next(products);
+      localStorage.setItem("products", JSON.stringify(products));
     } else {
       const updatedProducts = [...this.productsSubject.value];
       updatedProducts[existingProductIndex] = product;
       this.productsSubject.next(updatedProducts);
+      localStorage.setItem("products", JSON.stringify(updatedProducts));
     }
   }
 
-  private updateProducts(products: any[]): void {
+  updateProducts(products: any[]) {
     this.productsSubject.next(products);
   }
 
-  getProducts() {
-    this.http.get<any[]>(`${this.API_URL}products`).subscribe(products => {
-      this.productsSubject.next(products);
+  private loadProducts() {
+    this.getProducts().subscribe((products) => {
+      this.updateProducts(products);
     });
   }
-  
 
-  addProduct(product: any) {
-    return this.http.post(`${this.API_URL}products`, product);
+  getProducts() {
+    return this.http.get<any[]>(`${this.API_URL}products`);
   }
-  
+
+  addLocalProduct(product: any) {
+    const products = [product, ...this.productsSubject.value]; // NEW: add to beginning
+    this.productsSubject.next(products);
+    localStorage.setItem("products", JSON.stringify(products)); // keep localStorage synced
+  }
+
+  removeLocalProduct(tempId: number) {
+    const products = this.productsSubject.value.filter((p) => p.id !== tempId);
+    this.productsSubject.next(products);
+    this.saveProductsToStorage(); // << NEW
+  }
+
+  private editLocalProduct(product: any) {
+    const products = [...this.productsSubject.value];
+    const index = products.findIndex((p) => p.id === product.id);
+    if (index !== -1) {
+      products[index] = product;
+      this.productsSubject.next(products);
+      this.saveProductsToStorage(); // << NEW
+    }
+  }
+
+  saveProductsToStorage() {
+    const products = this.productsSubject.value;
+    localStorage.setItem("products", JSON.stringify(products));
+  }
+
+  loadProductsFromStorage() {
+    const stored = localStorage.getItem("products");
+    if (stored) {
+      const products = JSON.parse(stored);
+      this.productsSubject.next(products);
+    }
+  }
+
+  replaceTempProduct(tempId: number, realProduct: any) {
+    const products = this.productsSubject.value.map((p) => (p.id === tempId ? realProduct : p));
+    this.productsSubject.next(products);
+  }
+
+  addProduct(newProduct: any) {
+    return this.http.post(this.API_URL + "products", newProduct);
+  }
 
   editProduct(productId: string, updatedProduct: any) {
-    console.log('edit product', productId, updatedProduct);
+    this.webSocketService.send({ action: "editProduct", productId, product: updatedProduct });
+  }
 
-    // Send update via WebSocket
-    this.webSocketService.send({ action: 'editProduct', productId, product: updatedProduct });
-
-    // Send update via HTTP request
-    this.http.put(`${this.API_URL}products/${productId}`, updatedProduct)
-      .subscribe(response => {
-        console.log('HTTP PUT response:', response);
-        // Update local state immediately
-        this.addOrUpdateProduct(updatedProduct);
-      }, error => {
-        console.error('HTTP PUT error:', error);
-      });
+  deleteProduct(productId: string) {
+    this.webSocketService.send({ action: "deleteProduct", productId });
   }
 }

@@ -1,9 +1,13 @@
 {
   "routes": [
+    "/access",
     "/admin",
+    "/admin/beverage",
     "/admin/dashboard",
     "/admin/expenses",
+    "/admin/foods",
     "/admin/inventory",
+    "/admin/members",
     "/admin/products",
     "/admin/sales",
     "/pos"

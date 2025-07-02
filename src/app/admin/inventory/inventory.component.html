@@ -20,7 +20,7 @@
             <div *ngFor="let data of inventory">
                 <div class="inventory_table_list">
                     <div class="table_one">{{ data.product }}</div>
-                    <div class="table_two">{{ data.stocks }}</div>
+                    <div class="table_two" [ngClass]="{'low': data.stocks <= 50}">{{ data.stocks }}</div>
                     <div class="table_three">{{ data.category }}</div>
                     <div class="table_four">{{ data.brand }}</div>
                     <div class="table_five">
@@ -41,14 +41,16 @@
     <div class="modal-body">
         <form (submit)="saveEditedProduct()">
             <div class="modal-body-label">
-              <label for="editProductPrice">Stock:</label>
-              </div>
-              <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="qty" required>
-              <div class="modal-btns">
-                  <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
-                  <button class="btn modal-btns-add" type="submit">
-                      Add
-                  </button>
+                <label>Current stock:</label>
+                <div>{{ editingProduct?.stocks }}</div>
+                <label for="editProductPrice">Add stock:</label>
+            </div>
+            <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="qty" required>
+            <div class="modal-btns">
+                <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
+                <button class="btn modal-btns-add" type="submit">
+                    Add
+                </button>
             </div>
         </form>
     </div>
