@@ -4,16 +4,20 @@
     <tabset>
       <!-- Dropdown for filtering by member -->
       <div class="orders_table_filter">
-        <div style="width: 200px;">
+        <div style="width: 200px">
           <div class="pos_selected_orders">Customer</div>
           <ng-select [(ngModel)]="selectedMemberId" (change)="onMemberChange()">
             <ng-option [value]="0" selected>All</ng-option>
             <ng-option [value]="1">Walk-in Customer</ng-option>
-            <ng-option *ngFor="let member of members" [value]="member.id">{{member.name}}</ng-option>
+            <ng-option *ngFor="let member of members" [value]="member.id">{{
+              member.name
+            }}</ng-option>
           </ng-select>
         </div>
         <div class="orders_table_export">
-          <button class="btn btn_success" (click)="exportTodaySalesToExcel()">Export to Excel</button>
+          <button class="btn btn_success" (click)="exportTodaySalesToExcel()">
+            Export to Excel
+          </button>
           <button class="btn btn_info" (click)="exportTodaySalesToCsv()">Export to CSV</button>
         </div>
       </div>
@@ -33,30 +37,47 @@
           [dataSource]="todayProducts"
           [details]="details"
           [pay]="pay.bind(this)"
-          [columns]="['customer', 'qty', 'date', 'computer', 'ps4', 'edit', 'credit', 'pay', 'total', 'payment', 'view']"
+          [columns]="[
+            'customer',
+            'qty',
+            'date',
+            'computer',
+            'ps4',
+            'edit',
+            'credit',
+            'pay',
+            'total',
+            'payment',
+            'view'
+          ]"
           [totalItems]="totalItemsToday"
           [pageSize]="pageSizeToday"
           [currentPage]="currentPageToday"
           (pageChange)="onPageChange($event)"
         ></app-orders-list>
       </tab>
-      
+
       <tab [heading]="'All (Credit: ' + creditCount + ')'">
         <div class="orders_table_filter">
           <div class="orders_table_filter_date">
             <div>
               <label for="startDate">From:</label>
-              <input class="form-control" type="date" id="startDate" [(ngModel)]="startDate">
+              <input class="form-control" type="date" id="startDate" [(ngModel)]="startDate" />
             </div>
             <div>
               <label for="endDate">To:</label>
-              <input class="form-control" type="date" id="endDate" [(ngModel)]="endDate">
+              <input class="form-control" type="date" id="endDate" [(ngModel)]="endDate" />
             </div>
           </div>
           <div>
-            <span style="visibility: hidden;">filter</span>
-            <div style="column-gap: 10px; display: flex;">
-              <button class="btn btn_primary" (click)="filter(startDate, endDate, selectedMemberName)">Filter</button>
+            <span style="visibility: hidden">filter</span>
+            <div style="column-gap: 10px; display: flex">
+              <button
+                class="btn btn_primary"
+                (click)="filter(startDate, endDate, selectedMemberName)"
+              >
+                Filter
+              </button>
               <button class="btn btn_warning" (click)="clearFilter()">Clear Filter</button>
             </div>
           </div>
@@ -72,14 +93,25 @@
           [dataSource]="products"
           [details]="details"
           [pay]="pay.bind(this)"
-          [columns]="['customer', 'qty', 'date', 'computer', 'ps4', 'edit', 'credit', 'pay', 'total', 'payment', 'view']"
+          [columns]="[
+            'customer',
+            'qty',
+            'date',
+            'computer',
+            'ps4',
+            'edit',
+            'credit',
+            'pay',
+            'total',
+            'payment',
+            'view'
+          ]"
           [totalItems]="totalItems"
           [pageSize]="pageSize"
           [currentPage]="currentPage"
           (pageChange)="onPageChange($event)"
         ></app-orders-list>
       </tab>
-      
     </tabset>
   </div>
 </div>

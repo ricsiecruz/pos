@@ -1,8 +1,6 @@
-// orders.component.ts
 import { Component, ViewChild, OnInit, ChangeDetectorRef } from "@angular/core";
 import { SalesService } from "../../services/sales.service";
 import { ModalService } from "../../modal.service";
-import { WebSocketService } from "../../websocket-service";
 import { OrdersListComponent } from "./orders-list/orders-list.component";
 import { MembersService } from "../../services/members.service";
 
@@ -47,14 +45,20 @@ export class OrdersComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private salesService: SalesService,
     private membersService: MembersService,
-    private modalService: ModalService,
-    private webSocketService: WebSocketService
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
     this.salesService.sales$.subscribe((products: any[]) => {
-      console.log("new sale", products);
-      this.todayProducts = products;
+      // ✅ Check if it's an array
+      if (Array.isArray(products)) {
+        this.todayProducts = products;
+        this.currentSales.credit = products.reduce((sum, p) => sum + (p.credit || 0), 0);
+      } else {
+        console.warn("Expected array from sales$, got:", products);
+        this.todayProducts = [];
+        this.currentSales.credit = 0;
+      }
     });
 
     window.addEventListener("storage", (event) => {
@@ -64,32 +68,6 @@ export class OrdersComponent implements OnInit {
       }
     });
 
-    this.webSocketService.receive().subscribe((message: any) => {
-      if (message.action === "addExpensesResponse") {
-        this.fetchSalesData();
-      }
-    });
-
-    this.webSocketService.receive().subscribe((message: any) => {
-      if (message.action === "newSale") {
-        this.fetchSalesData();
-      }
-    });
-
-    this.webSocketService.receive().subscribe((message: any) => {
-      if (message.action === "updateSale") {
-        const updatedSale = message.data;
-        this.fetchSalesData();
-      }
-    });
-
-    // this.salesService.sales$.subscribe((products: any) => {
-    //   if (products && products.length > 0) {
-    //     this.products = products;
-    //     this.fetchSalesData();
-    //   }
-    // });
-
     this.membersService.members$.subscribe((members: any[]) => {
       if (members && members.length > 0) {
         this.members = members;
@@ -97,12 +75,6 @@ export class OrdersComponent implements OnInit {
     });
 
     this.fetchSalesData();
-
-    // this.salesService.getKaha().subscribe((res: any) => {
-    //   if(res.length == 0) {
-    //     this.kaha = 0
-    //   }
-    // })
   }
 
   onPageChange(page: number): void {
@@ -154,7 +126,7 @@ export class OrdersComponent implements OnInit {
       this.creditCount = res.sales.credit_count;
       this.todayProducts = this.currentSales.data;
       this.products = this.allSales.data;
-      console.log("res", res);
+      console.log("fetch sales data", res);
       this.filterTodayProducts();
       this.cdr.detectChanges();
     });
@@ -203,9 +175,19 @@ export class OrdersComponent implements OnInit {
   }
 
   pay(data: any) {
-    data.credit = null;
-    console.log("credit", data.credit);
-    this.salesService.editTransaction(data.id, data);
+    const id = data.id || data.sale_id;
+
+    this.salesService.updateLocalCredit(id, null); // update localStorage credit to null
+
+    // Optionally sync to server (via WebSocket or REST)
+    this.salesService.editTransaction(id, {
+      ...data,
+      credit: null,
+      mode_of_payment: "cash", // or 'gcash' if applicable
+    });
+
+    // Optionally re-fetch fresh data
+    this.fetchSalesData();
   }
 
   exportTodaySalesToCsv(): void {

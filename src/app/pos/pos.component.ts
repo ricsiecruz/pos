@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Output,
+} from "@angular/core";
 import { ProductService } from "../services/product.service";
 import { SalesService } from "../services/sales.service";
 import { MembersService } from "../services/members.service";
@@ -31,7 +37,8 @@ export class PosComponent {
   mode_of_payment: string = "cash";
   applyStudentDiscount: boolean = false;
   discountAmount: number = 0;
-
+  computer: string = "regular"; // Default selection
+  zombiePromo: boolean = false;
   products$ = this.productService.products$;
 
   constructor(
@@ -209,19 +216,23 @@ export class PosComponent {
     });
 
     const orderSummary = {
-      orders: orders,
-      qty: this.totalQuantity,
-      total: this.overallTotal,
-      subtotal: this.subtotal,
-      transactionid: transactionId,
-      datetime: new Date().toISOString(),
-      customer: this.selectedMemberName,
-      computer: this.pc === "" ? 0 : this.pc,
-      ps4: this.ps4 === "" ? 0 : this.ps4,
-      mode_of_payment: this.mode_of_payment,
       credit: this.calculateCredit(),
-      student_discount: this.applyStudentDiscount,
+      customer: this.selectedMemberName,
+      datetime: new Date().toISOString(),
       discount: this.discountAmount,
+      mode_of_payment: this.mode_of_payment,
+      orders: orders,
+      pc: {
+        computer: this.computer,
+        load: this.pc === "" ? 0 : this.pc,
+        zombiePromo: this.zombiePromo,
+      },
+      ps4: this.ps4 === "" ? 0 : this.ps4,
+      qty: this.totalQuantity,
+      student_discount: this.applyStudentDiscount,
+      subtotal: this.subtotal,
+      total: this.overallTotal,
+      transactionid: transactionId,
     };
 
     console.log("Order Summary:", orderSummary);
@@ -240,36 +251,17 @@ export class PosComponent {
     this.overallTotal = 0;
   }
 
-  // addToSales(transactionSales: any) {
-  //   console.log("pos", transactionSales);
-  //   this.salesService.addSales(transactionSales);
-  // }
-
-  // addToSales(transactionSales: any) {
-  //   this.salesService.addSales(transactionSales).subscribe({
-  //     next: (createdProduct: any) => {
-  //       console.log("Product saved to server:", createdProduct);
-  //       // Update the tempId product with real server data (optional)
-  //       this.salesService.replaceLocalProduct(tempId, createdProduct);
-  //       this.salesService.saveProductsToStorage();
-  //     },
-  //     error: (err) => {
-  //       console.error("Failed to add product:", err);
-  //       this.salesService.removeLocalProduct(tempId);
-  //       this.salesService.saveProductsToStorage();
-  //     }
-  //   });
-
-  // }
-
   addToSales(transactionSales: any) {
     const tempId = Date.now();
-    const tempProduct = { ...transactionSales, id: tempId };
 
-    this.salesService.addLocalProduct(tempProduct);
+    console.log("temp product", transactionSales);
+
+    this.salesService.addLocalProduct(transactionSales);
     this.salesService.saveProductsToStorage();
 
-    console.log("aaa", transactionSales);
+    const bc = new BroadcastChannel("sales_channel");
+    bc.postMessage({ type: "sale_added" });
+    bc.close();
 
     this.salesService.addSales(transactionSales).subscribe({
       next: (createdProduct: any) => {

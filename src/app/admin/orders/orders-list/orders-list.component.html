@@ -1,48 +1,48 @@
 <div class="orders-list">
   <!-- Stat Cards -->
-  <div *ngIf="showStats"> 
+  <div *ngIf="showStats">
     <div class="orders-list_stat">
       <div class="orders-list_stat_card">
         Gross
-        <div>PHP {{ totalSales | number:'1.2-2' }}</div>
+        <div>PHP {{ totalSales | number : "1.2-2" }}</div>
       </div>
       <div class="orders-list_stat_card">
         Expenses
-        <div>PHP {{ expenses | number:'1.2-2' }}</div>
+        <div>PHP {{ expenses | number : "1.2-2" }}</div>
       </div>
       <div class="orders-list_stat_card">
         Net
-        <div>PHP {{ net | number:'1.2-2' }}</div>
+        <div>PHP {{ net | number : "1.2-2" }}</div>
       </div>
       <div class="orders-list_stat_card">
         Credit
-        <div>PHP {{ credit | number:'1.2-2' }}</div>
+        <div>PHP {{ credit }}</div>
       </div>
     </div>
-    <div class="orders-list_stat" style="justify-content: flex-start; column-gap: 20px;">
-      <div class="orders-list_stat_card" style="margin: 0;">
+    <div class="orders-list_stat" style="justify-content: flex-start; column-gap: 20px">
+      <div class="orders-list_stat_card" style="margin: 0">
         PC
-        <div>PHP {{ computer | number:'1.2-2' }}</div>
+        <div>PHP {{ computer | number : "1.2-2" }}</div>
       </div>
-      <div class="orders-list_stat_card" style="margin: 0;">
+      <div class="orders-list_stat_card" style="margin: 0">
         Food and drinks
-        <div>PHP {{ foodDrinks | number:'1.2-2' }}</div>
+        <div>PHP {{ foodDrinks | number : "1.2-2" }}</div>
       </div>
-      <div class="orders-list_stat_card" style="margin: 0;">
+      <div class="orders-list_stat_card" style="margin: 0">
         Cash
-        <div>PHP {{ cash | number:'1.2-2' }}</div>
+        <div>PHP {{ cash | number : "1.2-2" }}</div>
       </div>
-      <div class="orders-list_stat_card" style="margin: 0;">
+      <div class="orders-list_stat_card" style="margin: 0">
         Gcash
-        <div>PHP {{ gcash | number:'1.2-2' }}</div>
+        <div>PHP {{ gcash | number : "1.2-2" }}</div>
       </div>
     </div>
-    <div class="orders-list_stat" style="justify-content: flex-start; column-gap: 20px;">
-      <div class="orders-list_stat_card" style="margin: 0;">
+    <div class="orders-list_stat" style="justify-content: flex-start; column-gap: 20px">
+      <div class="orders-list_stat_card" style="margin: 0">
         PS4
-        <div>PHP {{ ps4 | number:'1.2-2' }}</div>
+        <div>PHP {{ ps4 | number : "1.2-2" }}</div>
       </div>
-    <!-- <div class="orders-list_stat" style="justify-content: flex-start; column-gap: 20px;">
+      <!-- <div class="orders-list_stat" style="justify-content: flex-start; column-gap: 20px;">
       <div class="orders-list_stat_card" style="margin: 0;">
         Kaha
         <div>
@@ -56,117 +56,127 @@
         Kaha + cash
       </div>
     </div> -->
-  </div>
+    </div>
 
-  <!-- Table Headers -->
-  <div class="orders-list_table_header">
-    <div class="table_five" *ngIf="isColumnVisible('customer')">Customer</div>
-    <div class="table_two" *ngIf="isColumnVisible('qty')">Qty</div>
-    <div class="table_four" *ngIf="isColumnVisible('date')">Date</div>
-    <div class="table_six" *ngIf="isColumnVisible('computer')">Computer</div>
-    <div class="table_one" *ngIf="isColumnVisible('edit')"></div>
-    <div class="table_six" *ngIf="isColumnVisible('ps4')">PS4</div>
-    <div class="table_eight" *ngIf="isColumnVisible('credit')">Credit</div>
-    <div class="table_nine" *ngIf="isColumnVisible('pay')"></div>
-    <div class="table_three" *ngIf="isColumnVisible('total')">Total</div>
-    <div class="table_ten" *ngIf="isColumnVisible('payment')"></div>
-    <div class="table_seven" *ngIf="isColumnVisible('view')"></div>
-  </div>
+    <!-- Table Headers -->
+    <div class="orders-list_table_header">
+      <div class="table_five" *ngIf="isColumnVisible('customer')">Customer</div>
+      <div class="table_two" *ngIf="isColumnVisible('qty')">Qty</div>
+      <div class="table_four" *ngIf="isColumnVisible('date')">Date</div>
+      <div class="table_six" *ngIf="isColumnVisible('computer')">Computer</div>
+      <div class="table_one" *ngIf="isColumnVisible('edit')"></div>
+      <div class="table_one" *ngIf="isColumnVisible('computer')">Load</div>
+      <div class="table_six" *ngIf="isColumnVisible('ps4')">PS4</div>
+      <div class="table_eight" *ngIf="isColumnVisible('credit')">Credit</div>
+      <div class="table_nine" *ngIf="isColumnVisible('pay')"></div>
+      <div class="table_three" *ngIf="isColumnVisible('total')">Total</div>
+      <div class="table_ten" *ngIf="isColumnVisible('payment')"></div>
+      <div class="table_seven" *ngIf="isColumnVisible('view')"></div>
+    </div>
 
-  <!-- Table Rows -->
-  <div *ngIf="dataSource.length > 0; else noData">
-    <div class="orders-list_table_list" *ngFor="let data of dataSource">
-      <div class="table_five" *ngIf="isColumnVisible('customer')" (click)="viewMember(data.member_id)">
-        <span>{{ data.customer }}</span>
-      </div>
-      <div class="table_two" *ngIf="isColumnVisible('qty')">
-        <ng-container *ngIf="data.qty !== null && data.qty !== '0.00'; else nullTemplate">
-          {{ data.qty }}
-        </ng-container>
-      </div>
-      <div class="table_four" *ngIf="isColumnVisible('date')">
-        {{ data.datetime | date:"EEE, MMM d, y, HH:mm:ss" }}
-      </div>
-      <div class="table_six" *ngIf="isColumnVisible('computer')">
-        <ng-container *ngIf="data.computer !== null && data.computer !== '0.00'; else nullTemplate">
-          PHP {{ data.computer }}
-        </ng-container>
-      </div>
-      <div class="table_one" *ngIf="isColumnVisible('edit')">
-        <span class="products_table_list_add" (click)="editProduct(data)">
-          Edit
-        </span>
-      </div>
-      <div class="table_six" *ngIf="isColumnVisible('ps4')">
-        <ng-container *ngIf="data.ps4 !== null && data.ps4 !== '0.00'; else nullTemplate">
-          PHP {{ data.ps4 }}
-        </ng-container>
-      </div>
-      <div class="table_eight" *ngIf="isColumnVisible('credit')">
-        <ng-container *ngIf="data.credit !== null && data.credit !== '0.00'; else nullTemplate">
-          PHP {{ data.credit }}
-        </ng-container>
-        
-      </div>
-      <div class="table_nine" *ngIf="isColumnVisible('pay')">
-        <div (click)="payCredit(data)" *ngIf="data.credit !== null && data.credit !== '0.00'" class="btn btn_secondary">
-          pay
+    <!-- Table Rows -->
+    <div *ngIf="dataSource.length > 0; else noData">
+      <div class="orders-list_table_list" *ngFor="let data of dataSource">
+        <div
+          class="table_five"
+          *ngIf="isColumnVisible('customer')"
+          (click)="viewMember(data.member_id)"
+        >
+          <span>{{ data.customer }}</span>
+        </div>
+        <div class="table_two" *ngIf="isColumnVisible('qty')">
+          <ng-container *ngIf="data.qty !== null && data.qty !== '0.00'; else nullTemplate">
+            {{ data.qty }}
+          </ng-container>
+        </div>
+        <div class="table_four" *ngIf="isColumnVisible('date')">
+          {{ data.datetime | date : "EEE, MMM d, y, HH:mm:ss" }}
+        </div>
+        <div class="table_six" *ngIf="isColumnVisible('computer')">
+          <ng-container
+            *ngIf="data?.pc?.computer !== null && data?.pc?.computer !== ''; else nullTemplate"
+          >
+            {{ data?.pc?.computer }}
+          </ng-container>
+        </div>
+        <div class="table_one" *ngIf="isColumnVisible('edit')">
+          <span class="products_table_list_add" (click)="editProduct(data)"> Edit </span>
+        </div>
+        <div class="table_one" *ngIf="isColumnVisible('computer')">PHP {{ data?.pc?.load }}</div>
+        <div class="table_six" *ngIf="isColumnVisible('ps4')">
+          <ng-container *ngIf="data.ps4 !== null && data.ps4 !== '0.00'; else nullTemplate">
+            PHP {{ data.ps4 }}
+          </ng-container>
+        </div>
+        <div class="table_eight" *ngIf="isColumnVisible('credit')">
+          <ng-container *ngIf="data.credit !== null && data.credit !== '0.00'; else nullTemplate">
+            PHP {{ data.credit }}
+          </ng-container>
+        </div>
+        <div class="table_nine" *ngIf="isColumnVisible('pay')">
+          <div
+            (click)="payCredit(data)"
+            *ngIf="data.credit !== null && data.credit !== '0.00'"
+            class="btn btn_secondary"
+          >
+            pay
+          </div>
+        </div>
+        <div class="table_three" *ngIf="isColumnVisible('total')">PHP {{ data.total }}</div>
+        <div class="table_ten" *ngIf="isColumnVisible('payment')">
+          {{ data.mode_of_payment }}
+        </div>
+        <div class="table_seven" *ngIf="isColumnVisible('view')">
+          <div (click)="viewModal(data)" class="btn btn_primary">view</div>
         </div>
       </div>
-      <div class="table_three" *ngIf="isColumnVisible('total')">
-        PHP {{ data.total }}
-      </div>
-      <div class="table_ten" *ngIf="isColumnVisible('payment')">
-        {{ data.mode_of_payment }}
-      </div>
-      <div class="table_seven" *ngIf="isColumnVisible('view')">
-        <div (click)="viewModal(data)" class="btn btn_primary">
-          view
+      <app-pagination
+        [totalItems]="totalItems"
+        [pageSize]="pageSize"
+        [currentPage]="currentPage"
+        (pageChange)="onPageChange($event)"
+      >
+      </app-pagination>
+    </div>
+
+    <ng-template #nullTemplate> - </ng-template>
+
+    <!-- No Data Template -->
+    <ng-template #noData>
+      <div style="text-align: center; padding: 10px">No data</div>
+    </ng-template>
+
+    <!-- Edit Product Modal Template -->
+    <ng-template #editProductModal let-d="dismiss">
+      <div *ngIf="editingProduct">
+        <div class="modal-header">
+          Edit <span>{{ editingProduct?.customer }}</span>
+        </div>
+        <div class="modal-body">
+          <form (submit)="saveEditedProduct()">
+            <div class="modal-body-label">
+              <label for="editProductPrice">Load:</label>
+            </div>
+            <input
+              class="form-control"
+              type="number"
+              id="editProductPrice"
+              name="editProductPrice"
+              [(ngModel)]="editingProduct.computer"
+              required
+            />
+            <div class="modal-btns">
+              <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">
+                Cancel
+              </button>
+              <button class="btn modal-btns-add" type="submit">Save</button>
+            </div>
+          </form>
         </div>
       </div>
-    </div>
-    <app-pagination
-      [totalItems]="totalItems"
-      [pageSize]="pageSize"
-      [currentPage]="currentPage"
-      (pageChange)="onPageChange($event)"
-    >
-    </app-pagination>
-  </div>
+    </ng-template>
 
-  <ng-template #nullTemplate>
-    -
-  </ng-template>
-  
-  <!-- No Data Template -->
-  <ng-template #noData>
-    <div style="text-align: center; padding: 10px;">
-      No data
-    </div>
-  </ng-template>
-
-  <!-- Edit Product Modal Template -->
-  <ng-template #editProductModal let-d="dismiss">
-    <div *ngIf="editingProduct">
-      <div class="modal-header">
-        Edit <span>{{ editingProduct?.customer }}</span>
-      </div>
-      <div class="modal-body">
-        <form (submit)="saveEditedProduct()">
-          <div class="modal-body-label">
-            <label for="editProductPrice">Load:</label>
-          </div>
-          <input class="form-control" type="number" id="editProductPrice" name="editProductPrice" [(ngModel)]="editingProduct.computer" required>
-          <div class="modal-btns">
-            <button class="btn modal-btns-cancel" (click)="cancelForm()" type="button">Cancel</button>
-            <button class="btn modal-btns-add" type="submit">Save</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </ng-template>
-
-  <!-- <ng-template #openKahaModal let-d="dismiss">
+    <!-- <ng-template #openKahaModal let-d="dismiss">
     <div class="modal-header">
       Kaha
     </div>
@@ -184,73 +194,68 @@
     </div>
   </ng-template> -->
 
-  <!-- Sales Modal Template -->
-  <ng-template #sales let-d="dismiss">
-    <div class="modal-content" style="width: 424px;">
-      <div class="invoice">
-        <div class="invoice_header">
-          <img src="assets/img/logo.png">
-          <div>
-            <div>POS</div>
-            <div>TECH HYBE</div>
-          </div>
-        </div>
-        <div class="invoice_text">
-          Invoice
-        </div>
-        <div class="invoice_body">
-          <div class="invoice_body_header">
-            <div>Invoice #:</div>
-            <div>{{ details?.transactionid }}</div>
-          </div>
-          <div class="invoice_body_header">
-            <div>Date:</div>
-            <div>{{ details?.datetime | date:"EEEE, MMMM d, y, h:mm:ss" }}</div>
-          </div>
-          <div class="invoice_body_table">
-            <div class="invoice_body_table_header">
-              <div class="table1_one">Item</div>
-              <div class="table1_two">Price</div>
-              <div class="table1_three">Qty</div>
-              <div class="table1_four">Total</div>
-            </div>
-            <div *ngFor="let order of details?.orders" class="invoice_body_table_data">
-              <div class="table1_one">
-                {{ order.product }}
-              </div>
-              <div class="table1_two">
-                PHP {{ order.price }}
-              </div>
-              <div class="table1_three">
-                {{ order.quantity }}
-              </div>
-              <div class="table1_four">
-                PHP {{ order.total }}
-              </div>
+    <!-- Sales Modal Template -->
+    <ng-template #sales let-d="dismiss">
+      <div class="modal-content" style="width: 424px">
+        <div class="invoice">
+          <div class="invoice_header">
+            <img src="assets/img/logo.png" />
+            <div>
+              <div>POS</div>
+              <div>TECH HYBE</div>
             </div>
           </div>
-          <div class="invoice_body_header">
-            <div>Items:</div>
-            <div>{{ details?.qty }}</div>
-          </div>
-          <div class="invoice_body_header">
-            <div>Subtotal:</div>
-            <div>PHP {{ details?.subtotal }}</div>
-          </div>
-          <div class="invoice_body_header">
-            <div>Computer:</div>
-            <div>PHP {{ details?.computer }}</div>
-          </div>
-          <div class="invoice_body_header">
-            <div>PS4:</div>
-            <div>PHP {{ details?.ps4 }}</div>
-          </div>
-          <div class="invoice_body_total">
-            <div>Total Payable:</div>
-            <div>PHP {{ details?.total }}</div>
+          <div class="invoice_text">Invoice</div>
+          <div class="invoice_body">
+            <div class="invoice_body_header">
+              <div>Invoice #:</div>
+              <div>{{ details?.transactionid }}</div>
+            </div>
+            <div class="invoice_body_header">
+              <div>Date:</div>
+              <div>{{ details?.datetime | date : "EEEE, MMMM d, y, h:mm:ss" }}</div>
+            </div>
+            <div class="invoice_body_table">
+              <div class="invoice_body_table_header">
+                <div class="table1_one">Item</div>
+                <div class="table1_two">Price</div>
+                <div class="table1_three">Qty</div>
+                <div class="table1_four">Total</div>
+              </div>
+              <div *ngFor="let order of details?.orders" class="invoice_body_table_data">
+                <div class="table1_one">
+                  {{ order.product }}
+                </div>
+                <div class="table1_two">PHP {{ order.price }}</div>
+                <div class="table1_three">
+                  {{ order.quantity }}
+                </div>
+                <div class="table1_four">PHP {{ order.total }}</div>
+              </div>
+            </div>
+            <div class="invoice_body_header">
+              <div>Items:</div>
+              <div>{{ details?.qty }}</div>
+            </div>
+            <div class="invoice_body_header">
+              <div>Subtotal:</div>
+              <div>PHP {{ details?.subtotal }}</div>
+            </div>
+            <div class="invoice_body_header">
+              <div>Computer:</div>
+              <div>PHP {{ details?.computer }}</div>
+            </div>
+            <div class="invoice_body_header">
+              <div>PS4:</div>
+              <div>PHP {{ details?.ps4 }}</div>
+            </div>
+            <div class="invoice_body_total">
+              <div>Total Payable:</div>
+              <div>PHP {{ details?.total }}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </ng-template>
+    </ng-template>
+  </div>
 </div>

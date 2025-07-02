@@ -132,6 +132,22 @@
         class="form-control"
       />
     </div>
+    <input type="checkbox" [(ngModel)]="zombiePromo" />
+    <label>Zombie Promo</label>
+    <div style="display: flex; gap: 10px">
+      <label>
+        <input type="radio" [(ngModel)]="computer" name="option" value="regular" />
+        regular
+      </label>
+      <label>
+        <input type="radio" [(ngModel)]="computer" name="option" value="vip" />
+        vip
+      </label>
+      <label>
+        <input type="radio" [(ngModel)]="computer" name="option" value="competitive" />
+        competitive
+      </label>
+    </div>
 
     <div class="pos_selected_pc">
       <div class="">PS4</div>

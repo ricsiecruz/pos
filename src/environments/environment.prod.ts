@@ -3,11 +3,12 @@ export const environment = {
 
   // prod
   // apiUrl: "https://pos-backend-kt9t.vercel.app/",
-  apiUrl: "https://pos-backend-jade.vercel.app/",
   // apiUrl: 'https://benevolent-brioche-d29205.netlify.app',
+
+  apiUrl: "https://pos-backend-jade.vercel.app/",
   wsUrl: "wss://east-aware-radiator.glitch.me/",
 
   // local
   // apiUrl: "http://localhost:3000/",
-  // wsUrl: 'localhost:8080/'
+  // wsUrl: "localhost:8080/",
 };
